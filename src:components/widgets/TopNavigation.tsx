@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: 'rgba(0, 0, 0, 0.96)', // Default content color
-    fontFamily: 'System', // Graphik font fallback
+    fontFamily: 'Nu Sans', // NuSans Regular
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 20.8, // 1.3 * 16
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   accountType: {
     color: '#820ad1', // Primary accent color
-    fontFamily: 'System', // Graphik font fallback
+    fontFamily: 'Nu Sans', // NuSans Regular
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 18.2, // 1.3 * 14
