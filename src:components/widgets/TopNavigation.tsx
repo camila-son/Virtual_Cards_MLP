@@ -39,7 +39,7 @@ export function TopNavigation() {
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <ChatIcon size={20} color="rgba(0, 0, 0, 0.64)" />
+                <ChatIcon size={40} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
