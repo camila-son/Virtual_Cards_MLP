@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
-import { StatusBar } from './src:components/widgets/StatusBar';
 import { TopNavigation } from './src:components/widgets/TopNavigation';
 import { BalanceWidget } from './src:components/widgets/BalanceWidget';
 import { VirtualCardWidget } from './src:components/widgets/VirtualCardWidget';
@@ -30,7 +29,6 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
-      <StatusBar />
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <TopNavigation />
         <View style={styles.content}>
