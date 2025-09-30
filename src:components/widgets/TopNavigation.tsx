@@ -4,32 +4,48 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 export function TopNavigation() {
   return (
     <View style={styles.container}>
-      {/* Avatar and User Info */}
-      <View style={styles.userInfo}>
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>GA</Text>
+      <View style={styles.blurContainer}>
+        <View style={styles.wrapper}>
+          {/* Leading - Avatar */}
+          <View style={styles.leading}>
+            <View style={styles.avatarContainer}>
+              <View style={styles.avatar}>
+                <Text style={styles.avatarText}>GA</Text>
+              </View>
+              <View style={styles.avatarBorder} />
+              <View style={styles.avatarOverlay} />
+            </View>
           </View>
-          <View style={styles.avatarBorder} />
-          <View style={styles.avatarOverlay} />
+          
+          {/* Content - User Info */}
+          <View style={styles.content}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.userName}>Gabriel</Text>
+            </View>
+            <View style={styles.secondaryContent}>
+              <Text style={styles.accountType}>Nu Account</Text>
+            </View>
+          </View>
+          
+          {/* Trailing - Action Icons */}
+          <View style={styles.trailing}>
+            <TouchableOpacity style={styles.actionButton}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.iconText}>🔔</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.actionButton}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.iconText}>💬</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.actionButton}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.iconText}>⚙️</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.userDetails}>
-          <Text style={styles.userName}>Gabriel</Text>
-          <Text style={styles.accountType}>Nu Account</Text>
-        </View>
-      </View>
-      
-      {/* Action Icons */}
-      <View style={styles.actionIcons}>
-        <TouchableOpacity style={styles.iconButton}>
-          <Text style={styles.iconText}>🔔</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton}>
-          <Text style={styles.iconText}>💬</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton}>
-          <Text style={styles.iconText}>⚙️</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -37,23 +53,35 @@ export function TopNavigation() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 48, // Status bar height + padding as per Figma
+    width: '100%',
+  },
+  blurContainer: {
+    backgroundColor: 'rgba(236, 233, 238, 0.64)', // Subtle purple background
+    width: '100%',
+  },
+  wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 44, // Status bar height + padding
-    paddingBottom: 16,
-    height: 76, // h-19 equivalent
+    paddingVertical: 16,
+    height: 76,
+    gap: 16,
   },
-  userInfo: {
+  leading: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
+    height: '100%',
   },
   avatarContainer: {
     position: 'relative',
     width: 40,
     height: 40,
+    borderRadius: 64, // 64px radius as per Figma
+    borderWidth: 0.5,
+    borderColor: 'rgba(0, 0, 0, 0.08)',
+    overflow: 'hidden',
   },
   avatar: {
     width: '100%',
@@ -61,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#d1d5db', // gray-300
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 64,
   },
   avatarText: {
     color: '#6b7280', // gray-600
@@ -74,9 +102,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: 'rgba(0, 0, 0, 0.08)',
-    borderRadius: 20,
+    borderRadius: 64,
   },
   avatarOverlay: {
     position: 'absolute',
@@ -85,32 +113,74 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.04)',
-    borderRadius: 20,
+    borderRadius: 64,
   },
-  userDetails: {
+  content: {
+    flex: 1,
     flexDirection: 'column',
+    gap: 2,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    minHeight: 0,
+    minWidth: 0,
+  },
+  titleContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: 0,
+    minWidth: 0,
+    width: '100%',
   },
   userName: {
-    color: '#000',
-    fontFamily: 'System',
+    color: 'rgba(0, 0, 0, 0.96)', // Default content color
+    fontFamily: 'System', // Graphik font fallback
     fontSize: 16,
-    fontWeight: '300',
+    fontWeight: '400',
+    lineHeight: 20.8, // 1.3 * 16
+    letterSpacing: -0.16,
+    overflow: 'hidden',
+  },
+  secondaryContent: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: 0,
+    minWidth: 0,
+    width: '100%',
   },
   accountType: {
-    color: '#820ad1', // primary color
-    fontFamily: 'System',
+    color: '#820ad1', // Primary accent color
+    fontFamily: 'System', // Graphik font fallback
     fontSize: 14,
     fontWeight: '400',
+    lineHeight: 18.2, // 1.3 * 14
+    letterSpacing: -0.14,
+    overflow: 'hidden',
   },
-  actionIcons: {
+  trailing: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: 44,
+    gap: 0,
+    overflow: 'hidden',
   },
-  iconButton: {
-    padding: 8,
-    borderRadius: 20,
+  actionButton: {
     width: 44,
     height: 44,
+    maxWidth: 44,
+    maxHeight: 44,
+    minWidth: 44,
+    minHeight: 44,
+    padding: 8,
+    borderRadius: 64, // 64px radius as per Figma
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconContainer: {
+    width: 32,
+    height: 32,
+    padding: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
