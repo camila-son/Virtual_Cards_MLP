@@ -1,5 +1,5 @@
 // Font configuration for the app
-// Add your custom font files to assets/fonts/ directory
+// Using actual Nu Sans font files from assets/fonts/
 
 export const Fonts = {
   // Nu Sans variants (using actual font files from assets/fonts/)
