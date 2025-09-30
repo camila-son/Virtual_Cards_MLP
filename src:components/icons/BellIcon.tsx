@@ -7,7 +7,7 @@ interface BellIconProps {
   color?: string;
 }
 
-export function BellIcon({ size = 27, color = 'rgba(0, 0, 0, 0.64)' }: BellIconProps) {
+export function BellIcon({ size = 40, color = 'rgba(0, 0, 0, 0.64)' }: BellIconProps) {
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size} viewBox="0 0 44 44" fill="none">
