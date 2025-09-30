@@ -1,4 +1,4 @@
-import svgPaths from "../../imports/svg-fq1vamp6s2";
+import svgPaths from "../../src:assets/svg-fq1vamp6s2";
 
 
 export function EarnAPYWidget() {

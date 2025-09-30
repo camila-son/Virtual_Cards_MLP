@@ -1,4 +1,4 @@
-import svgPaths from "../../imports/svg-frv9c42num";
+import svgPaths from "../../src:assets/svg-frv9c42num";
 
 function Card() {
   return (

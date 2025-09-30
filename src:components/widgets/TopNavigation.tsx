@@ -1,5 +1,5 @@
-import svgPaths from "../../imports/svg-eedehvfhj9";
-import imgMagicAvatar from "figma:asset/a36dcbdac73a87ca8826a1fc403327edadb89527.png";
+import svgPaths from "../../src:assets/svg-eedehvfhj9";
+// Avatar placeholder - replace with actual image later
 
 export function TopNavigation() {
   return (
@@ -7,7 +7,9 @@ export function TopNavigation() {
       {/* Avatar and User Info */}
       <div className="flex items-center gap-4">
         <div className="relative w-10 h-10 rounded-full overflow-hidden">
-          <img alt="Gabriel" className="w-full h-full object-cover" src={imgMagicAvatar} />
+          <div className="w-full h-full bg-gray-300 flex items-center justify-center rounded-full">
+            <span className="text-gray-600 font-medium text-sm">GA</span>
+          </div>
           <div className="absolute inset-0 border border-black/8 rounded-full pointer-events-none" />
           <div className="absolute bg-black/4 inset-0 rounded-full z-[2]" />
         </div>

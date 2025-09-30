@@ -1,6 +1,6 @@
-import svgPaths from "../../imports/svg-2f8ekj8a34";
-import svgPathsNew from "../../imports/svg-v1unyf83bw";
-import { imgGroup, imgGroup1 } from "../../imports/svg-lnjnh";
+import svgPaths from "../../src:assets/svg-2f8ekj8a34";
+import svgPathsNew from "../../src:assets/svg-v1unyf83bw";
+import { imgGroup, imgGroup1 } from "../../src:assets/svg-lnjnh.tsx";
 
 function Ticker() {
   return (

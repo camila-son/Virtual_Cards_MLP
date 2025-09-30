@@ -1,5 +1,5 @@
-import svgPaths from "../../imports/svg-vftz5ennzh";
-import { imgGroup, imgGroup1 } from "../../imports/svg-r5mb8";
+import svgPaths from "../../src:assets/svg-vftz5ennzh";
+import { imgGroup, imgGroup1 } from "../../src:assets/svg-r5mb8.tsx";
 
 const USFlag = () => (
   <div className="relative w-8 h-8">

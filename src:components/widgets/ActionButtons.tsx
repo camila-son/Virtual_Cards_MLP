@@ -1,4 +1,4 @@
-import svgPaths from "../../imports/svg-xzon47pqta";
+import svgPaths from "../../src:assets/svg-xzon47pqta";
 
 const ActionButton = ({ icon, label }: { icon: string; label: string }) => (
   <div className="flex flex-col items-center gap-2 h-[86px] w-15">

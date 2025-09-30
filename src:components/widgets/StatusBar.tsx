@@ -1,4 +1,4 @@
-import svgPaths from "../../imports/svg-eedehvfhj9";
+import svgPaths from "../../src:assets/svg-eedehvfhj9";
 
 export function StatusBar() {
   return (

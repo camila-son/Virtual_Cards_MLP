@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "Virtual Cards MLP",
+    "slug": "virtual-cards-mlp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.virtualcardsmlp.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ece9ee"
+      }
+    }
+  }
+}
