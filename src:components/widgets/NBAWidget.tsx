@@ -89,14 +89,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 0,
-    width: 343,
+    flex: 1,
   },
   contentGroup: {
-    flex: 1,
     flexDirection: 'column',
     gap: 2,
     alignItems: 'flex-start',
-    paddingRight: 12,
     width: '100%',
   },
   title: {
@@ -104,11 +102,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '500',
     lineHeight: 28.8, // 1.2 * 24
-    color: 'rgba(0, 0, 0, 0.96)',
+    color: '#000000',
     width: '100%',
   },
   descriptionContainer: {
-    flex: 1,
     width: '100%',
   },
   description: {
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 21, // 1.5 * 14
-    color: 'rgba(0, 0, 0, 0.64)',
+    color: 'rgba(0, 0, 0, 0.7)',
     width: '100%',
   },
   bottomSection: {
@@ -125,7 +122,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-end',
     padding: 12,
-    width: 343,
   },
   buttonsContainer: {
     flexDirection: 'row',
