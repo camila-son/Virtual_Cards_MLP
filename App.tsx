@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { StatusBar } from './src:components/widgets/StatusBar';
 import { TopNavigation } from './src:components/widgets/TopNavigation';
 import { BalanceWidget } from './src:components/widgets/BalanceWidget';
@@ -10,8 +10,24 @@ import { MarketInfoWidget } from './src:components/widgets/MarketInfoWidget';
 import { ActionButtons } from './src:components/widgets/ActionButtons';
 import { BottomNavigation } from './src:components/widgets/BottomNavigation';
 import { HomeIndicator } from './src:components/widgets/HomeIndicator';
+import { loadCustomFonts } from './src/utils/loadFonts';
 
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    loadCustomFonts().then(() => {
+      setFontsLoaded(true);
+    });
+  }, []);
+
+  if (!fontsLoaded) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading fonts...</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <StatusBar />
@@ -33,6 +49,16 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ece9ee',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#000',
+  },
   container: {
     flex: 1,
     backgroundColor: '#ece9ee',
