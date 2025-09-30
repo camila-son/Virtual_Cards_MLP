@@ -4,7 +4,7 @@ import { StatusBar } from './src:components/widgets/StatusBar';
 import { TopNavigation } from './src:components/widgets/TopNavigation';
 import { BalanceWidget } from './src:components/widgets/BalanceWidget';
 import { VirtualCardWidget } from './src:components/widgets/VirtualCardWidget';
-import { EarnAPYWidget } from './src:components/widgets/EarnAPYWidget';
+import { NBAWidget } from './src:components/widgets/NBAWidget';
 import { TransactionsWidget } from './src:components/widgets/TransactionsWidget';
 import { MarketInfoWidget } from './src:components/widgets/MarketInfoWidget';
 import { ActionButtons } from './src:components/widgets/ActionButtons';
@@ -20,7 +20,7 @@ export default function App() {
         <View style={styles.content}>
           <BalanceWidget />
           <VirtualCardWidget />
-          <EarnAPYWidget />
+          <NBAWidget />
           <TransactionsWidget />
           <MarketInfoWidget />
           <ActionButtons />
