@@ -7,10 +7,10 @@ interface BellIconProps {
   color?: string;
 }
 
-export function BellIcon({ size = 20, color = 'rgba(0, 0, 0, 0.64)' }: BellIconProps) {
+export function BellIcon({ size = 27, color = 'rgba(0, 0, 0, 0.64)' }: BellIconProps) {
   return (
     <View style={{ width: size, height: size }}>
-      <Svg width={size} height={size} viewBox="12 16 20 12" fill="none">
+      <Svg width={size} height={size} viewBox="0 0 44 44" fill="none">
         <Path
           d="M14.4992 23.28L14.5883 23.1396C16.1807 20.6291 17.9542 17.8333 22.129 17.8333C26.3037 17.8333 28.0772 20.6291 29.6697 23.1396L29.7588 23.28L31.1658 22.3867C31.1159 22.308 31.0653 22.228 31.0139 22.1468C29.4627 19.6946 27.2311 16.1667 22.129 16.1667C17.0269 16.1667 14.7952 19.6946 13.244 22.1468C13.1927 22.2279 13.142 22.3081 13.0921 22.3867L14.4992 23.28Z"
           fill={color}

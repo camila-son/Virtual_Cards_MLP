@@ -34,7 +34,7 @@ export function TopNavigation() {
           <View style={styles.trailing}>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <BellIcon size={20} color="rgba(0, 0, 0, 0.64)" />
+                <BellIcon size={27} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
