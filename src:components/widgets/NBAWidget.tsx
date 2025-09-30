@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Fonts, Typography } from '../config/fonts';
 
 export function NBAWidget() {
   return (
@@ -99,7 +98,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    ...Typography.displayMedium,
+    fontFamily: 'System',
+    fontSize: 24,
+    fontWeight: '500',
+    lineHeight: 28.8,
     color: '#000000',
     width: '100%',
   },
@@ -107,7 +109,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   description: {
-    ...Typography.textRegular,
+    fontFamily: 'System',
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 21,
     color: 'rgba(0, 0, 0, 0.7)',
     width: '100%',
   },
@@ -135,7 +140,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   addMoneyText: {
-    ...Typography.textSemibold,
+    fontFamily: 'System',
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 15.6,
     color: '#ffffff',
     textAlign: 'center',
     letterSpacing: 0.12,
@@ -149,7 +157,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   dismissText: {
-    ...Typography.textSemibold,
+    fontFamily: 'System',
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 15.6,
     color: 'rgba(0, 0, 0, 0.96)',
     textAlign: 'center',
     letterSpacing: 0.12,
