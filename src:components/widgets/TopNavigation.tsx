@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingTop: 44, // Status bar height + padding
+    paddingBottom: 16,
     height: 76, // h-19 equivalent
   },
   userInfo: {
