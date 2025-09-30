@@ -2,10 +2,10 @@
 // Using actual Nu Sans font files from assets/fonts/
 
 export const Fonts = {
-  // Nu Sans variants (using exact font family names from .otf files)
+  // Nu Sans (normal) variants
   nuSans: {
     light: 'Nu Sans Light',
-    regular: 'Nu Sans Regular',
+    regular: 'Nu Sans',
     medium: 'Nu Sans Medium',
     semibold: 'Nu Sans Semibold',
   },
@@ -13,7 +13,7 @@ export const Fonts = {
   // Nu Sans Condensed variants
   nuSansCondensed: {
     light: 'Nu Sans Condensed Light',
-    regular: 'Nu Sans Condensed Regular',
+    regular: 'Nu Sans Condensed',
     medium: 'Nu Sans Condensed Medium',
     semibold: 'Nu Sans Condensed Semibold',
   },
@@ -21,7 +21,7 @@ export const Fonts = {
   // Nu Sans Extended variants
   nuSansExtended: {
     light: 'Nu Sans Extended Light',
-    regular: 'Nu Sans Extended Regular',
+    regular: 'Nu Sans Extended',
     medium: 'Nu Sans Extended Medium',
     semibold: 'Nu Sans Extended Semibold',
   },
@@ -63,5 +63,35 @@ export const Typography = {
     fontSize: 12,
     fontWeight: '600' as const,
     lineHeight: 15.6,
+  },
+  
+  // Condensed variants
+  condensedMedium: {
+    fontFamily: Fonts.nuSansCondensed.medium,
+    fontSize: 24,
+    fontWeight: '500' as const,
+    lineHeight: 28.8,
+  },
+  
+  condensedRegular: {
+    fontFamily: Fonts.nuSansCondensed.regular,
+    fontSize: 14,
+    fontWeight: '400' as const,
+    lineHeight: 21,
+  },
+  
+  // Extended variants
+  extendedMedium: {
+    fontFamily: Fonts.nuSansExtended.medium,
+    fontSize: 24,
+    fontWeight: '500' as const,
+    lineHeight: 28.8,
+  },
+  
+  extendedRegular: {
+    fontFamily: Fonts.nuSansExtended.regular,
+    fontSize: 14,
+    fontWeight: '400' as const,
+    lineHeight: 21,
   },
 };
