@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   addMoneyText: {
     fontFamily: 'System', // Nu Sans Text Semibold fallback
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '600', // SemiBold
     lineHeight: 15.6, // 1.3 * 12
     color: '#ffffff',
     textAlign: 'center',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   dismissText: {
     fontFamily: 'System', // Nu Sans Text Semibold fallback
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '600', // SemiBold
     lineHeight: 15.6, // 1.3 * 12
     color: 'rgba(0, 0, 0, 0.96)',
     textAlign: 'center',
