@@ -2,28 +2,28 @@
 // Using actual Nu Sans font files from assets/fonts/
 
 export const Fonts = {
-  // Nu Sans variants (using actual font files from assets/fonts/)
+  // Nu Sans variants (using exact font family names from .otf files)
   nuSans: {
-    light: 'Nu Sans-Light',
-    regular: 'Nu Sans-Regular',
-    medium: 'Nu Sans-Medium',
-    semibold: 'Nu Sans-Semibold',
+    light: 'Nu Sans Light',
+    regular: 'Nu Sans Regular',
+    medium: 'Nu Sans Medium',
+    semibold: 'Nu Sans Semibold',
   },
   
   // Nu Sans Condensed variants
   nuSansCondensed: {
-    light: 'Nu Sans Condensed-Light',
-    regular: 'Nu Sans Condensed-Regular',
-    medium: 'Nu Sans Condensed-Medium',
-    semibold: 'Nu Sans Condensed-Semibold',
+    light: 'Nu Sans Condensed Light',
+    regular: 'Nu Sans Condensed Regular',
+    medium: 'Nu Sans Condensed Medium',
+    semibold: 'Nu Sans Condensed Semibold',
   },
   
   // Nu Sans Extended variants
   nuSansExtended: {
-    light: 'Nu Sans Extended-Light',
-    regular: 'Nu Sans Extended-Regular',
-    medium: 'Nu Sans Extended-Medium',
-    semibold: 'Nu Sans Extended-Semibold',
+    light: 'Nu Sans Extended Light',
+    regular: 'Nu Sans Extended Regular',
+    medium: 'Nu Sans Extended Medium',
+    semibold: 'Nu Sans Extended Semibold',
   },
   
   // System fallbacks
