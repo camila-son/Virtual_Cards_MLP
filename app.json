@@ -8,6 +8,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "fonts": [
+      "assets/fonts/*.ttf",
+      "assets/fonts/*.otf"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.virtualcardsmlp.app"

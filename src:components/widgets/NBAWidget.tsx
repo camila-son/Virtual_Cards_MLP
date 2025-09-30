@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Fonts, Typography } from '../../config/fonts';
 
 export function NBAWidget() {
   return (
@@ -98,10 +99,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontFamily: 'System', // Nu Sans Display Medium fallback
-    fontSize: 24,
-    fontWeight: '500',
-    lineHeight: 28.8, // 1.2 * 24
+    ...Typography.displayMedium,
     color: '#000000',
     width: '100%',
   },
@@ -109,10 +107,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   description: {
-    fontFamily: 'System', // Nu Sans Text Regular fallback
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 21, // 1.5 * 14
+    ...Typography.textRegular,
     color: 'rgba(0, 0, 0, 0.7)',
     width: '100%',
   },
@@ -140,10 +135,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   addMoneyText: {
-    fontFamily: 'System', // Nu Sans Text Semibold fallback
-    fontSize: 12,
-    fontWeight: '600', // SemiBold
-    lineHeight: 15.6, // 1.3 * 12
+    ...Typography.textSemibold,
     color: '#ffffff',
     textAlign: 'center',
     letterSpacing: 0.12,
@@ -157,10 +149,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   dismissText: {
-    fontFamily: 'System', // Nu Sans Text Semibold fallback
-    fontSize: 12,
-    fontWeight: '600', // SemiBold
-    lineHeight: 15.6, // 1.3 * 12
+    ...Typography.textSemibold,
     color: 'rgba(0, 0, 0, 0.96)',
     textAlign: 'center',
     letterSpacing: 0.12,
