@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { BellIcon } from '../icons/BellIcon';
+import { ChatIcon } from '../icons/ChatIcon';
+import { SettingsIcon } from '../icons/SettingsIcon';
 
 export function TopNavigation() {
   return (
@@ -31,17 +34,17 @@ export function TopNavigation() {
           <View style={styles.trailing}>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <Text style={styles.iconText}>🔔</Text>
+                <BellIcon size={20} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <Text style={styles.iconText}>💬</Text>
+                <ChatIcon size={20} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <Text style={styles.iconText}>⚙️</Text>
+                <SettingsIcon size={20} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
           </View>
