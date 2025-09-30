@@ -1,102 +1,132 @@
-import svgPaths from "../../src:assets/svg-fq1vamp6s2";
-
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export function EarnAPYWidget() {
   return (
-    <div className="relative w-full h-[157px]">
-
-      
+    <View style={styles.container}>
       {/* Main Widget Container */}
-      <div 
-        className="relative bg-card rounded-[24px] w-full h-full z-10"
-        style={{
-          background: `
-            radial-gradient(circle at center, 
-              rgba(15, 10, 209, 0.4) 0%, 
-              rgba(233, 101, 255, 0.44) 57%, 
-              rgba(255, 101, 175, 0.31) 72%, 
-              rgba(255, 141, 8, 0.3) 92%, 
-              rgba(168, 55, 255, 0.3) 100%
-            ) padding-box,
-            radial-gradient(circle at center, 
-              rgba(15, 10, 209, 0.4) 0%, 
-              rgba(233, 101, 255, 0.44) 57%, 
-              rgba(255, 101, 175, 0.31) 72%, 
-              rgba(255, 141, 8, 0.3) 92%, 
-              rgba(168, 55, 255, 0.3) 100%
-            ) border-box
-          `,
-          border: '1px solid transparent',
-          backgroundOrigin: 'border-box',
-          backgroundClip: 'padding-box, border-box'
-        }}
-      >
+      <View style={styles.widgetContainer}>
         {/* White background overlay to maintain card appearance */}
-        <div className="absolute inset-[1px] bg-card rounded-[23px]">
+        <View style={styles.backgroundOverlay}>
           {/* Content - 20pt from left, 40pt clearance from close button */}
-          <div className="absolute flex flex-col gap-1 left-5 top-5 right-[52px] z-10">
-            {/* Title with gradient text */}
-            <div 
-              className="w-full bg-clip-text text-transparent leading-[1.2]"
-              style={{
-                fontFamily: 'var(--font-graphik)',
-                fontSize: 'var(--text-list-title)',
-                fontWeight: 'var(--font-weight-medium)',
-                WebkitTextFillColor: "transparent",
-                backgroundImage: `radial-gradient(circle at center, 
-                  rgba(15, 10, 209, 0.8) 0%, 
-                  rgba(233, 101, 255, 0.84) 57%, 
-                  rgba(255, 101, 175, 0.61) 72%, 
-                  rgba(255, 141, 8, 0.5) 92%, 
-                  rgba(168, 55, 255, 0.5) 100%
-                )`
-              }}
-            >
+          <View style={styles.content}>
+            {/* Title */}
+            <Text style={styles.title}>
               Earn 4% APY
-            </div>
+            </Text>
             
             {/* Description text */}
-            <div 
-              className="text-muted-foreground leading-[1.3] tracking-[-0.14px]"
-              style={{
-                fontFamily: 'var(--font-graphik)',
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-normal)'
-              }}
-            >
+            <Text style={styles.description}>
               Add Digital Dollars to your account and see them grow 🤑
-            </div>
-          </div>
+            </Text>
+          </View>
           
           {/* Close button - touches top and right edges */}
-          <div className="absolute right-0 top-0 p-2 z-10">
-            <div className="bg-[#f5f3f6] flex items-center justify-center rounded-full w-8 h-8">
-              <svg className="w-4 h-4" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16">
-                <path d={svgPaths.p1108f570} fill="var(--foreground)" fillOpacity="0.64" />
-              </svg>
-            </div>
-          </div>
+          <TouchableOpacity style={styles.closeButton}>
+            <View style={styles.closeButtonInner}>
+              <Text style={styles.closeIcon}>×</Text>
+            </View>
+          </TouchableOpacity>
           
           {/* Button - 12pt from sides */}
-          <div 
-            className="absolute bg-primary left-3 right-3 top-[109px] h-9 rounded-full flex items-center justify-center z-10"
-            style={{
-              backgroundColor: '#820ad1'
-            }}
-          >
-            <span 
-              className="text-primary-foreground text-center tracking-[-0.14px]"
-              style={{
-                fontFamily: 'var(--font-graphik)',
-                fontSize: 'var(--text-sm)',
-                fontWeight: 'var(--font-weight-medium)'
-              }}
-            >
+          <TouchableOpacity style={styles.addMoneyButton}>
+            <Text style={styles.addMoneyText}>
               Add money
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+    width: '100%',
+    height: 157,
+    marginBottom: 16,
+  },
+  widgetContainer: {
+    position: 'relative',
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    width: '100%',
+    height: '100%',
+    borderWidth: 1,
+    borderColor: 'rgba(15, 10, 209, 0.4)',
+    // Note: React Native doesn't support complex gradients like CSS, 
+    // so we'll use a solid border for now
+  },
+  backgroundOverlay: {
+    position: 'absolute',
+    top: 1,
+    left: 1,
+    right: 1,
+    bottom: 1,
+    backgroundColor: '#fff',
+    borderRadius: 23,
+  },
+  content: {
+    position: 'absolute',
+    flexDirection: 'column',
+    gap: 4,
+    left: 20,
+    top: 20,
+    right: 52,
+  },
+  title: {
+    width: '100%',
+    color: '#000',
+    lineHeight: 28.8, // 1.2 * 24
+    fontFamily: 'System', // Fallback since NuSans might not be available
+    fontSize: 24,
+    fontWeight: '500',
+  },
+  description: {
+    color: 'rgba(0, 0, 0, 0.64)',
+    lineHeight: 18.2, // 1.3 * 14
+    letterSpacing: -0.14,
+    fontFamily: 'System', // Fallback since NuSans might not be available
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    padding: 8,
+  },
+  closeButtonInner: {
+    backgroundColor: '#f5f3f6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 16,
+    width: 32,
+    height: 32,
+  },
+  closeIcon: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.64)',
+    fontWeight: 'bold',
+  },
+  addMoneyButton: {
+    position: 'absolute',
+    backgroundColor: '#820ad1',
+    left: 12,
+    right: 12,
+    top: 109,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addMoneyText: {
+    color: '#fff',
+    textAlign: 'center',
+    letterSpacing: -0.14,
+    fontFamily: 'System',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+});

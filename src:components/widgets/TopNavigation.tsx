@@ -1,54 +1,120 @@
-import svgPaths from "../../src:assets/svg-eedehvfhj9";
-// Avatar placeholder - replace with actual image later
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export function TopNavigation() {
   return (
-    <div className="flex items-center justify-between px-4 py-4 h-19">
+    <View style={styles.container}>
       {/* Avatar and User Info */}
-      <div className="flex items-center gap-4">
-        <div className="relative w-10 h-10 rounded-full overflow-hidden">
-          <div className="w-full h-full bg-gray-300 flex items-center justify-center rounded-full">
-            <span className="text-gray-600 font-medium text-sm">GA</span>
-          </div>
-          <div className="absolute inset-0 border border-black/8 rounded-full pointer-events-none" />
-          <div className="absolute bg-black/4 inset-0 rounded-full z-[2]" />
-        </div>
-        <div className="flex flex-col">
-          <div className="text-foreground" style={{ fontFamily: 'var(--font-graphik)', fontSize: 'var(--text-base)', fontWeight: 'var(--font-weight-light)' }}>Gabriel</div>
-          <p 
-            className="text-primary"
-            style={{
-              fontFamily: 'var(--font-graphik)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 'var(--font-weight-normal)'
-            }}
-          >Nu Account</p>
-        </div>
-      </div>
+      <View style={styles.userInfo}>
+        <View style={styles.avatarContainer}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>GA</Text>
+          </View>
+          <View style={styles.avatarBorder} />
+          <View style={styles.avatarOverlay} />
+        </View>
+        <View style={styles.userDetails}>
+          <Text style={styles.userName}>Gabriel</Text>
+          <Text style={styles.accountType}>Nu Account</Text>
+        </View>
+      </View>
       
       {/* Action Icons */}
-      <div className="flex items-center">
-        <button className="p-2 rounded-full w-11 h-11">
-          <svg className="w-5 h-5" fill="none" preserveAspectRatio="none" viewBox="0 0 20 20">
-            <path d={svgPaths.p5f5d00} fill="currentColor" fillOpacity="0.64" />
-            <path d={svgPaths.p397ca500} fill="currentColor" fillOpacity="0.64" />
-            <path d={svgPaths.p1d082b00} fill="currentColor" fillOpacity="0.64" />
-          </svg>
-        </button>
-        <button className="p-2 rounded-full w-11 h-11">
-          <svg className="w-5 h-5" fill="none" preserveAspectRatio="none" viewBox="0 0 20 20">
-            <path d={svgPaths.p3efb9f00} fill="currentColor" fillOpacity="0.64" />
-            <path d={svgPaths.p3df6880} fill="currentColor" fillOpacity="0.64" />
-            <path d={svgPaths.pd803e80} fill="currentColor" fillOpacity="0.64" />
-          </svg>
-        </button>
-        <button className="p-2 rounded-full w-11 h-11">
-          <svg className="w-5 h-5" fill="none" preserveAspectRatio="none" viewBox="0 0 20 20">
-            <path d={svgPaths.p305c50c0} fill="currentColor" fillOpacity="0.64" />
-            <path d={svgPaths.p19ec2580} fill="currentColor" fillOpacity="0.64" />
-          </svg>
-        </button>
-      </div>
-    </div>
+      <View style={styles.actionIcons}>
+        <TouchableOpacity style={styles.iconButton}>
+          <Text style={styles.iconText}>🔔</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton}>
+          <Text style={styles.iconText}>💬</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton}>
+          <Text style={styles.iconText}>⚙️</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    height: 76, // h-19 equivalent
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  avatarContainer: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#d1d5db', // gray-300
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+  },
+  avatarText: {
+    color: '#6b7280', // gray-600
+    fontWeight: '500',
+    fontSize: 14,
+  },
+  avatarBorder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.08)',
+    borderRadius: 20,
+  },
+  avatarOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    borderRadius: 20,
+  },
+  userDetails: {
+    flexDirection: 'column',
+  },
+  userName: {
+    color: '#000',
+    fontFamily: 'System',
+    fontSize: 16,
+    fontWeight: '300',
+  },
+  accountType: {
+    color: '#820ad1', // primary color
+    fontFamily: 'System',
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  actionIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconButton: {
+    padding: 8,
+    borderRadius: 20,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconText: {
+    fontSize: 20,
+    color: 'rgba(0, 0, 0, 0.64)',
+  },
+});

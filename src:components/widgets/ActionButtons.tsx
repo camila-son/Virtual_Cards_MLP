@@ -1,30 +1,66 @@
-import svgPaths from "../../src:assets/svg-xzon47pqta";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const ActionButton = ({ icon, label }: { icon: string; label: string }) => (
-  <div className="flex flex-col items-center gap-2 h-[86px] w-15">
-    <div className="relative w-15 h-15">
-      <svg className="w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 60 60">
-        <path d={svgPaths.p3ac20600} fill="var(--card)" />
-      </svg>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5">
-        <svg className="w-full h-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 20">
-          <path d={icon} fill="var(--foreground)" fillOpacity="0.96" />
-        </svg>
-      </div>
-    </div>
-    <div className="badge text-foreground text-nowrap tracking-[0.12px]">
-      {label}
-    </div>
-  </div>
+  <TouchableOpacity style={styles.actionButton}>
+    <View style={styles.iconContainer}>
+      <Text style={styles.iconText}>{icon}</Text>
+    </View>
+    <Text style={styles.label}>{label}</Text>
+  </TouchableOpacity>
 );
 
 export function ActionButtons() {
   return (
-    <div className="w-full flex items-start justify-between overflow-hidden p-2">
-      <ActionButton icon={svgPaths.p3cd52b40} label="Add" />
-      <ActionButton icon={svgPaths.p38d5080} label="Send" />
-      <ActionButton icon={svgPaths.p15b97e80} label="Receive" />
-      <ActionButton icon={svgPaths.p2e863b00} label="Exchange" />
-    </div>
+    <View style={styles.container}>
+      <ActionButton icon="➕" label="Add" />
+      <ActionButton icon="📤" label="Send" />
+      <ActionButton icon="📥" label="Receive" />
+      <ActionButton icon="🔄" label="Exchange" />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    padding: 8,
+    marginBottom: 16,
+  },
+  actionButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 8,
+    height: 86,
+    width: 60,
+  },
+  iconContainer: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  iconText: {
+    fontSize: 24,
+    color: 'rgba(0, 0, 0, 0.96)',
+  },
+  label: {
+    fontFamily: 'System',
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#000',
+    textAlign: 'center',
+    letterSpacing: 0.12,
+  },
+});

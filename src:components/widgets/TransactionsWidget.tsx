@@ -1,37 +1,81 @@
-function Title() {
-  return (
-    <div className="relative shrink-0 w-full" data-name="Title">
-      <div className="relative size-full">
-        <div className="box-border content-stretch flex flex-col gap-[8px] items-start px-[20px] py-0 relative w-full">
-          <div className="-webkit-box css-txjoqe overflow-ellipsis overflow-hidden relative shrink-0 w-full" style={{ fontFamily: 'var(--font-nusans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-normal)', color: 'rgba(0,0,0,0.64)', letterSpacing: '0.12px', lineHeight: '0' }}>
-            <p className="leading-[1.3]" style={{ fontFamily: 'var(--font-graphik)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-normal)' }}>Transactions</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Content() {
-  return (
-    <div className="flex-1 w-full p-8" data-name="Content">
-      <div className="flex flex-col items-center justify-center text-center gap-1">
-        <div style={{ fontFamily: 'var(--font-graphik)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'rgba(0,0,0,0.96)', letterSpacing: '-0.14px' }}>
-          <p className="leading-[1.3]" style={{ fontFamily: 'var(--font-graphik)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>No transactions</p>
-        </div>
-        <div style={{ fontFamily: 'var(--font-nusans)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-normal)', color: 'rgba(0,0,0,0.32)' }}>
-          <p className="leading-[1.3]" style={{ fontFamily: 'var(--font-graphik)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-normal)' }}>There are no recent events</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 export function TransactionsWidget() {
   return (
-    <div className="bg-white box-border content-stretch flex flex-col gap-[8px] items-start overflow-clip pb-[8px] pt-[20px] px-0 relative rounded-[24px] shadow-[0px_1px_0px_0px_#e5e0e8] w-full" data-name="Transactions widget">
-      <Title />
-      <Content />
-    </div>
+    <View style={styles.container}>
+      {/* Title Section */}
+      <View style={styles.titleSection}>
+        <Text style={styles.title}>Transactions</Text>
+      </View>
+
+      {/* Content Section */}
+      <View style={styles.contentSection}>
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyTitle}>No transactions</Text>
+          <Text style={styles.emptySubtitle}>There are no recent events</Text>
+        </View>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    flexDirection: 'column',
+    gap: 8,
+    alignItems: 'flex-start',
+    overflow: 'hidden',
+    paddingBottom: 8,
+    paddingTop: 20,
+    paddingHorizontal: 0,
+    borderRadius: 24,
+    shadowColor: '#e5e0e8',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 1,
+    width: '100%',
+    marginBottom: 16,
+  },
+  titleSection: {
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontFamily: 'System',
+    fontSize: 12,
+    fontWeight: '400',
+    color: 'rgba(0,0,0,0.64)',
+    letterSpacing: 0.12,
+    lineHeight: 15.6, // 1.3 * 12
+  },
+  contentSection: {
+    flex: 1,
+    width: '100%',
+    padding: 32,
+  },
+  emptyState: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    gap: 4,
+  },
+  emptyTitle: {
+    fontFamily: 'System',
+    fontSize: 14,
+    fontWeight: '500',
+    color: 'rgba(0,0,0,0.96)',
+    letterSpacing: -0.14,
+    lineHeight: 18.2, // 1.3 * 14
+  },
+  emptySubtitle: {
+    fontFamily: 'System',
+    fontSize: 14,
+    fontWeight: '400',
+    color: 'rgba(0,0,0,0.32)',
+    lineHeight: 18.2, // 1.3 * 14
+  },
+});
