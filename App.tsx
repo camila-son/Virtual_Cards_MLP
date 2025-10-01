@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { HomepageScreen } from './src/screens/homepage/HomepageScreen';
+import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
 import { loadCustomFonts } from './src/utils/loadFonts';
+import { Screen } from './src/types/navigation';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState<Screen>('homepage');
 
   useEffect(() => {
     loadCustomFonts().then(() => {
       setFontsLoaded(true);
     });
   }, []);
+
+  const navigateToScreen = (screen: Screen) => {
+    setCurrentScreen(screen);
+  };
 
   if (!fontsLoaded) {
     return (
@@ -20,10 +27,20 @@ export default function App() {
     );
   }
   
-  return <HomepageScreen />;
+  return (
+    <View style={styles.appContainer}>
+      <HomepageScreen onNavigateToMarketing={() => navigateToScreen('marketing')} />
+      {currentScreen === 'marketing' && (
+        <MarketingScreen onBack={() => navigateToScreen('homepage')} />
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
