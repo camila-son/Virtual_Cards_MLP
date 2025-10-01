@@ -9,11 +9,11 @@ export function NBAWidget() {
       {/* Aura effect layers for smooth blur simulation */}
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.12)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.13)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.10)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.02)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.10)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.036)',   // #0F0AD1 at 0% (30% of 0.12)
+          'rgba(233, 101, 255, 0.039)', // #E965FF at 57% (30% of 0.13)
+          'rgba(255, 101, 175, 0.03)', // #FF65AF at 72% (30% of 0.10)
+          'rgba(255, 141, 8, 0.006)',   // #FF8D08 at 92% (30% of 0.02)
+          'rgba(168, 55, 255, 0.03)'   // #A837FF at 100% (30% of 0.10)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -22,11 +22,11 @@ export function NBAWidget() {
       />
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.10)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.11)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.08)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.02)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.08)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.03)',   // #0F0AD1 at 0% (30% of 0.10)
+          'rgba(233, 101, 255, 0.033)', // #E965FF at 57% (30% of 0.11)
+          'rgba(255, 101, 175, 0.024)', // #FF65AF at 72% (30% of 0.08)
+          'rgba(255, 141, 8, 0.006)',   // #FF8D08 at 92% (30% of 0.02)
+          'rgba(168, 55, 255, 0.024)'   // #A837FF at 100% (30% of 0.08)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -35,11 +35,11 @@ export function NBAWidget() {
       />
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.08)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.09)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.06)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.06)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.024)',   // #0F0AD1 at 0% (30% of 0.08)
+          'rgba(233, 101, 255, 0.027)', // #E965FF at 57% (30% of 0.09)
+          'rgba(255, 101, 175, 0.018)', // #FF65AF at 72% (30% of 0.06)
+          'rgba(255, 141, 8, 0.003)',   // #FF8D08 at 92% (30% of 0.01)
+          'rgba(168, 55, 255, 0.018)'   // #A837FF at 100% (30% of 0.06)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -48,11 +48,11 @@ export function NBAWidget() {
       />
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.06)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.07)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.05)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.05)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.018)',   // #0F0AD1 at 0% (30% of 0.06)
+          'rgba(233, 101, 255, 0.021)', // #E965FF at 57% (30% of 0.07)
+          'rgba(255, 101, 175, 0.015)', // #FF65AF at 72% (30% of 0.05)
+          'rgba(255, 141, 8, 0.003)',   // #FF8D08 at 92% (30% of 0.01)
+          'rgba(168, 55, 255, 0.015)'   // #A837FF at 100% (30% of 0.05)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -61,11 +61,11 @@ export function NBAWidget() {
       />
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.04)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.05)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.03)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.03)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.012)',   // #0F0AD1 at 0% (30% of 0.04)
+          'rgba(233, 101, 255, 0.015)', // #E965FF at 57% (30% of 0.05)
+          'rgba(255, 101, 175, 0.009)', // #FF65AF at 72% (30% of 0.03)
+          'rgba(255, 141, 8, 0.003)',   // #FF8D08 at 92% (30% of 0.01)
+          'rgba(168, 55, 255, 0.009)'   // #A837FF at 100% (30% of 0.03)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -74,11 +74,11 @@ export function NBAWidget() {
       />
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.03)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.03)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.02)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.02)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.009)',   // #0F0AD1 at 0% (30% of 0.03)
+          'rgba(233, 101, 255, 0.009)', // #E965FF at 57% (30% of 0.03)
+          'rgba(255, 101, 175, 0.006)', // #FF65AF at 72% (30% of 0.02)
+          'rgba(255, 141, 8, 0.003)',   // #FF8D08 at 92% (30% of 0.01)
+          'rgba(168, 55, 255, 0.006)'   // #A837FF at 100% (30% of 0.02)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -87,11 +87,11 @@ export function NBAWidget() {
       />
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.02)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.02)', // #E965FF at 57%
-          'rgba(255, 101, 175, 0.01)', // #FF65AF at 72%
-          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
-          'rgba(168, 55, 255, 0.01)'   // #A837FF at 100%
+          'rgba(15, 10, 209, 0.006)',   // #0F0AD1 at 0% (30% of 0.02)
+          'rgba(233, 101, 255, 0.006)', // #E965FF at 57% (30% of 0.02)
+          'rgba(255, 101, 175, 0.003)', // #FF65AF at 72% (30% of 0.01)
+          'rgba(255, 141, 8, 0.003)',   // #FF8D08 at 92% (30% of 0.01)
+          'rgba(168, 55, 255, 0.003)'   // #A837FF at 100% (30% of 0.01)
         ]}
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   outerContainer: {
     width: '100%',
     height: 157,
-    marginBottom: 16,
+    marginBottom: 12,
     position: 'relative',
   },
   auraLayer1: {

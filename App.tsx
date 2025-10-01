@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, StyleSheet, ScrollView, Text, Animated } from 'react-native';
 import { TopNavigation } from './src:components/widgets/TopNavigation';
 import { BalanceWidget } from './src:components/widgets/BalanceWidget';
 import { VirtualCardWidget } from './src:components/widgets/VirtualCardWidget';
@@ -7,12 +7,11 @@ import { NBAWidget } from './src:components/widgets/NBAWidget';
 import { TransactionsWidget } from './src:components/widgets/TransactionsWidget';
 import { MarketInfoWidget } from './src:components/widgets/MarketInfoWidget';
 import { ActionButtons } from './src:components/widgets/ActionButtons';
-import { BottomNavigation } from './src:components/widgets/BottomNavigation';
-import { HomeIndicator } from './src:components/widgets/HomeIndicator';
 import { loadCustomFonts } from './src/utils/loadFonts';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     loadCustomFonts().then(() => {
@@ -29,19 +28,28 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <TopNavigation />
+      <TopNavigation scrollY={scrollY} />
+      <Animated.ScrollView 
+        style={styles.scrollView} 
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.scrollContent}
+      >
         <View style={styles.content}>
           <NBAWidget />
-          <BalanceWidget />
-          <VirtualCardWidget />
-          <TransactionsWidget />
-          <MarketInfoWidget />
           <ActionButtons />
+          <BalanceWidget />
+          <View style={styles.smallWidgetsRow}>
+            <MarketInfoWidget />
+            <VirtualCardWidget />
+          </View>
+          <TransactionsWidget />
         </View>
-      </ScrollView>
-      <BottomNavigation />
-      <HomeIndicator />
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -64,8 +72,16 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingTop: 136, // TopNavigation height (76) + top padding (48) + bottom padding (12)
+  },
   content: {
     paddingHorizontal: 16,
-    paddingBottom: 100, // Space for bottom navigation
+    paddingBottom: 32, // Reduced space after last widget
+  },
+  smallWidgetsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 12,
   },
 });

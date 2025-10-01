@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     elevation: 1,
     width: '100%',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   titleSection: {
     width: '100%',
     paddingHorizontal: 20,
   },
   title: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 12,
     fontWeight: '400',
     color: 'rgba(0,0,0,0.64)',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   emptyTitle: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 14,
     fontWeight: '500',
     color: 'rgba(0,0,0,0.96)',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     lineHeight: 18.2, // 1.3 * 14
   },
   emptySubtitle: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 14,
     fontWeight: '400',
     color: 'rgba(0,0,0,0.32)',

@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ChevronIcon } from '../icons/chevron_icon';
+import { SendIcon } from '../icons/SendIcon';
+import { USFlagIcon } from '../icons/USFlagIcon';
 
 export function BalanceWidget() {
   return (
@@ -9,13 +12,9 @@ export function BalanceWidget() {
         <View style={styles.header}>
           <View style={styles.balanceSection}>
             <Text style={styles.balanceLabel}>Balance</Text>
-            <View style={styles.balanceAmount}>
-              <Text style={styles.amount}>$0.00</Text>
-              <Text style={styles.currency}>USD</Text>
-            </View>
           </View>
           <TouchableOpacity style={styles.rightAction}>
-            <Text style={styles.actionIcon}>⋯</Text>
+            <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
           </TouchableOpacity>
         </View>
 
@@ -26,14 +25,26 @@ export function BalanceWidget() {
               <Text style={styles.digitalDollarLabel}>Digital Dollar</Text>
               <View style={styles.digitalDollarAmount}>
                 <Text style={styles.digitalDollarValue}>$0.00</Text>
-                <Text style={styles.yieldText}>Yields 4% APY</Text>
+                <View style={styles.yieldContainer}>
+                  <View style={styles.yieldIcon}>
+                    <SendIcon width={12} height={12} color="#0c7a3a" />
+                  </View>
+                  <Text style={styles.yieldText}>4% APY</Text>
+                </View>
               </View>
             </View>
-            <View style={styles.flagIcon}>
-              <Text style={styles.flagEmoji}>🇺🇸</Text>
+            <View style={styles.avatarContainer}>
+              <View style={styles.avatar}>
+                <USFlagIcon width={32} height={32} />
+              </View>
             </View>
           </View>
         </View>
+
+        {/* Add Money Button */}
+        <TouchableOpacity style={styles.addMoneyButton}>
+          <Text style={styles.addMoneyText}>Add money</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -48,7 +59,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 1,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   content: {
     flexDirection: 'column',
@@ -71,41 +82,18 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   balanceLabel: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 12,
     fontWeight: '400',
-    color: '#6b7280', // muted-foreground
-    lineHeight: 16.8, // 1.4 * 12
-  },
-  balanceAmount: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  amount: {
-    fontFamily: 'System',
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
-    lineHeight: 21.6, // 1.2 * 18
-  },
-  currency: {
-    fontFamily: 'System',
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#6b7280', // muted-foreground
-    letterSpacing: 0.12,
+    color: 'rgba(0,0,0,0.64)', // color.content.subtle
     lineHeight: 15.6, // 1.3 * 12
+    letterSpacing: 0.12,
   },
   rightAction: {
     width: 20,
     height: 20,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  actionIcon: {
-    fontSize: 16,
-    color: '#6b7280', // muted-foreground
   },
   digitalDollarSection: {
     width: '100%',
@@ -117,8 +105,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderWidth: 1,
-    borderColor: '#e5e0e8',
+    borderColor: '#efefef', // color.border.default
     borderRadius: 16,
+    height: 56,
   },
   digitalDollarContent: {
     flex: 1,
@@ -126,10 +115,10 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   digitalDollarLabel: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 12,
     fontWeight: '400',
-    color: '#6b7280', // muted-foreground
+    color: 'rgba(0,0,0,0.64)', // color.content.subtle
     letterSpacing: 0.12,
     lineHeight: 15.6, // 1.3 * 12
   },
@@ -139,27 +128,61 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   digitalDollarValue: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 14,
     fontWeight: '500',
-    color: '#000',
+    color: 'rgba(0,0,0,0.96)', // color.content.default
     lineHeight: 18.2, // 1.3 * 14
   },
+  yieldContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
+  yieldIcon: {
+    width: 12,
+    height: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   yieldText: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 12,
     fontWeight: '400',
-    color: '#16a34a', // success-foreground
+    color: '#0c7a3a', // color.content.feedback.success
     letterSpacing: 0.12,
     lineHeight: 15.6, // 1.3 * 12
   },
-  flagIcon: {
-    width: 32,
+  avatarContainer: {
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  flagEmoji: {
-    fontSize: 24,
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+  },
+  addMoneyButton: {
+    backgroundColor: '#f5f3f6', // surface.subtle-purple
+    borderRadius: 64,
+    height: 36,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginHorizontal: 12,
+  },
+  addMoneyText: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 12,
+    fontWeight: '500',
+    color: 'rgba(0,0,0,0.96)', // color.content.default
+    letterSpacing: 0.12,
+    lineHeight: 15.6, // 1.3 * 12
+    textAlign: 'center',
   },
 });

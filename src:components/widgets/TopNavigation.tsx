@@ -1,12 +1,44 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { HelpIcon } from '../icons/help_icon';
 import { MGMIcon } from '../icons/MGM_icon';
 import { VisibilityOnIcon } from '../icons/Visibility_on_icon';
 
-export function TopNavigation() {
+interface TopNavigationProps {
+  scrollY?: Animated.Value;
+  scrollThreshold?: number;
+}
+
+export function TopNavigation({ scrollY, scrollThreshold = 50 }: TopNavigationProps) {
+  const [backgroundOpacity] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    if (scrollY) {
+      const listener = scrollY.addListener(({ value }) => {
+        const opacity = Math.min(value / scrollThreshold, 1);
+        backgroundOpacity.setValue(opacity);
+      });
+
+      return () => {
+        scrollY.removeListener(listener);
+      };
+    }
+  }, [scrollY, scrollThreshold, backgroundOpacity]);
+
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      style={[
+        styles.container,
+        {
+          backgroundColor: scrollY 
+            ? backgroundOpacity.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['rgba(236, 233, 238, 0)', 'rgba(236, 233, 238, 1)'],
+              })
+            : 'rgba(236, 233, 238, 0)'
+        }
+      ]}
+    >
       <View style={styles.blurContainer}>
         <View style={styles.wrapper}>
           {/* Leading - Avatar */}
@@ -50,17 +82,22 @@ export function TopNavigation() {
           </View>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 48, // Status bar height + padding as per Figma
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
     width: '100%',
+    paddingTop: 48,
+    paddingBottom: 12,
   },
   blurContainer: {
-    backgroundColor: 'rgba(236, 233, 238, 0.64)', // Subtle purple background
     width: '100%',
   },
   wrapper: {

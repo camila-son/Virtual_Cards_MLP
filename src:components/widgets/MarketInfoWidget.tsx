@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { USFlagIcon } from '../icons/USFlagIcon';
+import { BitcoinIcon } from '../icons/BitcoinIcon';
 
 export function MarketInfoWidget() {
   return (
@@ -11,7 +13,7 @@ export function MarketInfoWidget() {
             {/* Digital Dollar Row */}
             <View style={styles.marketRow}>
               <View style={styles.flagIcon}>
-                <Text style={styles.flagEmoji}>🇺🇸</Text>
+                <USFlagIcon width={32} height={32} />
               </View>
               <View style={styles.marketDetails}>
                 <Text style={styles.marketLabel}>Digital Dollar</Text>
@@ -25,7 +27,7 @@ export function MarketInfoWidget() {
             {/* Bitcoin Row */}
             <View style={styles.marketRow}>
               <View style={styles.bitcoinIcon}>
-                <Text style={styles.bitcoinEmoji}>₿</Text>
+                <BitcoinIcon width={32} height={32} />
               </View>
               <View style={styles.marketDetails}>
                 <Text style={styles.marketLabel}>Bitcoin price</Text>
@@ -54,7 +56,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     overflow: 'hidden',
     borderRadius: 24,
-    marginBottom: 16,
+    shadowColor: '#e5e0e8',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 1,
+    flex: 1,
   },
   topSection: {
     flex: 1,
@@ -89,21 +96,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  flagEmoji: {
-    fontSize: 20,
-  },
   bitcoinIcon: {
     width: 32,
     height: 32,
-    backgroundColor: '#FB8A22',
-    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bitcoinEmoji: {
-    fontSize: 16,
-    color: '#FFE7D0',
-    fontWeight: 'bold',
   },
   marketDetails: {
     flex: 1,
@@ -111,14 +108,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   marketLabel: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 12,
     fontWeight: '400',
     color: '#6b7280', // muted-foreground
     lineHeight: 15.6, // 1.3 * 12
   },
   marketValue: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 12,
     fontWeight: '500',
     color: '#000',
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   viewAllText: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 12,
     fontWeight: '500',
     color: '#000',

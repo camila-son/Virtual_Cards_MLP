@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { VirtualCardIcon } from '../icons/VirtualCardIcon';
 
 export function VirtualCardWidget() {
   return (
@@ -7,23 +8,12 @@ export function VirtualCardWidget() {
       {/* Top Section */}
       <View style={styles.topSection}>
         <View style={styles.cardsIllustration}>
-          {/* Simplified card stack using emojis */}
-          <View style={styles.cardStack}>
-            <View style={[styles.card, styles.card1]}>
-              <Text style={styles.cardEmoji}>💳</Text>
-            </View>
-            <View style={[styles.card, styles.card2]}>
-              <Text style={styles.cardEmoji}>💳</Text>
-            </View>
-            <View style={[styles.card, styles.card3]}>
-              <Text style={styles.cardEmoji}>💳</Text>
-            </View>
-          </View>
+          <VirtualCardIcon width={32} height={33} />
         </View>
         
         <View style={styles.content}>
           <Text style={styles.subtitle}>Shop safely</Text>
-          <Text style={styles.title}>My Cards</Text>
+          <Text style={styles.title}>Virtual Cards</Text>
         </View>
       </View>
 
@@ -45,7 +35,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     overflow: 'hidden',
     borderRadius: 24,
-    marginBottom: 16,
+    shadowColor: '#e5e0e8',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 1,
+    flex: 1,
   },
   topSection: {
     flex: 1,
@@ -57,43 +52,9 @@ const styles = StyleSheet.create({
   },
   cardsIllustration: {
     width: 32,
-    height: 32,
-    position: 'relative',
-  },
-  cardStack: {
-    position: 'relative',
-    width: 32,
-    height: 32,
-  },
-  card: {
-    position: 'absolute',
-    width: 20,
-    height: 14,
-    borderRadius: 4,
+    height: 33,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  card1: {
-    backgroundColor: '#8D42C9',
-    top: 0,
-    left: 0,
-    transform: [{ rotate: '30deg' }],
-  },
-  card2: {
-    backgroundColor: '#4B218D',
-    top: 4,
-    left: 8,
-    transform: [{ rotate: '15deg' }],
-  },
-  card3: {
-    backgroundColor: '#820AD1',
-    top: 8,
-    left: 4,
-    transform: [{ rotate: '0deg' }],
-  },
-  cardEmoji: {
-    fontSize: 8,
-    color: '#fff',
   },
   content: {
     flex: 1,
@@ -101,14 +62,14 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   subtitle: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans',
     fontSize: 12,
     fontWeight: '400',
     color: '#6b7280', // muted-foreground
     lineHeight: 15.6, // 1.3 * 12
   },
   title: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 18,
     fontWeight: '500',
     color: '#000',
@@ -128,7 +89,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   createButtonText: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 12,
     fontWeight: '500',
     color: '#000',

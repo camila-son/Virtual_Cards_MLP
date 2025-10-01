@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { AddIcon } from '../icons/AddIcon';
+import { ReceiveIcon } from '../icons/ReceiveIcon';
+import { SendIcon } from '../icons/SendIcon';
+import { ExchangeIcon } from '../icons/ExchangeIcon';
 
-const ActionButton = ({ icon, label }: { icon: string; label: string }) => (
+const ActionButton = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
   <TouchableOpacity style={styles.actionButton}>
     <View style={styles.iconContainer}>
-      <Text style={styles.iconText}>{icon}</Text>
+      {icon}
     </View>
     <Text style={styles.label}>{label}</Text>
   </TouchableOpacity>
@@ -13,10 +17,10 @@ const ActionButton = ({ icon, label }: { icon: string; label: string }) => (
 export function ActionButtons() {
   return (
     <View style={styles.container}>
-      <ActionButton icon="➕" label="Add" />
-      <ActionButton icon="📤" label="Send" />
-      <ActionButton icon="📥" label="Receive" />
-      <ActionButton icon="🔄" label="Exchange" />
+      <ActionButton icon={<AddIcon width={24} height={24} />} label="Add" />
+      <ActionButton icon={<SendIcon width={24} height={24} />} label="Send" />
+      <ActionButton icon={<ReceiveIcon width={24} height={24} />} label="Receive" />
+      <ActionButton icon={<ExchangeIcon width={24} height={24} />} label="Exchange" />
     </View>
   );
 }
@@ -29,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     overflow: 'hidden',
     padding: 8,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   actionButton: {
     flexDirection: 'column',
@@ -45,18 +49,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
+    shadowColor: '#E5E0E8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  iconText: {
-    fontSize: 24,
-    color: 'rgba(0, 0, 0, 0.96)',
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 1,
   },
   label: {
-    fontFamily: 'System',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 12,
     fontWeight: '500',
     color: '#000',
