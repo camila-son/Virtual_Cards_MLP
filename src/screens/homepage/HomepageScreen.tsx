@@ -7,10 +7,7 @@ import { NBAWidget } from './components/NBAWidget';
 import { TransactionsWidget } from './components/TransactionsWidget';
 import { MarketInfoWidget } from './components/MarketInfoWidget';
 import { ActionButtons } from './components/ActionButtons';
-
-interface HomepageScreenProps {
-  onNavigateToMarketing?: () => void;
-}
+import { HomepageScreenProps } from '../../types/navigation';
 
 export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -30,11 +27,11 @@ export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
       >
         <View style={styles.content}>
           <NBAWidget />
-          <ActionButtons onNavigateToMarketing={onNavigateToMarketing} />
+          <ActionButtons />
           <BalanceWidget />
           <View style={styles.smallWidgetsRow}>
             <MarketInfoWidget />
-            <VirtualCardWidget />
+            <VirtualCardWidget onNavigateToMarketing={onNavigateToMarketing} />
           </View>
           <TransactionsWidget />
         </View>

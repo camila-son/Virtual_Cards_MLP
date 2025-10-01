@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { VirtualCardIcon } from '../../../components/icons/VirtualCardIcon';
+import { VirtualCardWidgetProps } from '../../../types/navigation';
 
-export function VirtualCardWidget() {
+export function VirtualCardWidget({ onNavigateToMarketing }: VirtualCardWidgetProps) {
   return (
     <View style={styles.container}>
       {/* Top Section */}
@@ -19,7 +20,7 @@ export function VirtualCardWidget() {
 
       {/* Bottom Section */}
       <View style={styles.bottomSection}>
-        <TouchableOpacity style={styles.createButton}>
+        <TouchableOpacity style={styles.createButton} onPress={onNavigateToMarketing}>
           <Text style={styles.createButtonText}>Create</Text>
         </TouchableOpacity>
       </View>

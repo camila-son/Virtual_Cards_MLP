@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   marketInfo: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#e5e0e8',
+    borderColor: '#efefef',
     borderRadius: 16,
     width: '100%',
   },
