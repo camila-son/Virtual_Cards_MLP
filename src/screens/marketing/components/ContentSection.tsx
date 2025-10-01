@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainTitle: {
-    fontFamily: Fonts.nuSans.medium,
+    fontFamily: 'Nu Sans Medium',
     fontSize: 20,
     fontWeight: '500',
     color: 'rgba(0,0,0,0.96)',
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   description: {
-    fontFamily: Fonts.nuSans.regular,
+    fontFamily: 'Nu Sans Regular',
     fontSize: 16,
     fontWeight: '400',
     color: 'rgba(0,0,0,0.64)',

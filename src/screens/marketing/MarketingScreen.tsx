@@ -7,8 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { TopNavigationBar } from './components/TopNavigationBar';
-import { HeroSection } from './components/HeroSection';
-import { PageIndicators } from './components/PageIndicators';
+import { HeroSectionWithIndicators } from './components/HeroSectionWithIndicators';
 import { ContentSection } from './components/ContentSection';
 import { ListRows } from './components/ListRows';
 
@@ -50,8 +49,7 @@ export function MarketingScreen({ onBack }: MarketingScreenProps) {
     >
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar onBack={handleBack} />
-        <HeroSection />
-        <PageIndicators />
+        <HeroSectionWithIndicators />
         <ContentSection />
         <ListRows />
       </SafeAreaView>

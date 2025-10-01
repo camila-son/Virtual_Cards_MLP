@@ -9,7 +9,6 @@ export function ListRows() {
       <View style={styles.listContainer}>
         {/* Standard Option */}
         <View style={styles.listRow}>
-          <View style={styles.rowDivider} />
           <View style={styles.rowContent}>
             <View style={styles.textContent}>
               <Text style={styles.rowTitle}>Standard</Text>
@@ -21,12 +20,13 @@ export function ListRows() {
               <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
             </View>
           </View>
-          <View style={styles.rowDivider} />
         </View>
+
+        {/* Divider between rows */}
+        <View style={styles.rowDivider} />
 
         {/* Temporary Option */}
         <View style={styles.listRow}>
-          <View style={styles.rowDivider} />
           <View style={styles.rowContent}>
             <View style={styles.textContent}>
               <Text style={styles.rowTitle}>Temporary</Text>
@@ -38,7 +38,6 @@ export function ListRows() {
               <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
             </View>
           </View>
-          <View style={styles.rowDivider} />
         </View>
       </View>
     </View>
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
     bottom: 16,
     left: 16,
     right: 16,
+    paddingBottom: 32,
   },
   listContainer: {
     backgroundColor: '#ffffff',
@@ -85,14 +85,14 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   rowTitle: {
-    fontFamily: Fonts.nuSans.semibold,
+    fontFamily: 'Nu Sans Medium',
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '500',
     color: 'rgba(0,0,0,0.96)',
     lineHeight: 18.2,
   },
   rowDescription: {
-    fontFamily: Fonts.nuSans.regular,
+    fontFamily: 'Nu Sans Regular',
     fontSize: 14,
     fontWeight: '400',
     color: 'rgba(0,0,0,0.64)',
