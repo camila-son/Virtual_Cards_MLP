@@ -34,17 +34,17 @@ export function TopNavigation() {
           <View style={styles.trailing}>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <BellIcon size={40} color="rgba(0, 0, 0, 0.64)" />
+                <BellIcon size={44} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <ChatIcon size={40} color="rgba(0, 0, 0, 0.64)" />
+                <ChatIcon size={44} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <SettingsIcon size={40} color="rgba(0, 0, 0, 0.64)" />
+                <SettingsIcon size={44} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
           </View>

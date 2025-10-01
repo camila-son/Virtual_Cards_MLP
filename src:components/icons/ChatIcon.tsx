@@ -7,7 +7,7 @@ interface ChatIconProps {
   color?: string;
 }
 
-export function ChatIcon({ size = 40, color = 'rgba(0, 0, 0, 0.64)' }: ChatIconProps) {
+export function ChatIcon({ size = 44, color = 'rgba(0, 0, 0, 0.64)' }: ChatIconProps) {
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size} viewBox="0 0 44 44" fill="none">
