@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import { HelpIcon } from '../icons/help_icon';
-import { MGMIcon } from '../icons/MGM_icon';
-import { VisibilityOnIcon } from '../icons/Visibility_on_icon';
+import { HelpIcon } from '../../../components/icons/help_icon';
+import { MGMIcon } from '../../../components/icons/MGM_icon';
+import { VisibilityOnIcon } from '../../../components/icons/Visibility_on_icon';
 
 interface TopNavigationProps {
   scrollY?: Animated.Value;

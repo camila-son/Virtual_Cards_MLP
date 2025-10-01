@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Fonts, Typography } from '../config/fonts';
+import { Fonts, Typography } from '../../../components/config/fonts';
 
 export function NBAWidget() {
   return (

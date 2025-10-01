@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { AddIcon } from '../icons/AddIcon';
-import { ReceiveIcon } from '../icons/ReceiveIcon';
-import { SendIcon } from '../icons/SendIcon';
-import { ExchangeIcon } from '../icons/ExchangeIcon';
+import { AddIcon } from '../../../components/icons/AddIcon';
+import { ReceiveIcon } from '../../../components/icons/ReceiveIcon';
+import { SendIcon } from '../../../components/icons/SendIcon';
+import { ExchangeIcon } from '../../../components/icons/ExchangeIcon';
 
 const ActionButton = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
   <TouchableOpacity style={styles.actionButton}>

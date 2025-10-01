@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { USFlagIcon } from '../icons/USFlagIcon';
-import { BitcoinIcon } from '../icons/BitcoinIcon';
+import { USFlagIcon } from '../../../components/icons/USFlagIcon';
+import { BitcoinIcon } from '../../../components/icons/BitcoinIcon';
 
 export function MarketInfoWidget() {
   return (

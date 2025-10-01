@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { VirtualCardIcon } from '../icons/VirtualCardIcon';
+import { VirtualCardIcon } from '../../../components/icons/VirtualCardIcon';
 
 export function VirtualCardWidget() {
   return (

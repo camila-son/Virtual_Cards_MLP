@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ChevronIcon } from '../icons/chevron_icon';
-import { SendIcon } from '../icons/SendIcon';
-import { USFlagIcon } from '../icons/USFlagIcon';
+import { ChevronIcon } from '../../../components/icons/chevron_icon';
+import { SendIcon } from '../../../components/icons/SendIcon';
+import { USFlagIcon } from '../../../components/icons/USFlagIcon';
 
 export function BalanceWidget() {
   return (
