@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Virtual_Cards_Working",
-    "slug": "Virtual_Cards_Working",
+    "name": "Virtual Cards MLP",
+    "slug": "virtual-cards-mlp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,14 +13,22 @@
       "backgroundColor": "#ece9ee"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.virtualcardsmlp.app"
     },
     "android": {
       "backgroundColor": "#ece9ee",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "backgroundColor": "#ece9ee"
+      }
     },
     "assetBundlePatterns": [
       "**/*"
+    ],
+    "plugins": [
+      "expo-font",
+      "expo-asset"
     ]
   }
 }
