@@ -6,6 +6,9 @@ import { Fonts, Typography } from '../config/fonts';
 export function NBAWidget() {
   return (
     <View style={styles.outerContainer}>
+      {/* Aura effect background */}
+      <View style={styles.auraEffect} />
+      
       {/* Gradient border container */}
       <LinearGradient
         colors={[
@@ -67,6 +70,22 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 157,
     marginBottom: 16,
+    position: 'relative',
+  },
+  auraEffect: {
+    position: 'absolute',
+    top: -10,
+    left: -10,
+    right: -10,
+    bottom: -10,
+    backgroundColor: '#ffffff',
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: '#0f0ad1',
+    // Note: React Native doesn't support blur filter directly
+    // This creates the base aura effect structure
+    opacity: 0.3,
+    zIndex: -1,
   },
   gradientBorder: {
     borderRadius: 24,
