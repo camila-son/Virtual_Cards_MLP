@@ -29,7 +29,7 @@ export default function App() {
   
   return (
     <View style={styles.appContainer}>
-      <HomepageScreen onNavigateToMarketing={() => navigateToScreen('marketing')} />
+      <HomepageScreen />
       {currentScreen === 'marketing' && (
         <MarketingScreen onBack={() => navigateToScreen('homepage')} />
       )}
