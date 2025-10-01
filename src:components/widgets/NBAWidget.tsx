@@ -141,9 +141,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   addMoneyText: {
-    fontFamily: 'Nu Sans Semibold',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '500',
     lineHeight: 15.6,
     color: '#ffffff',
     textAlign: 'center',
@@ -158,9 +158,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   dismissText: {
-    fontFamily: 'Nu Sans Semibold',
+    fontFamily: 'Nu Sans Medium',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '500',
     lineHeight: 15.6,
     color: 'rgba(0, 0, 0, 0.96)',
     textAlign: 'center',
