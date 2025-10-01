@@ -7,10 +7,58 @@ export function NBAWidget() {
   return (
     <View style={styles.outerContainer}>
       {/* Aura effect layers for blur simulation */}
-      <View style={styles.auraLayer1} />
-      <View style={styles.auraLayer2} />
-      <View style={styles.auraLayer3} />
-      <View style={styles.auraLayer4} />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.1)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.11)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.08)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.02)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.08)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer1}
+      />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.08)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.09)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.06)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.06)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer2}
+      />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.06)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.07)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.05)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.05)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer3}
+      />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.04)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.04)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.03)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.03)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer4}
+      />
       
       {/* Gradient border container */}
       <LinearGradient
@@ -81,9 +129,7 @@ const styles = StyleSheet.create({
     left: -5,
     right: -5,
     bottom: -5,
-    backgroundColor: '#0f0ad1',
     borderRadius: 24,
-    opacity: 0.1,
     zIndex: -4,
   },
   auraLayer2: {
@@ -92,9 +138,7 @@ const styles = StyleSheet.create({
     left: -10,
     right: -10,
     bottom: -10,
-    backgroundColor: '#0f0ad1',
     borderRadius: 24,
-    opacity: 0.08,
     zIndex: -3,
   },
   auraLayer3: {
@@ -103,9 +147,7 @@ const styles = StyleSheet.create({
     left: -15,
     right: -15,
     bottom: -15,
-    backgroundColor: '#0f0ad1',
     borderRadius: 24,
-    opacity: 0.06,
     zIndex: -2,
   },
   auraLayer4: {
@@ -114,9 +156,7 @@ const styles = StyleSheet.create({
     left: -21,
     right: -21,
     bottom: -21,
-    backgroundColor: '#0f0ad1',
     borderRadius: 24,
-    opacity: 0.04,
     zIndex: -1,
   },
   gradientBorder: {
