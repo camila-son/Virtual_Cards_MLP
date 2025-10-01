@@ -1,17 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Fonts } from '../../../components/config/fonts';
-import { CONTENT_DATA } from '../../../constants/marketingData';
-import { ContentSectionProps } from '../../../types/navigation';
 
-export function ContentSection({ currentIndex }: ContentSectionProps) {
-  const currentContent = CONTENT_DATA[currentIndex] || CONTENT_DATA[0];
-
+export function ContentSection() {
   return (
     <View style={styles.contentSection}>
-      <Text style={styles.mainTitle}>{currentContent.title}</Text>
+      <Text style={styles.mainTitle}>No fees or spread</Text>
       <Text style={styles.description}>
-        {currentContent.description}
+        You don't pay extra on domestic or international purchases. Nu is free of charge!
       </Text>
     </View>
   );
@@ -24,7 +20,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainTitle: {
-    fontFamily: 'Nu Sans Medium',
+    fontFamily: Fonts.nuSans.medium,
     fontSize: 20,
     fontWeight: '500',
     color: 'rgba(0,0,0,0.96)',
@@ -33,7 +29,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   description: {
-    fontFamily: 'Nu Sans Regular',
+    fontFamily: Fonts.nuSans.regular,
     fontSize: 16,
     fontWeight: '400',
     color: 'rgba(0,0,0,0.64)',

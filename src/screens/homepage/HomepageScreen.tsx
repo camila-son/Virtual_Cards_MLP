@@ -9,7 +9,7 @@ import { MarketInfoWidget } from './components/MarketInfoWidget';
 import { ActionButtons } from './components/ActionButtons';
 
 interface HomepageScreenProps {
-  onNavigateToMarketing?: () => void;
+  onNavigateToMarketing: () => void;
 }
 
 export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
@@ -30,11 +30,11 @@ export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
       >
         <View style={styles.content}>
           <NBAWidget />
-          <ActionButtons onNavigateToMarketing={onNavigateToMarketing} />
+          <ActionButtons />
           <BalanceWidget />
           <View style={styles.smallWidgetsRow}>
             <MarketInfoWidget />
-            <VirtualCardWidget />
+            <VirtualCardWidget onNavigateToMarketing={onNavigateToMarketing} />
           </View>
           <TransactionsWidget />
         </View>

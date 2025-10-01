@@ -4,28 +4,19 @@
     "slug": "virtual-cards-mlp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ece9ee"
-    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.virtualcardsmlp.app"
     },
     "android": {
-      "backgroundColor": "#ece9ee",
-      "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "backgroundColor": "#ece9ee"
       }
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "plugins": [
       "expo-font",
       "expo-asset"

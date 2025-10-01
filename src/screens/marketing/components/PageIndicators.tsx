@@ -1,19 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { PageIndicatorsProps } from '../../../types/navigation';
 
-export function PageIndicators({ currentIndex, totalCount }: PageIndicatorsProps) {
+export function PageIndicators() {
   return (
     <View style={styles.pageIndicators}>
-      {Array.from({ length: totalCount }, (_, index) => (
-        <View
-          key={index}
-          style={[
-            styles.indicator,
-            index === currentIndex ? styles.activeIndicator : styles.inactiveIndicator,
-          ]}
-        />
-      ))}
+      <View style={styles.activeIndicator} />
+      <View style={styles.inactiveIndicator} />
+      <View style={styles.inactiveIndicator} />
     </View>
   );
 }
@@ -27,15 +20,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingVertical: 16,
   },
-  indicator: {
+  activeIndicator: {
     width: 8,
     height: 8,
     borderRadius: 4,
-  },
-  activeIndicator: {
     backgroundColor: 'rgba(0,0,0,0.96)',
   },
   inactiveIndicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     backgroundColor: 'rgba(0,0,0,0.16)',
   },
 });
