@@ -3,8 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { HomepageScreen } from './src/screens/homepage/HomepageScreen';
 import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
 import { loadCustomFonts } from './src/utils/loadFonts';
-
-type Screen = 'homepage' | 'marketing';
+import { Screen } from './src/types/navigation';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);

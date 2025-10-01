@@ -1,10 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { VirtualCardIcon } from '../../../components/icons/VirtualCardIcon';
-
-interface VirtualCardWidgetProps {
-  onNavigateToMarketing: () => void;
-}
+import { VirtualCardWidgetProps } from '../../../types/navigation';
 
 export function VirtualCardWidget({ onNavigateToMarketing }: VirtualCardWidgetProps) {
   return (

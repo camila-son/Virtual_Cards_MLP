@@ -1,10 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-
-interface PageIndicatorsProps {
-  currentIndex: number;
-  totalCount: number;
-}
+import { PageIndicatorsProps } from '../../../types/navigation';
 
 export function PageIndicators({ currentIndex, totalCount }: PageIndicatorsProps) {
   return (

@@ -2,43 +2,30 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ChevronIcon } from '../../../components/icons/chevron_icon';
 import { Fonts } from '../../../components/config/fonts';
+import { LIST_OPTIONS } from '../../../constants/marketingData';
 
 export function ListRows() {
   return (
     <View style={styles.navigationList}>
       <View style={styles.listContainer}>
-        {/* Standard Option */}
-        <View style={styles.listRow}>
-          <View style={styles.rowContent}>
-            <View style={styles.textContent}>
-              <Text style={styles.rowTitle}>Standard</Text>
-              <Text style={styles.rowDescription}>
-                Ideal for subscriptions, recurring charges and day-to-day use.
-              </Text>
+        {LIST_OPTIONS.map((option, index) => (
+          <React.Fragment key={index}>
+            <View style={styles.listRow}>
+              <View style={styles.rowContent}>
+                <View style={styles.textContent}>
+                  <Text style={styles.rowTitle}>{option.title}</Text>
+                  <Text style={styles.rowDescription}>
+                    {option.description}
+                  </Text>
+                </View>
+                <View style={styles.chevronIcon}>
+                  <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
+                </View>
+              </View>
             </View>
-            <View style={styles.chevronIcon}>
-              <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
-            </View>
-          </View>
-        </View>
-
-        {/* Divider between rows */}
-        <View style={styles.rowDivider} />
-
-        {/* Temporary Option */}
-        <View style={styles.listRow}>
-          <View style={styles.rowContent}>
-            <View style={styles.textContent}>
-              <Text style={styles.rowTitle}>Temporary</Text>
-              <Text style={styles.rowDescription}>
-                Available for 24 hours. After this period, payments will be denied.
-              </Text>
-            </View>
-            <View style={styles.chevronIcon}>
-              <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
-            </View>
-          </View>
-        </View>
+            {index < LIST_OPTIONS.length - 1 && <View style={styles.rowDivider} />}
+          </React.Fragment>
+        ))}
       </View>
     </View>
   );

@@ -2,10 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { ChevronIcon } from '../../../components/icons/chevron_icon';
 import { Fonts } from '../../../components/config/fonts';
-
-interface TopNavigationBarProps {
-  onBack: () => void;
-}
+import { TopNavigationBarProps } from '../../../types/navigation';
 
 export function TopNavigationBar({ onBack }: TopNavigationBarProps) {
   return (

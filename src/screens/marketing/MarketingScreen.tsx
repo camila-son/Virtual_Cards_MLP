@@ -8,12 +8,8 @@ import {
 } from 'react-native';
 import { TopNavigationBar } from './components/TopNavigationBar';
 import { HeroSectionWithIndicators } from './components/HeroSectionWithIndicators';
-import { ContentSection } from './components/ContentSection';
 import { ListRows } from './components/ListRows';
-
-interface MarketingScreenProps {
-  onBack: () => void;
-}
+import { MarketingScreenProps } from '../../types/navigation';
 
 export function MarketingScreen({ onBack }: MarketingScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
@@ -50,7 +46,6 @@ export function MarketingScreen({ onBack }: MarketingScreenProps) {
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar onBack={handleBack} />
         <HeroSectionWithIndicators />
-        <ContentSection />
         <ListRows />
       </SafeAreaView>
     </Animated.View>
