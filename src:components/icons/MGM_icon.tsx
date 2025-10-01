@@ -2,12 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-interface ChatIconProps {
+interface MGMIconProps {
   size?: number;
   color?: string;
 }
 
-export function ChatIcon({ size = 44, color = 'rgba(0, 0, 0, 0.64)' }: ChatIconProps) {
+export function MGMIcon({ size = 44, color = 'rgba(0, 0, 0, 0.64)' }: MGMIconProps) {
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size} viewBox="0 0 44 44" fill="none">

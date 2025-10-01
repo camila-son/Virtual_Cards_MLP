@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { BellIcon } from '../icons/BellIcon';
-import { ChatIcon } from '../icons/ChatIcon';
-import { SettingsIcon } from '../icons/SettingsIcon';
+import { HelpIcon } from '../icons/help_icon';
+import { MGMIcon } from '../icons/MGM_icon';
+import { VisibilityOnIcon } from '../icons/Visibility_on_icon';
 
 export function TopNavigation() {
   return (
@@ -34,17 +34,17 @@ export function TopNavigation() {
           <View style={styles.trailing}>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <BellIcon size={44} color="rgba(0, 0, 0, 0.64)" />
+                <HelpIcon size={44} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <ChatIcon size={44} color="rgba(0, 0, 0, 0.64)" />
+                <MGMIcon size={44} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <View style={styles.iconContainer}>
-                <SettingsIcon size={44} color="rgba(0, 0, 0, 0.64)" />
+                <VisibilityOnIcon size={44} color="rgba(0, 0, 0, 0.64)" />
               </View>
             </TouchableOpacity>
           </View>

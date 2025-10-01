@@ -2,12 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-interface SettingsIconProps {
+interface VisibilityOnIconProps {
   size?: number;
   color?: string;
 }
 
-export function SettingsIcon({ size = 44, color = 'rgba(0, 0, 0, 0.64)' }: SettingsIconProps) {
+export function VisibilityOnIcon({ size = 44, color = 'rgba(0, 0, 0, 0.64)' }: VisibilityOnIconProps) {
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size} viewBox="0 0 44 44" fill="none">
