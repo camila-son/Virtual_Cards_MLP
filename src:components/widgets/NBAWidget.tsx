@@ -6,8 +6,11 @@ import { Fonts, Typography } from '../config/fonts';
 export function NBAWidget() {
   return (
     <View style={styles.outerContainer}>
-      {/* Aura effect background */}
-      <View style={styles.auraEffect} />
+      {/* Aura effect layers for blur simulation */}
+      <View style={styles.auraLayer1} />
+      <View style={styles.auraLayer2} />
+      <View style={styles.auraLayer3} />
+      <View style={styles.auraLayer4} />
       
       {/* Gradient border container */}
       <LinearGradient
@@ -72,19 +75,48 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     position: 'relative',
   },
-  auraEffect: {
+  auraLayer1: {
+    position: 'absolute',
+    top: -5,
+    left: -5,
+    right: -5,
+    bottom: -5,
+    backgroundColor: '#0f0ad1',
+    borderRadius: 24,
+    opacity: 0.1,
+    zIndex: -4,
+  },
+  auraLayer2: {
     position: 'absolute',
     top: -10,
     left: -10,
     right: -10,
     bottom: -10,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#0f0ad1',
     borderRadius: 24,
-    borderWidth: 2,
-    borderColor: '#0f0ad1',
-    // Note: React Native doesn't support blur filter directly
-    // This creates the base aura effect structure
-    opacity: 0.3,
+    opacity: 0.08,
+    zIndex: -3,
+  },
+  auraLayer3: {
+    position: 'absolute',
+    top: -15,
+    left: -15,
+    right: -15,
+    bottom: -15,
+    backgroundColor: '#0f0ad1',
+    borderRadius: 24,
+    opacity: 0.06,
+    zIndex: -2,
+  },
+  auraLayer4: {
+    position: 'absolute',
+    top: -21,
+    left: -21,
+    right: -21,
+    bottom: -21,
+    backgroundColor: '#0f0ad1',
+    borderRadius: 24,
+    opacity: 0.04,
     zIndex: -1,
   },
   gradientBorder: {
