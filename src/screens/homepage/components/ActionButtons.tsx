@@ -14,7 +14,11 @@ const ActionButton = ({ icon, label }: { icon: React.ReactNode; label: string })
   </TouchableOpacity>
 );
 
-export function ActionButtons() {
+interface ActionButtonsProps {
+  onNavigateToMarketing?: () => void;
+}
+
+export function ActionButtons({ onNavigateToMarketing }: ActionButtonsProps) {
   return (
     <View style={styles.container}>
       <ActionButton icon={<AddIcon width={24} height={24} />} label="Add" />
