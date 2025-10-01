@@ -6,10 +6,23 @@ import { Fonts, Typography } from '../config/fonts';
 export function NBAWidget() {
   return (
     <View style={styles.outerContainer}>
-      {/* Aura effect layers for blur simulation */}
+      {/* Aura effect layers for smooth blur simulation */}
       <LinearGradient
         colors={[
-          'rgba(15, 10, 209, 0.1)',   // #0F0AD1 at 0%
+          'rgba(15, 10, 209, 0.12)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.13)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.10)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.02)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.10)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer1}
+      />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.10)',   // #0F0AD1 at 0%
           'rgba(233, 101, 255, 0.11)', // #E965FF at 57%
           'rgba(255, 101, 175, 0.08)', // #FF65AF at 72%
           'rgba(255, 141, 8, 0.02)',   // #FF8D08 at 92%
@@ -18,7 +31,7 @@ export function NBAWidget() {
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.auraLayer1}
+        style={styles.auraLayer2}
       />
       <LinearGradient
         colors={[
@@ -31,7 +44,7 @@ export function NBAWidget() {
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.auraLayer2}
+        style={styles.auraLayer3}
       />
       <LinearGradient
         colors={[
@@ -44,12 +57,12 @@ export function NBAWidget() {
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.auraLayer3}
+        style={styles.auraLayer4}
       />
       <LinearGradient
         colors={[
           'rgba(15, 10, 209, 0.04)',   // #0F0AD1 at 0%
-          'rgba(233, 101, 255, 0.04)', // #E965FF at 57%
+          'rgba(233, 101, 255, 0.05)', // #E965FF at 57%
           'rgba(255, 101, 175, 0.03)', // #FF65AF at 72%
           'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
           'rgba(168, 55, 255, 0.03)'   // #A837FF at 100%
@@ -57,7 +70,33 @@ export function NBAWidget() {
         locations={[0, 0.57, 0.72, 0.92, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.auraLayer4}
+        style={styles.auraLayer5}
+      />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.03)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.03)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.02)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.02)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer6}
+      />
+      <LinearGradient
+        colors={[
+          'rgba(15, 10, 209, 0.02)',   // #0F0AD1 at 0%
+          'rgba(233, 101, 255, 0.02)', // #E965FF at 57%
+          'rgba(255, 101, 175, 0.01)', // #FF65AF at 72%
+          'rgba(255, 141, 8, 0.01)',   // #FF8D08 at 92%
+          'rgba(168, 55, 255, 0.01)'   // #A837FF at 100%
+        ]}
+        locations={[0, 0.57, 0.72, 0.92, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.auraLayer7}
       />
       
       {/* Gradient border container */}
@@ -125,32 +164,59 @@ const styles = StyleSheet.create({
   },
   auraLayer1: {
     position: 'absolute',
-    top: -5,
-    left: -5,
-    right: -5,
-    bottom: -5,
+    top: -3,
+    left: -3,
+    right: -3,
+    bottom: -3,
     borderRadius: 24,
-    zIndex: -4,
+    zIndex: -7,
   },
   auraLayer2: {
     position: 'absolute',
-    top: -10,
-    left: -10,
-    right: -10,
-    bottom: -10,
+    top: -6,
+    left: -6,
+    right: -6,
+    bottom: -6,
     borderRadius: 24,
-    zIndex: -3,
+    zIndex: -6,
   },
   auraLayer3: {
+    position: 'absolute',
+    top: -9,
+    left: -9,
+    right: -9,
+    bottom: -9,
+    borderRadius: 24,
+    zIndex: -5,
+  },
+  auraLayer4: {
+    position: 'absolute',
+    top: -12,
+    left: -12,
+    right: -12,
+    bottom: -12,
+    borderRadius: 24,
+    zIndex: -4,
+  },
+  auraLayer5: {
     position: 'absolute',
     top: -15,
     left: -15,
     right: -15,
     bottom: -15,
     borderRadius: 24,
+    zIndex: -3,
+  },
+  auraLayer6: {
+    position: 'absolute',
+    top: -18,
+    left: -18,
+    right: -18,
+    bottom: -18,
+    borderRadius: 24,
     zIndex: -2,
   },
-  auraLayer4: {
+  auraLayer7: {
     position: 'absolute',
     top: -21,
     left: -21,
