@@ -32,9 +32,9 @@ export default function App() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <TopNavigation />
         <View style={styles.content}>
+          <NBAWidget />
           <BalanceWidget />
           <VirtualCardWidget />
-          <NBAWidget />
           <TransactionsWidget />
           <MarketInfoWidget />
           <ActionButtons />
