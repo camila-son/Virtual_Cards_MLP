@@ -27,7 +27,7 @@ export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
       >
         <View style={styles.content}>
           <NBAWidget />
-          <ActionButtons />
+          <ActionButtons onNavigateToMarketing={onNavigateToMarketing} />
           <BalanceWidget />
           <View style={styles.smallWidgetsRow}>
             <MarketInfoWidget />
