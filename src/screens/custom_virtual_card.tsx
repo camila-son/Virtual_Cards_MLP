@@ -170,6 +170,7 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
               <React.Fragment key={item.id}>
                 <TouchableOpacity
                   style={styles.cardDesignItem}
+                  activeOpacity={1}
                   onPress={() => {
                     setSelectedDesignIndex(index);
                     // Update the selected color swatch to match the clicked card
