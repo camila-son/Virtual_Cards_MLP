@@ -8,7 +8,6 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  FlatList,
   ScrollView,
 } from 'react-native';
 import { TopNavigationBar } from './marketing/components/TopNavigationBar';
@@ -18,7 +17,7 @@ import { Fonts } from '../components/config/fonts';
 export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const nameFadeAnim = useRef(new Animated.Value(1)).current;
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<ScrollView>(null);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedDesignIndex, setSelectedDesignIndex] = useState(0);
   
