@@ -237,6 +237,13 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
         <View style={styles.content}>
           {/* Content will be added here */}
         </View>
+        
+        {/* Bottom Bar */}
+        <View style={styles.bottomBar}>
+          <TouchableOpacity style={styles.primaryButton}>
+            <Text style={styles.buttonText}>Choose design</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </Animated.View>
   );
@@ -342,5 +349,28 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 16,
+  },
+  bottomBar: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 16,
+    backgroundColor: '#ece9ee', // Match screen background
+  },
+  primaryButton: {
+    backgroundColor: '#820AD1', // Surface Accent Primary color
+    height: 48,
+    borderRadius: 64, // Medium border radius for pill shape
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+  },
+  buttonText: {
+    fontFamily: 'Nu Sans Medium', // Nu Sans Text Semibold from Figma
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#ffffff', // White text on colored background
+    textAlign: 'center',
+    lineHeight: 20.8, // 16 * 1.3 (line height from Figma)
   },
 });
