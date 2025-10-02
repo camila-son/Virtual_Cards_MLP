@@ -159,6 +159,8 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
               
               if (closestIndex !== selectedDesignIndex) {
                 animateNameChange(closestIndex);
+                // Update the selected color swatch to match the centered card
+                setSelectedColorIndex(closestIndex);
               }
             }}
           >
@@ -171,6 +173,8 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
                   style={styles.cardDesignItem}
                   onPress={() => {
                     setSelectedDesignIndex(index);
+                    // Update the selected color swatch to match the clicked card
+                    setSelectedColorIndex(index);
                     // Scroll to the snap position for this card
                     flatListRef.current?.scrollTo({
                       x: snapPositions[index],
