@@ -6,6 +6,9 @@ import {
   Animated,
   Dimensions,
   Text,
+  Image,
+  TextInput,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
 import { CustomVirtualCardScreenProps } from '../../types/navigation';
@@ -15,9 +18,13 @@ import { CARD_DESIGNS, COLOR_SWATCHES, LAYOUT_CONSTANTS } from './constants';
 export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const nameFadeAnim = useRef(new Animated.Value(1)).current;
+  const selectionElementsFadeAnim = useRef(new Animated.Value(1)).current; // For card name and swatches
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedDesignIndex, setSelectedDesignIndex] = useState(0);
   const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(undefined);
+  const [screenMode, setScreenMode] = useState<'selection' | 'naming'>('selection');
+  const [customCardName, setCustomCardName] = useState('');
+  const textInputRef = useRef<TextInput>(null);
   
   const screenWidth = Dimensions.get('window').width;
   const itemWidth = LAYOUT_CONSTANTS.CARD_WIDTH + LAYOUT_CONSTANTS.CARD_SPACING;
@@ -70,8 +77,19 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleChooseDesign = () => {
-    // TODO: Implement design selection logic
-    console.log('Design chosen:', CARD_DESIGNS[selectedDesignIndex]);
+    // Fade out card name and swatches
+    Animated.timing(selectionElementsFadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      // Switch to naming mode after fade out completes
+      setScreenMode('naming');
+      // Focus text input after a short delay
+      setTimeout(() => {
+        textInputRef.current?.focus();
+      }, 100);
+    });
   };
 
   useEffect(() => {
@@ -84,14 +102,26 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   }, [slideAnim]);
 
   const handleBack = () => {
-    // Slide out to right animation before navigating back
-    Animated.timing(slideAnim, {
-      toValue: Dimensions.get('window').width,
-      duration: 250,
-      useNativeDriver: true,
-    }).start(() => {
-      onBack();
-    });
+    if (screenMode === 'naming') {
+      // Return to selection mode and fade in elements
+      setScreenMode('selection');
+      setCustomCardName('');
+      // Fade in card name and swatches
+      Animated.timing(selectionElementsFadeAnim, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      // Slide out to right animation before navigating back
+      Animated.timing(slideAnim, {
+        toValue: Dimensions.get('window').width,
+        duration: 250,
+        useNativeDriver: true,
+      }).start(() => {
+        onBack();
+      });
+    }
   };
 
   return (
@@ -108,38 +138,81 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
         
         {/* Screen title positioned 8px below TopNavigationBar */}
         <Text style={styles.screenTitle}>
-          Choose a design for your virtual card
+          {screenMode === 'selection' ? 'Choose a design' : 'Name your card'}
         </Text>
         
-        {/* Card Carousel */}
-        <CardCarousel
-          cardDesigns={CARD_DESIGNS}
-          selectedDesignIndex={selectedDesignIndex}
-          onCardSelect={handleCardSelect}
-          screenWidth={screenWidth}
-          scrollToIndex={scrollToIndex}
-        />
-        
-        {/* Card name with dissolve effect positioned 20px below carousel */}
-        <View style={styles.cardNameContainer}>
-          <Animated.Text 
-            style={[
-              styles.cardName,
-              {
-                opacity: nameFadeAnim,
-              }
-            ]}
-          >
-            {CARD_DESIGNS[selectedDesignIndex]?.name}
-          </Animated.Text>
-        </View>
-        
-        {/* Color Swatches */}
-        <ColorSwatches
-          colorSwatches={COLOR_SWATCHES}
-          selectedColorIndex={selectedColorIndex}
-          onSwatchPress={handleColorSwatchPress}
-        />
+        {screenMode === 'selection' ? (
+          <>
+            {/* Card Carousel */}
+            <CardCarousel
+              cardDesigns={CARD_DESIGNS}
+              selectedDesignIndex={selectedDesignIndex}
+              onCardSelect={handleCardSelect}
+              screenWidth={screenWidth}
+              scrollToIndex={scrollToIndex}
+            />
+            
+            {/* Card name with dissolve effect positioned 20px below carousel */}
+            <Animated.View style={{ opacity: selectionElementsFadeAnim }}>
+              <View style={styles.cardNameContainer}>
+                <Animated.Text 
+                  style={[
+                    styles.cardName,
+                    {
+                      opacity: nameFadeAnim,
+                    }
+                  ]}
+                >
+                  {CARD_DESIGNS[selectedDesignIndex]?.name}
+                </Animated.Text>
+              </View>
+            </Animated.View>
+            
+            {/* Color Swatches */}
+            <Animated.View style={{ opacity: selectionElementsFadeAnim }}>
+              <ColorSwatches
+                colorSwatches={COLOR_SWATCHES}
+                selectedColorIndex={selectedColorIndex}
+                onSwatchPress={handleColorSwatchPress}
+              />
+            </Animated.View>
+          </>
+        ) : (
+          <TouchableWithoutFeedback onPress={() => {
+            setScreenMode('selection');
+            setCustomCardName('');
+            // Fade in card name and swatches
+            Animated.timing(selectionElementsFadeAnim, {
+              toValue: 1,
+              duration: 250,
+              useNativeDriver: true,
+            }).start();
+          }}>
+            <View style={styles.namingModeContainer}>
+              {/* Static selected card with text input overlay */}
+              <View style={styles.staticCardContainer}>
+                <Image 
+                  source={CARD_DESIGNS[selectedDesignIndex]?.image} 
+                  style={styles.staticCardImage}
+                  resizeMode="contain"
+                />
+                <TouchableWithoutFeedback onPress={() => {}}>
+                  <TextInput
+                    ref={textInputRef}
+                    style={styles.cardNameInput}
+                    value={customCardName}
+                    onChangeText={setCustomCardName}
+                    placeholder="Enter card name"
+                    placeholderTextColor="rgba(255,255,255,0.7)"
+                    autoFocus={true}
+                    maxLength={20}
+                    textAlign="center"
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
         
         {/* Empty content area */}
         <View style={styles.content}>
@@ -188,5 +261,35 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 16,
+  },
+  namingModeContainer: {
+    flex: 1,
+    width: '100%',
+  },
+  staticCardContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 68, // Position to match carousel
+    position: 'relative',
+  },
+  staticCardImage: {
+    width: LAYOUT_CONSTANTS.CARD_WIDTH,
+    height: 330,
+  },
+  cardNameInput: {
+    position: 'absolute',
+    top: '70%',
+    left: '50%',
+    transform: [{ translateX: -100 }],
+    width: 200,
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 16,
+    color: '#ffffff',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
 });
