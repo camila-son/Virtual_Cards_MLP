@@ -6,12 +6,10 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
-import { TopNavigationBar } from './components/TopNavigationBar';
-import { HeroSectionWithIndicators } from './components/HeroSectionWithIndicators';
-import { ListRows } from './components/ListRows';
-import { MarketingScreenProps } from '../../types/navigation';
+import { TopNavigationBar } from './marketing/components/TopNavigationBar';
+import { CustomVirtualCardScreenProps } from '../types/navigation';
 
-export function MarketingScreen({ onBack, onNavigateToVirtualCardCreation }: MarketingScreenProps) {
+export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
 
   useEffect(() => {
@@ -45,8 +43,10 @@ export function MarketingScreen({ onBack, onNavigateToVirtualCardCreation }: Mar
     >
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar onBack={handleBack} />
-        <HeroSectionWithIndicators />
-        <ListRows onNavigateToVirtualCardCreation={onNavigateToVirtualCardCreation} />
+        {/* Empty content area */}
+        <View style={styles.content}>
+          {/* Content will be added here */}
+        </View>
       </SafeAreaView>
     </Animated.View>
   );
@@ -61,9 +61,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     flex: 1,
     backgroundColor: '#ece9ee',
-    zIndex: 1001, // Higher than TopNavigation's zIndex: 1000
+    zIndex: 1002, // Higher than marketing screen's zIndex: 1001
   },
   safeArea: {
     flex: 1,
+  },
+  content: {
+    flex: 1,
+    padding: 16,
   },
 });

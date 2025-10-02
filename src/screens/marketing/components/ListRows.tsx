@@ -1,16 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ChevronIcon } from '../../../components/icons/chevron_icon';
 import { Fonts } from '../../../components/config/fonts';
 import { LIST_OPTIONS } from '../../../constants/marketingData';
 
-export function ListRows() {
+interface ListRowsProps {
+  onNavigateToVirtualCardCreation: () => void;
+}
+
+export function ListRows({ onNavigateToVirtualCardCreation }: ListRowsProps) {
   return (
     <View style={styles.navigationList}>
       <View style={styles.listContainer}>
         {LIST_OPTIONS.map((option, index) => (
           <React.Fragment key={index}>
-            <View style={styles.listRow}>
+            <TouchableOpacity 
+              style={styles.listRow}
+              onPress={() => {
+                if (option.title === 'Standard') {
+                  onNavigateToVirtualCardCreation();
+                }
+              }}
+              activeOpacity={0.7}
+            >
               <View style={styles.rowContent}>
                 <View style={styles.textContent}>
                   <Text style={styles.rowTitle}>{option.title}</Text>
@@ -22,7 +34,7 @@ export function ListRows() {
                   <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
             {index < LIST_OPTIONS.length - 1 && <View style={styles.rowDivider} />}
           </React.Fragment>
         ))}

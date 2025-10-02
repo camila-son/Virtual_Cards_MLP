@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { HomepageScreen } from './src/screens/homepage/HomepageScreen';
 import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
+import { CustomVirtualCardScreen } from './src/screens/custom_virtual_card';
 import { loadCustomFonts } from './src/utils/loadFonts';
 import { Screen } from './src/types/navigation';
 
@@ -29,9 +30,18 @@ export default function App() {
   
   return (
     <View style={styles.appContainer}>
-      <HomepageScreen onNavigateToMarketing={() => navigateToScreen('marketing')} />
-      {currentScreen === 'marketing' && (
-        <MarketingScreen onBack={() => navigateToScreen('homepage')} />
+      <HomepageScreen 
+        onNavigateToMarketing={() => navigateToScreen('marketing')}
+        onNavigateToVirtualCardCreation={() => navigateToScreen('custom_virtual_card')}
+      />
+      {(currentScreen === 'marketing' || currentScreen === 'custom_virtual_card') && (
+        <MarketingScreen 
+          onBack={() => navigateToScreen('homepage')}
+          onNavigateToVirtualCardCreation={() => navigateToScreen('custom_virtual_card')}
+        />
+      )}
+      {currentScreen === 'custom_virtual_card' && (
+        <CustomVirtualCardScreen onBack={() => navigateToScreen('marketing')} />
       )}
     </View>
   );
