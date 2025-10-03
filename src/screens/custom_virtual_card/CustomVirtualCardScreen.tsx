@@ -75,8 +75,6 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleChooseDesign = () => {
-    console.log('Transitioning to naming mode');
-    
     // Transition to Naming: Non-selected cards fade out, selected card remains visible
     Animated.parallel([
       Animated.timing(nonSelectedCardsFadeAnim, {
@@ -103,7 +101,6 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleBackToSelection = () => {
-    console.log('🚀 handleBackToSelection called - starting transition');
     setCustomCardName('');
     setRestoreScrollPosition(savedScrollPosition);
     
@@ -126,14 +123,11 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
       })
     ]).start(({ finished }) => {
       if (finished) {
-        console.log('🚀 Animations completed, preparing to switch mode');
-        
         // Ensure static overlay is completely hidden before switching
         staticOverlayOpacityAnim.setValue(0);
         
         // Use requestAnimationFrame to ensure the opacity change is rendered
         requestAnimationFrame(() => {
-          console.log('🚀 Switching to selection mode after RAF');
           setScreenMode('selection');
         });
       }
@@ -143,46 +137,35 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleTextInputBlur = () => {
-    console.log('🎯 TextInput onBlur called');
     // Small delay to ensure this is from a background touch, not programmatic blur
     setTimeout(() => {
       if (screenMode === 'naming' && customCardName.trim() === '') {
-        console.log('🎯 TextInput lost focus with empty input → Going back to selection mode');
         handleBackToSelection();
       }
     }, 50);
   };
 
   const handleBackgroundPress = () => {
-    console.log('🔥 handleBackgroundPress called, screenMode:', screenMode);
-    console.log('🔥 This should NOT fire when clicking back button!');
-    console.log('🔥 customCardName:', `"${customCardName}"`);
-    console.log('🔥 customCardName.trim():', `"${customCardName.trim()}"`);
-    console.log('🔥 isEmpty:', customCardName.trim() === '');
-    
     if (screenMode === 'naming') {
       if (customCardName.trim() === '') {
-        console.log('🔥 Empty input + background touch → Going back to selection mode');
+        // Empty input + background touch → Go back to selection mode
         handleBackToSelection();
       } else {
-        console.log('🔥 Filled input + background touch → Dismissing keyboard only');
+        // Filled input + background touch → Dismiss keyboard only
         textInputRef.current?.blur();
       }
     }
   };
 
   const handleCreateCard = () => {
-    console.log('Creating virtual card with name:', customCardName);
+    // TODO: Implement card creation logic
     onBack();
   };
 
   const handleBack = () => {
-    console.log('🔙 handleBack called, screenMode:', screenMode);
     if (screenMode === 'naming') {
-      console.log('🔙 Back button pressed in naming mode → Going back to selection mode');
       handleBackToSelection();
     } else {
-      console.log('🔙 Back button pressed in selection mode → Exiting screen');
       Animated.timing(slideAnim, {
         toValue: Dimensions.get('window').width,
         duration: 250,
@@ -315,9 +298,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     zIndex: 1002,
-  },
-  contentWrapper: {
-    flex: 1,
   },
   container: {
     flex: 1,
