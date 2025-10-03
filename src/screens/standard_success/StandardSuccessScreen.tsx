@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   TextInput,
+  Easing,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StandardSuccessScreenProps } from '../../types/navigation';
@@ -16,14 +17,43 @@ import { CloseIcon, AppleWalletIcon } from '../../components/icons';
 
 export function StandardSuccessScreen({ onNext, cardDesign, customCardName }: StandardSuccessScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+  const floatAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // Slide-in animation
     Animated.timing(slideAnim, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
     }).start();
-  }, [slideAnim]);
+
+    // Floating animation - continuous cycle
+    const floatingAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(floatAnim, {
+          toValue: -8, // Float up 8px
+          duration: 1333,
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnim, {
+          toValue: 8, // Float down 8px  
+          duration: 2667,
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnim, {
+          toValue: -8, // Float back up to start position
+          duration: 1333,
+          useNativeDriver: true,
+        }),
+      ]),
+      { iterations: -1, resetBeforeIteration: false }
+    );
+    floatingAnimation.start();
+
+    return () => {
+      floatingAnimation.stop();
+    };
+  }, [slideAnim, floatAnim]);
 
   return (
     <LinearGradient
@@ -53,14 +83,20 @@ export function StandardSuccessScreen({ onNext, cardDesign, customCardName }: St
 
           {/* Card Display - positioned relative to full screen */}
           <View style={styles.cardOverlayContainer}>
-            <View style={styles.cardContainer}>
-              <Image 
-                source={cardDesign.image} 
+            <Animated.View style={[styles.cardContainer, {
+              transform: [
+                { scale: 1.27 }, 
+                { translateY: 30 }, 
+                { translateY: floatAnim }
+              ]
+            }]}>
+              <Image
+                source={cardDesign.image}
                 style={styles.cardImage}
                 resizeMode="contain"
               />
               <Text style={styles.cardNameText}>{customCardName}</Text>
-            </View>
+            </Animated.View>
           </View>
 
           <View style={styles.content}>
@@ -146,7 +182,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
-    transform: [{ scale: 1.27 }, { translateY: 30 }], // Same transform as naming mode scaled state
   },
   cardImage: {
     width: 220, // Back to original size since container is scaled
@@ -212,7 +247,7 @@ const styles = StyleSheet.create({
     lineHeight: 20.8, // 16 * 1.3
   },
   secondaryButton: {
-    backgroundColor: '#f5f3f6',
+    backgroundColor: '#efefef',
     height: 48,
     borderRadius: 64,
     flexDirection: 'row',
