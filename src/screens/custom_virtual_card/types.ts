@@ -16,6 +16,10 @@ export interface CardCarouselProps {
   onCardSelect: (index: number) => void;
   screenWidth: number;
   scrollToIndex?: number; // Add this to trigger external scrolling
+  onScrollPositionChange?: (scrollX: number) => void; // Callback for scroll position changes
+  restoreScrollPosition?: number; // Position to restore scroll to
+  screenMode?: 'selection' | 'naming'; // Current screen mode
+  nonSelectedCardsOpacity?: any; // Animated value for non-selected cards opacity
 }
 
 export interface ColorSwatchesProps {
@@ -26,5 +30,7 @@ export interface ColorSwatchesProps {
 
 export interface BottomBarProps {
   onChooseDesign: () => void;
+  onCreateCard?: () => void;
+  screenMode?: 'selection' | 'naming';
 }
 

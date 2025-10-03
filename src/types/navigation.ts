@@ -22,6 +22,7 @@ export interface ContentSectionProps {
 
 export interface TopNavigationBarProps {
   onBack: () => void;
+  title?: string; // Optional title to display in the navigation bar
 }
 
 // Homepage screen types

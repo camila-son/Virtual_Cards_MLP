@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 32, // 32px below card name
+    marginTop: 32, // Restored to original spacing
     gap: 16, // 16px spacing between swatches
   },
   colorSwatch: {

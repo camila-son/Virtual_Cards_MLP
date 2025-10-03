@@ -2,11 +2,15 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { BottomBarProps } from '../types';
 
-export function BottomBar({ onChooseDesign }: BottomBarProps) {
+export function BottomBar({ onChooseDesign, onCreateCard, screenMode = 'selection' }: BottomBarProps) {
+  const isNamingMode = screenMode === 'naming';
+  const buttonText = isNamingMode ? 'Create virtual card' : 'Choose design';
+  const onPress = isNamingMode ? onCreateCard : onChooseDesign;
+
   return (
     <View style={styles.bottomBar}>
-      <TouchableOpacity style={styles.primaryButton} onPress={onChooseDesign}>
-        <Text style={styles.buttonText}>Choose design</Text>
+      <TouchableOpacity style={styles.primaryButton} onPress={onPress}>
+        <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -17,7 +21,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 16,
     paddingBottom: 16,
-    backgroundColor: '#ece9ee', // Match screen background
+    backgroundColor: 'transparent', // Transparent to show gradient background
   },
   primaryButton: {
     backgroundColor: '#820AD1', // Surface Accent Primary color

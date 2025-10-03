@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  Animated,
 } from 'react-native';
 import { CardCarouselProps } from '../types';
 import { LAYOUT_CONSTANTS } from '../constants';
@@ -16,6 +17,10 @@ export function CardCarousel({
   onCardSelect,
   screenWidth,
   scrollToIndex,
+  onScrollPositionChange,
+  restoreScrollPosition,
+  screenMode,
+  nonSelectedCardsOpacity,
 }: CardCarouselProps) {
   const scrollViewRef = useRef<ScrollView>(null);
   const itemWidth = LAYOUT_CONSTANTS.CARD_WIDTH + LAYOUT_CONSTANTS.CARD_SPACING;
@@ -37,6 +42,11 @@ export function CardCarousel({
 
   const handleScrollEnd = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
+    
+    // Track scroll position
+    if (onScrollPositionChange) {
+      onScrollPositionChange(contentOffsetX);
+    }
     
     // Calculate which card is centered based on snap positions
     let closestIndex = 0;
@@ -65,6 +75,16 @@ export function CardCarousel({
     }
   }, [scrollToIndex, snapPositions]);
 
+  // Handle scroll position restoration
+  useEffect(() => {
+    if (restoreScrollPosition !== undefined) {
+      scrollViewRef.current?.scrollTo({
+        x: restoreScrollPosition,
+        animated: false, // No animation for restoration to avoid jarring effect
+      });
+    }
+  }, [restoreScrollPosition]);
+
   return (
     <View style={styles.carouselContainer}>
       <ScrollView
@@ -80,26 +100,34 @@ export function CardCarousel({
         {/* Left margin */}
         <View style={styles.leftMargin} />
         
-        {cardDesigns.map((item, index) => (
-          <React.Fragment key={item.id}>
-            <TouchableOpacity
-              style={styles.cardDesignItem}
-              activeOpacity={1}
-              onPress={() => handleCardPress(index)}
-            >
-              <Image 
-                source={item.image} 
-                style={styles.cardImage}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-            
-            {/* Spacer between cards (except after last card) */}
-            {index < cardDesigns.length - 1 && (
-              <View style={styles.cardSpacer} />
-            )}
-          </React.Fragment>
-        ))}
+        {cardDesigns.map((item, index) => {
+          const isSelectedCard = index === selectedDesignIndex;
+          // Selected card always visible (opacity 1), non-selected cards follow nonSelectedCardsOpacity
+          const cardOpacity = isSelectedCard ? 1 : (nonSelectedCardsOpacity || 1);
+          
+          return (
+            <React.Fragment key={item.id}>
+              <Animated.View style={{ opacity: cardOpacity }}>
+                <TouchableOpacity
+                  style={styles.cardDesignItem}
+                  activeOpacity={1}
+                  onPress={() => handleCardPress(index)}
+                >
+                  <Image 
+                    source={item.image} 
+                    style={styles.cardImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+              
+              {/* Spacer between cards (except after last card) */}
+              {index < cardDesigns.length - 1 && (
+                <View style={styles.cardSpacer} />
+              )}
+            </React.Fragment>
+          );
+        })}
         
         {/* Right margin */}
         <View style={styles.rightMargin} />
@@ -110,7 +138,7 @@ export function CardCarousel({
 
 const styles = StyleSheet.create({
   carouselContainer: {
-    marginTop: 36, // 36px below title
+    marginTop: 42, // Moved down 30px from 12px
     alignItems: 'center',
     position: 'relative',
   },
