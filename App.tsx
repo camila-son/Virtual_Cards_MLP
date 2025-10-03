@@ -3,12 +3,18 @@ import { View, StyleSheet, Text } from 'react-native';
 import { HomepageScreen } from './src/screens/homepage/HomepageScreen';
 import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
 import { CustomVirtualCardScreen } from './src/screens/custom_virtual_card';
+import { LoadingScreen } from './src/screens/loading';
+import { StandardSuccessScreen } from './src/screens/standard_success';
 import { loadCustomFonts } from './src/utils/loadFonts';
 import { Screen } from './src/types/navigation';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [currentScreen, setCurrentScreen] = useState<Screen>('homepage');
+  const [cardData, setCardData] = useState<{
+    cardDesign: { id: number; name: string; image: any };
+    customCardName: string;
+  } | null>(null);
 
   useEffect(() => {
     loadCustomFonts().then(() => {
@@ -18,6 +24,15 @@ export default function App() {
 
   const navigateToScreen = (screen: Screen) => {
     setCurrentScreen(screen);
+  };
+
+  const navigateToLoadingWithCardData = (cardDesign: { id: number; name: string; image: any }, customCardName: string) => {
+    setCardData({ cardDesign, customCardName });
+    setCurrentScreen('loading');
+  };
+
+  const navigateToStandardSuccess = () => {
+    setCurrentScreen('standard_success');
   };
 
   if (!fontsLoaded) {
@@ -41,7 +56,24 @@ export default function App() {
         />
       )}
       {currentScreen === 'custom_virtual_card' && (
-        <CustomVirtualCardScreen onBack={() => navigateToScreen('marketing')} />
+        <CustomVirtualCardScreen 
+          onBack={() => navigateToScreen('marketing')} 
+          onNavigateToLoading={navigateToLoadingWithCardData}
+        />
+      )}
+      {currentScreen === 'loading' && cardData && (
+        <LoadingScreen 
+          onNext={navigateToStandardSuccess}
+          cardDesign={cardData.cardDesign}
+          customCardName={cardData.customCardName}
+        />
+      )}
+      {currentScreen === 'standard_success' && cardData && (
+        <StandardSuccessScreen 
+          onNext={() => navigateToScreen('homepage')}
+          cardDesign={cardData.cardDesign}
+          customCardName={cardData.customCardName}
+        />
       )}
     </View>
   );

@@ -1,5 +1,5 @@
 // Navigation types
-export type Screen = 'homepage' | 'marketing' | 'custom_virtual_card';
+export type Screen = 'homepage' | 'marketing' | 'custom_virtual_card' | 'loading' | 'standard_success';
 
 // Marketing screen types
 export interface MarketingScreenProps {
@@ -38,4 +38,27 @@ export interface VirtualCardWidgetProps {
 // Custom virtual card screen types
 export interface CustomVirtualCardScreenProps {
   onBack: () => void;
+  onNavigateToLoading: (cardDesign: { id: number; name: string; image: any }, customCardName: string) => void;
+}
+
+// Loading screen types
+export interface LoadingScreenProps {
+  onNext: () => void;
+  cardDesign: {
+    id: number;
+    name: string;
+    image: any;
+  };
+  customCardName: string;
+}
+
+// Standard success screen types
+export interface StandardSuccessScreenProps {
+  onNext: () => void;
+  cardDesign: {
+    id: number;
+    name: string;
+    image: any;
+  };
+  customCardName: string;
 }

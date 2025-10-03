@@ -9,6 +9,7 @@ import {
   Image,
   TextInput,
   TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
@@ -16,12 +17,14 @@ import { CustomVirtualCardScreenProps } from '../../types/navigation';
 import { CardCarousel, ColorSwatches, BottomBar } from './components';
 import { CARD_DESIGNS, COLOR_SWATCHES, LAYOUT_CONSTANTS } from './constants';
 
-export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps) {
+export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomVirtualCardScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const nameFadeAnim = useRef(new Animated.Value(1)).current;
   const selectionElementsFadeAnim = useRef(new Animated.Value(1)).current;
   const nonSelectedCardsFadeAnim = useRef(new Animated.Value(1)).current;
   const staticOverlayOpacityAnim = useRef(new Animated.Value(0)).current;
+  const cardScaleAnim = useRef(new Animated.Value(1)).current;
+  const cardPositionAnim = useRef(new Animated.Value(0)).current;
   
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedDesignIndex, setSelectedDesignIndex] = useState(0);
@@ -30,20 +33,23 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   const [customCardName, setCustomCardName] = useState('');
   const [savedScrollPosition, setSavedScrollPosition] = useState<number>(0);
   const [restoreScrollPosition, setRestoreScrollPosition] = useState<number | undefined>(undefined);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isCardScaledUp, setIsCardScaledUp] = useState(false);
   
   const textInputRef = useRef<TextInput>(null);
   const screenWidth = Dimensions.get('window').width;
 
   const animateNameChange = (newIndex: number) => {
+    // Ultra-fast transition for immediate response
     Animated.timing(nameFadeAnim, {
       toValue: 0,
-      duration: 150,
+      duration: 30,
       useNativeDriver: true,
     }).start(() => {
       setSelectedDesignIndex(newIndex);
       Animated.timing(nameFadeAnim, {
         toValue: 1,
-        duration: 150,
+        duration: 30,
         useNativeDriver: true,
       }).start();
     });
@@ -51,21 +57,37 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
 
   const handleCardSelect = (index: number) => {
     if (index !== selectedDesignIndex) {
-      animateNameChange(index);
+      // Update both immediately for instant response
       setSelectedColorIndex(index);
+      setSelectedDesignIndex(index);
+      
+      // Optional: Add a very subtle animation for polish
+      nameFadeAnim.setValue(0.8);
+      Animated.timing(nameFadeAnim, {
+        toValue: 1,
+        duration: 50,
+        useNativeDriver: true,
+      }).start();
     }
   };
 
   const handleColorSwatchPress = (index: number) => {
     const cardIndex = Math.min(index, CARD_DESIGNS.length - 1);
     
-    // Update swatch selection first
+    // Update both immediately
     setSelectedColorIndex(index);
+    setSelectedDesignIndex(cardIndex);
     
+    // Scroll to the card
     setScrollToIndex(cardIndex);
-    if (cardIndex !== selectedDesignIndex) {
-      animateNameChange(cardIndex);
-    }
+    
+    // Add subtle animation for polish
+    nameFadeAnim.setValue(0.8);
+    Animated.timing(nameFadeAnim, {
+      toValue: 1,
+      duration: 50,
+      useNativeDriver: true,
+    }).start();
     
     setTimeout(() => setScrollToIndex(undefined), 100);
   };
@@ -75,6 +97,11 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleChooseDesign = () => {
+    // Reset card scale and position when entering naming mode
+    cardScaleAnim.setValue(1);
+    cardPositionAnim.setValue(0);
+    setIsCardScaledUp(false);
+    
     // Transition to Naming: Non-selected cards fade out, selected card remains visible
     Animated.parallel([
       Animated.timing(nonSelectedCardsFadeAnim, {
@@ -101,8 +128,12 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleBackToSelection = () => {
-    setCustomCardName('');
     setRestoreScrollPosition(savedScrollPosition);
+    
+    // Reset card scale and position when going back to selection
+    cardScaleAnim.setValue(1);
+    cardPositionAnim.setValue(0);
+    setIsCardScaledUp(false);
     
     // Animate back to selection mode FIRST
     Animated.parallel([
@@ -123,6 +154,9 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
       })
     ]).start(({ finished }) => {
       if (finished) {
+        // Clear the text input only after the overlay has faded out
+        setCustomCardName('');
+        
         // Ensure static overlay is completely hidden before switching
         staticOverlayOpacityAnim.setValue(0);
         
@@ -158,13 +192,35 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
   };
 
   const handleCreateCard = () => {
-    // TODO: Implement card creation logic
-    onBack();
+    // Navigate to loading screen with card data
+    const selectedCard = CARD_DESIGNS[selectedDesignIndex];
+    onNavigateToLoading(selectedCard, customCardName);
   };
 
   const handleBack = () => {
     if (screenMode === 'naming') {
-      handleBackToSelection();
+      // If card is scaled up, animate it back down first
+      if (isCardScaledUp) {
+        Animated.parallel([
+          Animated.timing(cardScaleAnim, {
+            toValue: 1,
+            duration: 200,
+            useNativeDriver: true,
+          }),
+          Animated.timing(cardPositionAnim, {
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: true,
+          })
+        ]).start(() => {
+          setIsCardScaledUp(false);
+          // After scaling animation completes, proceed with normal back transition
+          handleBackToSelection();
+        });
+      } else {
+        // Card is already at normal size, proceed directly
+        handleBackToSelection();
+      }
     } else {
       Animated.timing(slideAnim, {
         toValue: Dimensions.get('window').width,
@@ -183,6 +239,53 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
       useNativeDriver: true,
     }).start();
   }, [slideAnim]);
+
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', () => {
+      setIsKeyboardVisible(true);
+      // Scale back to normal and return to original position when keyboard appears
+      Animated.parallel([
+        Animated.timing(cardScaleAnim, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(cardPositionAnim, {
+          toValue: 0, // Return to original position
+          duration: 250,
+          useNativeDriver: true,
+        })
+      ]).start(() => {
+        setIsCardScaledUp(false);
+      });
+    });
+
+    const keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', () => {
+      setIsKeyboardVisible(false);
+      // Scale up and move down slightly when keyboard starts to disappear (only if in naming mode and has text)
+      if (screenMode === 'naming' && customCardName.trim() !== '') {
+        Animated.parallel([
+          Animated.timing(cardScaleAnim, {
+            toValue: 1.27, // 280/220 = 1.27 for width scaling
+            duration: 250,
+            useNativeDriver: true,
+          }),
+          Animated.timing(cardPositionAnim, {
+            toValue: 30, // Move down by 30 pixels when scaled up (40 - 10)
+            duration: 250,
+            useNativeDriver: true,
+          })
+        ]).start(() => {
+          setIsCardScaledUp(true);
+        });
+      }
+    });
+
+    return () => {
+      keyboardWillShowListener?.remove();
+      keyboardWillHideListener?.remove();
+    };
+  }, [screenMode, customCardName, cardScaleAnim]);
 
   return (
     <LinearGradient
@@ -266,7 +369,12 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
           }
         ]}
       >
-        <View style={styles.staticCardContainer}>
+        <Animated.View style={[styles.staticCardContainer, {
+          transform: [
+            { scale: cardScaleAnim },
+            { translateY: cardPositionAnim }
+          ]
+        }]}>
           <Image 
             source={CARD_DESIGNS[selectedDesignIndex]?.image} 
             style={styles.staticCardImage}
@@ -284,7 +392,7 @@ export function CustomVirtualCardScreen({ onBack }: CustomVirtualCardScreenProps
             maxLength={20}
             textAlign='left'
           />
-        </View>
+        </Animated.View>
       </Animated.View>
     </LinearGradient>
   );
@@ -325,18 +433,19 @@ const styles = StyleSheet.create({
     top: 100, // Increased to account for SafeAreaView + TopNavigationBar
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 100, // Leave space for BottomBar (approximately 80px + padding)
     zIndex: 1000,
   },
   staticOverlayContainer: {
     position: 'absolute',
-    top: 160,
+    top: 160, // Back to original position where it was aligned
     left: '50%',
     width: 220,
     height: 330,
     marginLeft: -110,
     zIndex: 9999,
     elevation: 20,
+    backgroundColor: 'transparent',
   },
   staticCardContainer: {
     alignItems: 'center',
@@ -344,6 +453,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+    backgroundColor: '#F6ECFF',
+    borderRadius: 12,
   },
   staticCardImage: {
     width: LAYOUT_CONSTANTS.CARD_WIDTH,
@@ -367,7 +478,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     textAlign: 'left',
     includeFontPadding: false,
-    selectionColor: '#ffffff',
     zIndex: 99999,
     elevation: 30,
   },

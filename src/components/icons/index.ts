@@ -1,7 +1,9 @@
 // Icons exports
 export { AddIcon } from './AddIcon';
+export { AppleWalletIcon } from './AppleWalletIcon';
 export { BitcoinIcon } from './BitcoinIcon';
 export { ChevronIcon } from './chevron_icon';
+export { CloseIcon } from './CloseIcon';
 export { ExchangeIcon } from './ExchangeIcon';
 export { HelpIcon } from './help_icon';
 export { MGMIcon } from './MGM_icon';
