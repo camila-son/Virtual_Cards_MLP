@@ -4,10 +4,14 @@ import { HomepageScreen } from './src/screens/homepage/HomepageScreen';
 import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
 import { CustomVirtualCardScreen } from './src/screens/custom_virtual_card';
 import { LoadingScreen } from './src/screens/loading';
+import { TemporaryLoadingScreen } from './src/screens/temporary_loading';
 import { StandardSuccessScreen } from './src/screens/standard_success';
+import { TemporarySuccessScreen } from './src/screens/temporary_success';
 import { PinScreen } from './src/screens/pin';
 import { StandardCardDetailsScreen } from './src/screens/standard_card_details';
+import { TemporaryCardDetailsScreen } from './src/screens/temporary_card_details';
 import { CardManagementScreen } from './src/screens/card_management';
+import { TemporaryDisclaimerScreen } from './src/screens/temporary_disclaimer';
 import { loadCustomFonts } from './src/utils/loadFonts';
 import { Screen } from './src/types/navigation';
 import { CardsProvider, useCards } from './src/contexts/CardsContext';
@@ -20,8 +24,12 @@ function AppContent() {
     customCardName: string;
   } | null>(null);
   const [successScreenShown, setSuccessScreenShown] = useState(false);
+  const [temporarySuccessScreenShown, setTemporarySuccessScreenShown] = useState(false);
   const [cardDetailsLoaded, setCardDetailsLoaded] = useState(false);
+  const [temporaryCardDetailsLoaded, setTemporaryCardDetailsLoaded] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const [isTemporaryFlow, setIsTemporaryFlow] = useState(false);
+  const [temporaryCardExpiresAt, setTemporaryCardExpiresAt] = useState<Date | null>(null);
   const { cards } = useCards();
 
   useEffect(() => {
@@ -41,7 +49,32 @@ function AppContent() {
   const navigateToLoadingWithCardData = (cardDesign: { id: number; name: string; image: any }, customCardName: string) => {
     setCardData({ cardDesign, customCardName });
     setSuccessScreenShown(false); // Reset for new card creation flow
+    setIsTemporaryFlow(false); // Mark as standard flow
     setCurrentScreen('loading');
+  };
+
+  const navigateToTemporarySuccess = () => {
+    setTemporarySuccessScreenShown(false); // Reset for new temporary card creation flow
+    setIsTemporaryFlow(true); // Mark as temporary flow
+    
+    // Find the temporary card and store its expiration time
+    const tempCard = cards.find(card => card.isTemporary);
+    if (tempCard && tempCard.expiresAt) {
+      setTemporaryCardExpiresAt(tempCard.expiresAt);
+    }
+    
+    setCurrentScreen('temporary_success');
+  };
+
+  const navigateToTemporaryCardDetails = () => {
+    setTemporaryCardDetailsLoaded(false); // Reset before navigation
+    setCurrentScreen('temporary_card_details');
+  };
+
+  const handleTemporaryCardDetailsLoaded = () => {
+    // Called by TemporaryCardDetailsScreen when slide-in animation completes
+    setTemporarySuccessScreenShown(true); // Hide success screen AFTER animation completes
+    setTemporaryCardDetailsLoaded(true);
   };
 
   const navigateToStandardSuccess = () => {
@@ -93,10 +126,31 @@ function AppContent() {
         onNavigateToMarketing={() => navigateToScreen('marketing')}
         onNavigateToVirtualCardCreation={() => navigateToScreen('custom_virtual_card')}
       />
-      {(currentScreen === 'marketing' || currentScreen === 'custom_virtual_card') && (
+      {(currentScreen === 'marketing' || currentScreen === 'custom_virtual_card' || currentScreen === 'temporary_disclaimer' || currentScreen === 'loading' || currentScreen === 'temporary_loading' || currentScreen === 'temporary_success' || currentScreen === 'temporary_card_details') && (
         <MarketingScreen 
           onBack={() => navigateToScreen('homepage')}
           onNavigateToVirtualCardCreation={() => navigateToScreen('custom_virtual_card')}
+          onNavigateToTemporaryDisclaimer={() => navigateToScreen('temporary_disclaimer')}
+        />
+      )}
+      {currentScreen === 'temporary_disclaimer' && (
+        <TemporaryDisclaimerScreen 
+          onBack={() => navigateToScreen('marketing')}
+          onCreateTemporaryCard={() => {
+            // Navigate to temporary loading screen
+            navigateToScreen('temporary_loading');
+          }}
+        />
+      )}
+      {currentScreen === 'temporary_loading' && (
+        <TemporaryLoadingScreen 
+          onNext={navigateToTemporarySuccess}
+        />
+      )}
+      {!temporarySuccessScreenShown && (currentScreen === 'temporary_success' || (currentScreen === 'pin' && isTemporaryFlow) || (currentScreen === 'temporary_card_details' && !temporaryCardDetailsLoaded)) && (
+        <TemporarySuccessScreen 
+          onNext={() => navigateToScreen('homepage')}
+          onNavigateToPin={navigateToPin}
         />
       )}
       {currentScreen === 'custom_virtual_card' && (
@@ -120,25 +174,36 @@ function AppContent() {
           customCardName={cardData.customCardName}
         />
       )}
-      {currentScreen === 'pin' && cardData && (
+      {currentScreen === 'pin' && (
         <PinScreen 
           onBack={() => {
             if (selectedCardId) {
               // Coming from card management, go back to card management
               setSelectedCardId(null);
               setCurrentScreen('card_management');
+            } else if (isTemporaryFlow) {
+              // Coming from temporary success screen
+              setCurrentScreen('temporary_success');
             } else {
-              // Coming from success screen (new card creation), go back to success screen
+              // Coming from standard success screen
               setCurrentScreen('standard_success');
             }
           }}
-          onNavigateToCardDetails={navigateToCardDetails}
+          onNavigateToCardDetails={() => {
+            // Check if we're in temporary flow or standard flow
+            if (isTemporaryFlow) {
+              navigateToTemporaryCardDetails();
+            } else {
+              navigateToCardDetails();
+            }
+          }}
           title="Enter your 4-digit PIN"
         />
       )}
       {(currentScreen === 'card_management' || 
         (currentScreen === 'pin' && selectedCardId) || 
-        (currentScreen === 'standard_card_details' && (selectedCardId || cardDetailsLoaded))) && (
+        (currentScreen === 'standard_card_details' && (selectedCardId || cardDetailsLoaded)) ||
+        (currentScreen === 'temporary_card_details' && temporaryCardDetailsLoaded)) && (
         <CardManagementScreen 
           onBack={navigateToHomepage}
           onCardPress={handleCardSelection}
@@ -157,6 +222,13 @@ function AppContent() {
           onAnimationComplete={handleCardDetailsLoaded}
           cardDesign={cardData.cardDesign}
           customCardName={cardData.customCardName}
+        />
+      )}
+      {currentScreen === 'temporary_card_details' && temporaryCardExpiresAt && (
+        <TemporaryCardDetailsScreen 
+          onBack={navigateToCardManagement}
+          onAnimationComplete={handleTemporaryCardDetailsLoaded}
+          expiresAt={temporaryCardExpiresAt}
         />
       )}
     </View>

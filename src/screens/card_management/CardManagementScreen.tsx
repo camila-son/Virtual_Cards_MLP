@@ -35,6 +35,13 @@ export function CardManagementScreen({ onBack, onCardPress }: CardManagementScre
     }
   };
 
+  const calculateHoursLeft = (expiresAt: Date) => {
+    const now = new Date();
+    const diff = expiresAt.getTime() - now.getTime();
+    const hours = Math.ceil(diff / (1000 * 60 * 60));
+    return Math.max(0, hours);
+  };
+
   return (
     <Animated.View 
       style={[
@@ -84,28 +91,42 @@ export function CardManagementScreen({ onBack, onCardPress }: CardManagementScre
               <View style={styles.listHeader}>
                 <Text style={styles.listTitle}>Virtual cards ({cards.length})</Text>
               </View>
-              {cards.map((card, index) => (
-                <TouchableOpacity 
-                  key={card.id}
-                  style={styles.cardRow}
-                  onPress={() => handleCardPress(card.id)}
-                >
-                  <View style={styles.cardThumbnailContainer}>
-                    <Image 
-                      source={card.cardDesign.image} 
-                      style={styles.cardThumbnail}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <View style={styles.cardInfo}>
-                    <Text style={styles.cardName}>{card.name}</Text>
-                    <Text style={styles.cardDetails}>
-                      •••• {card.lastFourDigits} · {card.cardType}
-                    </Text>
-                  </View>
-                  {index < cards.length - 1 && <View style={styles.divider} />}
-                </TouchableOpacity>
-              ))}
+              {cards.map((card, index) => {
+                const hoursLeft = card.isTemporary && card.expiresAt ? calculateHoursLeft(card.expiresAt) : null;
+                const thumbnail = card.isTemporary 
+                  ? require('../../../assets/mini-temporary_card.png')
+                  : card.cardDesign?.image;
+                
+                return (
+                  <TouchableOpacity 
+                    key={card.id}
+                    style={styles.cardRow}
+                    onPress={() => handleCardPress(card.id)}
+                  >
+                    <View style={styles.cardThumbnailContainer}>
+                      {thumbnail && (
+                        <Image 
+                          source={thumbnail} 
+                          style={styles.cardThumbnail}
+                          resizeMode="contain"
+                        />
+                      )}
+                    </View>
+                    <View style={styles.cardInfo}>
+                      <Text style={styles.cardName}>{card.name}</Text>
+                      <Text style={styles.cardDetails}>
+                        •••• {card.lastFourDigits} · {card.cardType}
+                      </Text>
+                    </View>
+                    {card.isTemporary && hoursLeft !== null && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>{hoursLeft}h left</Text>
+                      </View>
+                    )}
+                    {index < cards.length - 1 && <View style={styles.divider} />}
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           )}
         </ScrollView>
@@ -219,6 +240,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 18,
     color: 'rgba(0,0,0,0.96)',
+  },
+  badge: {
+    backgroundColor: '#EEEEFF',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    marginLeft: 12,
+  },
+  badgeText: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 12,
+    lineHeight: 14,
+    color: '#615BCC',
+    letterSpacing: 0.12,
   },
   cardDetails: {
     fontFamily: 'Nu Sans Regular',

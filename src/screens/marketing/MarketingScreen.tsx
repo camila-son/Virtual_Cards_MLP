@@ -11,7 +11,7 @@ import { HeroSectionWithIndicators } from './components/HeroSectionWithIndicator
 import { ListRows } from './components/ListRows';
 import { MarketingScreenProps } from '../../types/navigation';
 
-export function MarketingScreen({ onBack, onNavigateToVirtualCardCreation }: MarketingScreenProps) {
+export function MarketingScreen({ onBack, onNavigateToVirtualCardCreation, onNavigateToTemporaryDisclaimer }: MarketingScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
 
   useEffect(() => {
@@ -46,7 +46,10 @@ export function MarketingScreen({ onBack, onNavigateToVirtualCardCreation }: Mar
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar onBack={handleBack} />
         <HeroSectionWithIndicators />
-        <ListRows onNavigateToVirtualCardCreation={onNavigateToVirtualCardCreation} />
+        <ListRows 
+          onNavigateToVirtualCardCreation={onNavigateToVirtualCardCreation}
+          onNavigateToTemporaryDisclaimer={onNavigateToTemporaryDisclaimer}
+        />
       </SafeAreaView>
     </Animated.View>
   );

@@ -11,6 +11,8 @@ export interface VirtualCard {
     image: any;
   };
   createdAt: Date;
+  isTemporary?: boolean;
+  expiresAt?: Date;
 }
 
 interface CardsContextType {

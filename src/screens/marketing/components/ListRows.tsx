@@ -6,9 +6,10 @@ import { LIST_OPTIONS } from '../../../constants/marketingData';
 
 interface ListRowsProps {
   onNavigateToVirtualCardCreation: () => void;
+  onNavigateToTemporaryDisclaimer: () => void;
 }
 
-export function ListRows({ onNavigateToVirtualCardCreation }: ListRowsProps) {
+export function ListRows({ onNavigateToVirtualCardCreation, onNavigateToTemporaryDisclaimer }: ListRowsProps) {
   return (
     <View style={styles.navigationList}>
       <View style={styles.listContainer}>
@@ -19,6 +20,8 @@ export function ListRows({ onNavigateToVirtualCardCreation }: ListRowsProps) {
               onPress={() => {
                 if (option.title === 'Standard') {
                   onNavigateToVirtualCardCreation();
+                } else if (option.title === 'Temporary') {
+                  onNavigateToTemporaryDisclaimer();
                 }
               }}
               activeOpacity={0.7}

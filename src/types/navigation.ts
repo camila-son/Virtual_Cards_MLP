@@ -1,10 +1,11 @@
 // Navigation types
-export type Screen = 'homepage' | 'marketing' | 'custom_virtual_card' | 'loading' | 'standard_success' | 'pin' | 'standard_card_details' | 'card_management';
+export type Screen = 'homepage' | 'marketing' | 'custom_virtual_card' | 'loading' | 'temporary_loading' | 'standard_success' | 'temporary_success' | 'pin' | 'standard_card_details' | 'temporary_card_details' | 'card_management' | 'temporary_disclaimer';
 
 // Marketing screen types
 export interface MarketingScreenProps {
   onBack: () => void;
   onNavigateToVirtualCardCreation: () => void;
+  onNavigateToTemporaryDisclaimer: () => void;
 }
 
 export interface HeroCarouselProps {
@@ -53,6 +54,17 @@ export interface LoadingScreenProps {
   customCardName: string;
 }
 
+// Temporary loading screen types
+export interface TemporaryLoadingScreenProps {
+  onNext: () => void;
+}
+
+// Temporary success screen types
+export interface TemporarySuccessScreenProps {
+  onNext: () => void;
+  onNavigateToPin: () => void;
+}
+
 // Standard success screen types
 export interface StandardSuccessScreenProps {
   onNext: () => void;
@@ -88,4 +100,17 @@ export interface StandardCardDetailsScreenProps {
 export interface CardManagementScreenProps {
   onBack: () => void;
   onCardPress?: (cardId: string) => void;
+}
+
+// Temporary card details screen types
+export interface TemporaryCardDetailsScreenProps {
+  onBack: () => void;
+  onAnimationComplete?: () => void;
+  expiresAt: Date;
+}
+
+// Temporary disclaimer screen types
+export interface TemporaryDisclaimerScreenProps {
+  onBack: () => void;
+  onCreateTemporaryCard: () => void;
 }
