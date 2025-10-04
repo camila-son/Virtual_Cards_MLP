@@ -14,24 +14,26 @@ import {
 import { PinScreenProps } from '../../types/navigation';
 import { CloseIcon } from '../../components/icons';
 
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const ANIMATION_DURATION = 300;
+
 export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your 4-digit PIN" }: PinScreenProps) {
   const [pin, setPin] = useState<string>('');
   const [isError, setIsError] = useState<boolean>(false);
-  const slideUpAnim = useRef(new Animated.Value(Dimensions.get('window').height)).current;
-  const overlaySlideAnim = useRef(new Animated.Value(Dimensions.get('window').height)).current;
+  const slideUpAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+  const overlaySlideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Slide-up animation for both bottom sheet and overlay
     Animated.parallel([
       Animated.timing(slideUpAnim, {
         toValue: 0,
-        duration: 300,
+        duration: ANIMATION_DURATION,
         useNativeDriver: true,
       }),
       Animated.timing(overlaySlideAnim, {
         toValue: 0,
-        duration: 300,
+        duration: ANIMATION_DURATION,
         useNativeDriver: true,
       }),
     ]).start();
@@ -72,51 +74,41 @@ export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your
   };
 
   const handleSuccess = () => {
-    // Handle successful PIN entry - slide down then navigate to card details
-    console.log('PIN entered successfully:', pin);
-    
-    // Wait 1 second, then slide down bottom sheet
     setTimeout(() => {
       Keyboard.dismiss();
       
-      const screenHeight = Dimensions.get('window').height;
-      
       Animated.parallel([
         Animated.timing(slideUpAnim, {
-          toValue: screenHeight,
-          duration: 300,
+          toValue: SCREEN_HEIGHT,
+          duration: ANIMATION_DURATION,
           useNativeDriver: true,
           easing: Easing.out(Easing.quad),
         }),
         Animated.timing(overlaySlideAnim, {
-          toValue: screenHeight,
-          duration: 300,
+          toValue: SCREEN_HEIGHT,
+          duration: ANIMATION_DURATION,
           useNativeDriver: true,
           easing: Easing.out(Easing.quad),
         }),
       ]).start(() => {
-        // After slide down animation completes, navigate to card details
         onNavigateToCardDetails();
       });
     }, 1000);
   };
 
   const handleClose = () => {
-    // Dismiss keyboard and animate out immediately
     Keyboard.dismiss();
-    
-    const screenHeight = Dimensions.get('window').height;
     
     Animated.parallel([
       Animated.timing(slideUpAnim, {
-        toValue: screenHeight,
-        duration: 300, // Match opening animation duration
+        toValue: SCREEN_HEIGHT,
+        duration: ANIMATION_DURATION,
         useNativeDriver: true,
-        easing: Easing.out(Easing.quad), // iOS-like easing
+        easing: Easing.out(Easing.quad),
       }),
       Animated.timing(overlaySlideAnim, {
-        toValue: screenHeight,
-        duration: 300,
+        toValue: SCREEN_HEIGHT,
+        duration: ANIMATION_DURATION,
         useNativeDriver: true,
         easing: Easing.out(Easing.quad),
       }),
@@ -130,7 +122,6 @@ export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your
       <Animated.View style={[styles.pinDotsContainer, { transform: [{ translateX: shakeAnim }] }]}>
         {[0, 1, 2, 3].map((index) => {
           const isFilled = pin.length > index;
-          const isFocused = pin.length === index;
           
           return (
             <View
@@ -236,7 +227,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1005, // Higher than StandardSuccessScreen
+    zIndex: 1007, // Higher than CardManagementScreen (1005) and StandardCardDetailsScreen (1006)
     backgroundColor: 'transparent', // Make sure root is transparent
   },
   overlay: {

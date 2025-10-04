@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,42 +7,66 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Animated,
+  Dimensions,
 } from 'react-native';
 import { CardManagementScreenProps } from '../../types/navigation';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
 import { AddIcon, FreezeIcon, AddToWalletIcon } from '../../components/icons';
 import { useCards } from '../../contexts/CardsContext';
 
-export function CardManagementScreen({ onBack }: CardManagementScreenProps) {
-  // No slide animation needed - this screen is revealed when StandardCardDetailsScreen slides out
+export function CardManagementScreen({ onBack, onCardPress }: CardManagementScreenProps) {
   const { cards } = useCards();
+  const slideAnim = useRef(new Animated.Value(0)).current;
+
+  const handleBack = () => {
+    Animated.timing(slideAnim, {
+      toValue: Dimensions.get('window').width,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onBack();
+    });
+  };
+
+  const handleCardPress = (cardId: string) => {
+    if (onCardPress) {
+      onCardPress(cardId);
+    }
+  };
 
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      style={[
+        styles.container,
+        {
+          transform: [{ translateX: slideAnim }],
+        },
+      ]}
+    >
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar 
-          onBack={onBack}
+          onBack={handleBack}
           title="My cards"
           backgroundColor="#ECE9EE"
         />
         
-        {/* Action Row */}
         <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.actionButton} onPress={() => console.log('New virtual card')}>
+          <TouchableOpacity style={styles.actionButton}>
             <View style={styles.actionIconContainer}>
               <AddIcon width={24} height={24} color="rgba(0,0,0,0.96)" />
             </View>
             <Text style={styles.actionLabel}>New virtual card</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Freeze cards')}>
+          <TouchableOpacity style={styles.actionButton}>
             <View style={styles.actionIconContainer}>
               <FreezeIcon size={24} color="rgba(0,0,0,0.96)" />
             </View>
             <Text style={styles.actionLabel}>Freeze cards</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Add to wallet')}>
+          <TouchableOpacity style={styles.actionButton}>
             <View style={styles.actionIconContainer}>
               <AddToWalletIcon size={24} color="rgba(0,0,0,0.96)" />
             </View>
@@ -64,7 +88,7 @@ export function CardManagementScreen({ onBack }: CardManagementScreenProps) {
                 <TouchableOpacity 
                   key={card.id}
                   style={styles.cardRow}
-                  onPress={() => console.log('Card pressed:', card.name)}
+                  onPress={() => handleCardPress(card.id)}
                 >
                   <View style={styles.cardThumbnailContainer}>
                     <Image 
@@ -86,7 +110,7 @@ export function CardManagementScreen({ onBack }: CardManagementScreenProps) {
           )}
         </ScrollView>
       </SafeAreaView>
-    </View>
+    </Animated.View>
   );
 }
 

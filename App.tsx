@@ -10,9 +10,9 @@ import { StandardCardDetailsScreen } from './src/screens/standard_card_details';
 import { CardManagementScreen } from './src/screens/card_management';
 import { loadCustomFonts } from './src/utils/loadFonts';
 import { Screen } from './src/types/navigation';
-import { CardsProvider } from './src/contexts/CardsContext';
+import { CardsProvider, useCards } from './src/contexts/CardsContext';
 
-export default function App() {
+function AppContent() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [currentScreen, setCurrentScreen] = useState<Screen>('homepage');
   const [cardData, setCardData] = useState<{
@@ -21,6 +21,8 @@ export default function App() {
   } | null>(null);
   const [successScreenShown, setSuccessScreenShown] = useState(false);
   const [cardDetailsLoaded, setCardDetailsLoaded] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const { cards } = useCards();
 
   useEffect(() => {
     loadCustomFonts().then(() => {
@@ -30,6 +32,10 @@ export default function App() {
 
   const navigateToScreen = (screen: Screen) => {
     setCurrentScreen(screen);
+  };
+
+  const navigateToHomepage = () => {
+    setCurrentScreen('homepage');
   };
 
   const navigateToLoadingWithCardData = (cardDesign: { id: number; name: string; image: any }, customCardName: string) => {
@@ -61,6 +67,18 @@ export default function App() {
     setCardDetailsLoaded(true);
   };
 
+  const handleCardSelection = (cardId: string) => {
+    const selectedCard = cards.find(card => card.id === cardId);
+    if (selectedCard) {
+      setCardData({
+        cardDesign: selectedCard.cardDesign,
+        customCardName: selectedCard.name,
+      });
+      setSelectedCardId(cardId);
+      setCurrentScreen('pin');
+    }
+  };
+
   if (!fontsLoaded) {
     return (
       <View style={styles.loadingContainer}>
@@ -70,8 +88,7 @@ export default function App() {
   }
   
   return (
-    <CardsProvider>
-      <View style={styles.appContainer}>
+    <View style={styles.appContainer}>
       <HomepageScreen 
         onNavigateToMarketing={() => navigateToScreen('marketing')}
         onNavigateToVirtualCardCreation={() => navigateToScreen('custom_virtual_card')}
@@ -103,32 +120,53 @@ export default function App() {
           customCardName={cardData.customCardName}
         />
       )}
-      {currentScreen === 'pin' && (
+      {currentScreen === 'pin' && cardData && (
         <PinScreen 
-          onBack={() => navigateToScreen('standard_success')}
+          onBack={() => {
+            if (selectedCardId) {
+              // Coming from card management, go back to card management
+              setSelectedCardId(null);
+              setCurrentScreen('card_management');
+            } else {
+              // Coming from success screen (new card creation), go back to success screen
+              setCurrentScreen('standard_success');
+            }
+          }}
           onNavigateToCardDetails={navigateToCardDetails}
           title="Enter your 4-digit PIN"
         />
       )}
-      {currentScreen === 'card_management' && (
+      {(currentScreen === 'card_management' || 
+        (currentScreen === 'pin' && selectedCardId) || 
+        (currentScreen === 'standard_card_details' && (selectedCardId || cardDetailsLoaded))) && (
         <CardManagementScreen 
-          onBack={() => navigateToScreen('standard_success')}
-        />
-      )}
-      {currentScreen === 'standard_card_details' && cardDetailsLoaded && cardData && (
-        <CardManagementScreen 
-          onBack={() => navigateToScreen('standard_success')}
+          onBack={navigateToHomepage}
+          onCardPress={handleCardSelection}
         />
       )}
       {currentScreen === 'standard_card_details' && cardData && (
         <StandardCardDetailsScreen 
-          onBack={navigateToCardManagement}
+          onBack={() => {
+            if (selectedCardId) {
+              // Viewing existing card from card management, reset and go back
+              setSelectedCardId(null);
+            }
+            // Always go to card management when leaving card details
+            navigateToCardManagement();
+          }}
           onAnimationComplete={handleCardDetailsLoaded}
           cardDesign={cardData.cardDesign}
           customCardName={cardData.customCardName}
         />
       )}
     </View>
+  );
+}
+
+export default function App() {
+  return (
+    <CardsProvider>
+      <AppContent />
     </CardsProvider>
   );
 }

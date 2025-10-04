@@ -87,4 +87,5 @@ export interface StandardCardDetailsScreenProps {
 // Card management screen types
 export interface CardManagementScreenProps {
   onBack: () => void;
+  onCardPress?: (cardId: string) => void;
 }
