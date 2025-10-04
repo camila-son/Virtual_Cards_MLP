@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   listTitle: {
-    fontFamily: 'Nu Sans-Regular',
+    fontFamily: 'Nu Sans Regular',
     fontSize: 12,
     lineHeight: 16,
     color: 'rgba(0,0,0,0.64)',
@@ -179,27 +179,26 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   cardThumbnailContainer: {
-    width: 40,
-    height: 27,
-    transform: [{ rotate: '270deg' }],
+    width: 24,
+    height: 36,
   },
   cardThumbnail: {
-    width: 40,
-    height: 27,
+    width: 24,
+    height: 36,
   },
   cardInfo: {
     flex: 1,
     gap: 4,
   },
   cardName: {
-    fontFamily: 'Nu Sans-Medium',
-    fontSize: 14,
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 16,
     lineHeight: 18,
     color: 'rgba(0,0,0,0.96)',
   },
   cardDetails: {
-    fontFamily: 'Nu Sans-Regular',
-    fontSize: 12,
+    fontFamily: 'Nu Sans Regular',
+    fontSize: 14,
     lineHeight: 16,
     color: 'rgba(0,0,0,0.64)',
     letterSpacing: 0.12,
@@ -207,10 +206,9 @@ const styles = StyleSheet.create({
   divider: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: 16,
+    right: 16,
     height: 1,
     backgroundColor: '#efefef',
-    marginLeft: 68,
   },
 });
