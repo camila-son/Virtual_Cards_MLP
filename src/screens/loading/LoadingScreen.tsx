@@ -10,9 +10,12 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LoadingScreenProps } from '../../types/navigation';
+import { useCards } from '../../contexts/CardsContext';
 
 export function LoadingScreen({ onNext, cardDesign, customCardName }: LoadingScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+  const { addCard } = useCards();
+  const cardAddedRef = useRef(false);
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -20,7 +23,23 @@ export function LoadingScreen({ onNext, cardDesign, customCardName }: LoadingScr
       duration: 300,
       useNativeDriver: true,
     }).start();
-  }, [slideAnim]);
+
+    // Only add the card once
+    if (!cardAddedRef.current) {
+      cardAddedRef.current = true;
+      
+      // Generate a random 4-digit number for the card
+      const lastFourDigits = Math.floor(1000 + Math.random() * 9000).toString();
+
+      // Add the card to the context
+      addCard({
+        name: customCardName,
+        lastFourDigits,
+        cardType: 'Pre-paid',
+        cardDesign,
+      });
+    }
+  }, [slideAnim, addCard, customCardName, cardDesign]);
 
   return (
     <LinearGradient

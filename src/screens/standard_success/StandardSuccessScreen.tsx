@@ -15,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StandardSuccessScreenProps } from '../../types/navigation';
 import { CloseIcon, AppleWalletIcon } from '../../components/icons';
 
-export function StandardSuccessScreen({ onNext, cardDesign, customCardName }: StandardSuccessScreenProps) {
+export function StandardSuccessScreen({ onNext, onNavigateToPin, cardDesign, customCardName }: StandardSuccessScreenProps) {
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const floatAnim = useRef(new Animated.Value(0)).current;
 
@@ -113,7 +113,7 @@ export function StandardSuccessScreen({ onNext, cardDesign, customCardName }: St
               <AppleWalletIcon size={24} color="#ffffff" />
               <Text style={styles.primaryButtonText}>Add to Apple Wallet</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.secondaryButton} onPress={() => console.log('View card details')}>
+            <TouchableOpacity style={styles.secondaryButton} onPress={onNavigateToPin}>
               <Text style={styles.secondaryButtonText}>View card details</Text>
             </TouchableOpacity>
           </View>

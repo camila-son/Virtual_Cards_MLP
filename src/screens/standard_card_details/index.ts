@@ -1,0 +1,1 @@
+export { StandardCardDetailsScreen } from './StandardCardDetailsScreen';

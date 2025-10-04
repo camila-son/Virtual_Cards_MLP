@@ -1,14 +1,21 @@
 // Icons exports
 export { AddIcon } from './AddIcon';
+export { AddToWalletIcon } from './AddToWalletIcon';
 export { AppleWalletIcon } from './AppleWalletIcon';
 export { BitcoinIcon } from './BitcoinIcon';
+export { CheckIcon } from './CheckIcon';
 export { ChevronIcon } from './chevron_icon';
 export { CloseIcon } from './CloseIcon';
+export { CopyIcon } from './CopyIcon';
+export { DeleteIcon } from './DeleteIcon';
 export { ExchangeIcon } from './ExchangeIcon';
+export { FreezeIcon } from './FreezeIcon';
 export { HelpIcon } from './help_icon';
+export { MastercardLogo } from './MastercardLogo';
 export { MGMIcon } from './MGM_icon';
 export { ReceiveIcon } from './ReceiveIcon';
 export { SendIcon } from './SendIcon';
+export { ShieldIcon } from './ShieldIcon';
 export { USFlagIcon } from './USFlagIcon';
 export { VirtualCardIcon } from './VirtualCardIcon';
 export { VisibilityOnIcon } from './Visibility_on_icon';

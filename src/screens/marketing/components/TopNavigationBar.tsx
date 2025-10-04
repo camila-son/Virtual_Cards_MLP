@@ -3,9 +3,9 @@ import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { ChevronIcon } from '../../../components/icons/chevron_icon';
 import { TopNavigationBarProps } from '../../../types/navigation';
 
-export function TopNavigationBar({ onBack, title }: TopNavigationBarProps) {
+export function TopNavigationBar({ onBack, title, backgroundColor }: TopNavigationBarProps) {
   return (
-    <View style={styles.topBar}>
+    <View style={[styles.topBar, backgroundColor && { backgroundColor }]}>
       <View style={styles.navigationBar}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
           <View style={styles.backIcon}>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: 'Nu Sans Medium',
-    fontSize: 20,
+    fontSize: 14,
     color: 'rgba(0,0,0,0.96)',
   },
 });

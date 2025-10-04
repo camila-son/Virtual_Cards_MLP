@@ -5,8 +5,12 @@ import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
 import { CustomVirtualCardScreen } from './src/screens/custom_virtual_card';
 import { LoadingScreen } from './src/screens/loading';
 import { StandardSuccessScreen } from './src/screens/standard_success';
+import { PinScreen } from './src/screens/pin';
+import { StandardCardDetailsScreen } from './src/screens/standard_card_details';
+import { CardManagementScreen } from './src/screens/card_management';
 import { loadCustomFonts } from './src/utils/loadFonts';
 import { Screen } from './src/types/navigation';
+import { CardsProvider } from './src/contexts/CardsContext';
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -15,6 +19,8 @@ export default function App() {
     cardDesign: { id: number; name: string; image: any };
     customCardName: string;
   } | null>(null);
+  const [successScreenShown, setSuccessScreenShown] = useState(false);
+  const [cardDetailsLoaded, setCardDetailsLoaded] = useState(false);
 
   useEffect(() => {
     loadCustomFonts().then(() => {
@@ -28,11 +34,31 @@ export default function App() {
 
   const navigateToLoadingWithCardData = (cardDesign: { id: number; name: string; image: any }, customCardName: string) => {
     setCardData({ cardDesign, customCardName });
+    setSuccessScreenShown(false); // Reset for new card creation flow
     setCurrentScreen('loading');
   };
 
   const navigateToStandardSuccess = () => {
     setCurrentScreen('standard_success');
+  };
+
+  const navigateToPin = () => {
+    setCurrentScreen('pin');
+  };
+
+  const navigateToCardDetails = () => {
+    setCardDetailsLoaded(false); // Reset before navigation
+    setCurrentScreen('standard_card_details');
+  };
+
+  const navigateToCardManagement = () => {
+    setCurrentScreen('card_management');
+  };
+
+  const handleCardDetailsLoaded = () => {
+    // Called by StandardCardDetailsScreen when slide-in animation completes
+    setSuccessScreenShown(true); // Hide success screen AFTER animation completes
+    setCardDetailsLoaded(true);
   };
 
   if (!fontsLoaded) {
@@ -44,7 +70,8 @@ export default function App() {
   }
   
   return (
-    <View style={styles.appContainer}>
+    <CardsProvider>
+      <View style={styles.appContainer}>
       <HomepageScreen 
         onNavigateToMarketing={() => navigateToScreen('marketing')}
         onNavigateToVirtualCardCreation={() => navigateToScreen('custom_virtual_card')}
@@ -68,14 +95,41 @@ export default function App() {
           customCardName={cardData.customCardName}
         />
       )}
-      {currentScreen === 'standard_success' && cardData && (
+      {!successScreenShown && (currentScreen === 'standard_success' || currentScreen === 'pin' || currentScreen === 'standard_card_details') && cardData && (
         <StandardSuccessScreen 
           onNext={() => navigateToScreen('homepage')}
+          onNavigateToPin={navigateToPin}
+          cardDesign={cardData.cardDesign}
+          customCardName={cardData.customCardName}
+        />
+      )}
+      {currentScreen === 'pin' && (
+        <PinScreen 
+          onBack={() => navigateToScreen('standard_success')}
+          onNavigateToCardDetails={navigateToCardDetails}
+          title="Enter your 4-digit PIN"
+        />
+      )}
+      {currentScreen === 'card_management' && (
+        <CardManagementScreen 
+          onBack={() => navigateToScreen('standard_success')}
+        />
+      )}
+      {currentScreen === 'standard_card_details' && cardDetailsLoaded && cardData && (
+        <CardManagementScreen 
+          onBack={() => navigateToScreen('standard_success')}
+        />
+      )}
+      {currentScreen === 'standard_card_details' && cardData && (
+        <StandardCardDetailsScreen 
+          onBack={navigateToCardManagement}
+          onAnimationComplete={handleCardDetailsLoaded}
           cardDesign={cardData.cardDesign}
           customCardName={cardData.customCardName}
         />
       )}
     </View>
+    </CardsProvider>
   );
 }
 
