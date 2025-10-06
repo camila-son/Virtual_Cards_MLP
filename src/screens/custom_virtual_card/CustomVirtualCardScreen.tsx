@@ -10,7 +10,9 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
 import { CustomVirtualCardScreenProps } from '../../types/navigation';
@@ -18,6 +20,7 @@ import { CardCarousel, ColorSwatches, BottomBar } from './components';
 import { CARD_DESIGNS, COLOR_SWATCHES, LAYOUT_CONSTANTS } from './constants';
 
 export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomVirtualCardScreenProps) {
+  const insets = useSafeAreaInsets();
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const nameFadeAnim = useRef(new Animated.Value(1)).current;
   const selectionElementsFadeAnim = useRef(new Animated.Value(1)).current;
@@ -38,6 +41,10 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
   
   const textInputRef = useRef<TextInput>(null);
   const screenWidth = Dimensions.get('window').width;
+  
+  // Calculate the exact position for the static overlay to align with carousel
+  // SafeAreaInset top + TopNavBar height (56px) + carousel marginTop (42px)
+  const staticOverlayTop = insets.top + 56 + 42;
 
   const animateNameChange = (newIndex: number) => {
     // Ultra-fast transition for immediate response
@@ -358,6 +365,7 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
         style={[
           styles.staticOverlayContainer, 
           { 
+            top: staticOverlayTop,
             opacity: staticOverlayOpacityAnim,
             pointerEvents: screenMode === 'naming' ? 'auto' : 'none'
           }
@@ -436,7 +444,7 @@ const styles = StyleSheet.create({
   },
   staticOverlayContainer: {
     position: 'absolute',
-    top: 160, // Back to original position where it was aligned
+    // top is set dynamically based on device SafeArea insets
     left: '50%',
     width: 220,
     height: 330,
