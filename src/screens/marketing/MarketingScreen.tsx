@@ -5,6 +5,8 @@ import {
   SafeAreaView,
   Animated,
   Dimensions,
+  Image,
+  Text,
 } from 'react-native';
 import { TopNavigationBar } from './components/TopNavigationBar';
 import { HeroSectionWithIndicators } from './components/HeroSectionWithIndicators';
@@ -45,7 +47,21 @@ export function MarketingScreen({ onBack, onNavigateToVirtualCardCreation, onNav
     >
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar onBack={handleBack} />
-        <HeroSectionWithIndicators />
+        {/* Hero Image */}
+        <View style={styles.heroImageContainer}>
+          <Image 
+            source={require('../../../assets/temporary_card.png')}
+            style={styles.heroImage}
+            resizeMode="cover"
+          />
+        </View>
+        {/* Title and Subtitle */}
+        <View style={styles.titleSection}>
+          <Text style={styles.title}>Shop anywhere, in any currency, with a pre-paid virtual card</Text>
+          <Text style={styles.subtitle}>Create multiple cards and delete them anytime. Shop like a local wherever you are.</Text>
+        </View>
+        {/* Temporarily hidden - keeping for future use */}
+        {/* <HeroSectionWithIndicators /> */}
         <ListRows 
           onNavigateToVirtualCardCreation={onNavigateToVirtualCardCreation}
           onNavigateToTemporaryDisclaimer={onNavigateToTemporaryDisclaimer}
@@ -68,5 +84,34 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
+  },
+  heroImageContainer: {
+    width: '100%',
+    height: 250,
+    overflow: 'hidden',
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+  },
+  titleSection: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 24,
+    gap: 8,
+  },
+  title: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 28,
+    fontWeight: '500',
+    color: 'rgba(0,0,0,0.96)',
+    lineHeight: 33.6,
+  },
+  subtitle: {
+    fontFamily: 'Nu Sans Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    color: 'rgba(0,0,0,0.64)',
+    lineHeight: 24,
   },
 });

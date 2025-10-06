@@ -31,10 +31,12 @@ export interface TopNavigationBarProps {
 export interface HomepageScreenProps {
   onNavigateToMarketing: () => void;
   onNavigateToVirtualCardCreation: () => void;
+  onNavigateToCardManagement: () => void;
 }
 
 export interface VirtualCardWidgetProps {
   onNavigateToMarketing: () => void;
+  onNavigateToCardManagement: () => void;
 }
 
 // Custom virtual card screen types
@@ -100,6 +102,8 @@ export interface StandardCardDetailsScreenProps {
 export interface CardManagementScreenProps {
   onBack: () => void;
   onCardPress?: (cardId: string) => void;
+  onNavigateToVirtualCardCreation?: () => void;
+  onNavigateToTemporaryDisclaimer?: () => void;
 }
 
 // Temporary card details screen types

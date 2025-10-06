@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -14,10 +14,21 @@ import { CardManagementScreenProps } from '../../types/navigation';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
 import { AddIcon, FreezeIcon, AddToWalletIcon } from '../../components/icons';
 import { useCards } from '../../contexts/CardsContext';
+import { CardTypeBottomSheet } from './components/CardTypeBottomSheet';
 
-export function CardManagementScreen({ onBack, onCardPress }: CardManagementScreenProps) {
+export function CardManagementScreen({ onBack, onCardPress, onNavigateToVirtualCardCreation, onNavigateToTemporaryDisclaimer }: CardManagementScreenProps) {
   const { cards } = useCards();
-  const slideAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+  const [showCardTypeSheet, setShowCardTypeSheet] = useState(false);
+
+  useEffect(() => {
+    // Slide in from right when component mounts
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [slideAnim]);
 
   const handleBack = () => {
     Animated.timing(slideAnim, {
@@ -59,7 +70,10 @@ export function CardManagementScreen({ onBack, onCardPress }: CardManagementScre
         />
         
         <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => setShowCardTypeSheet(true)}
+          >
             <View style={styles.actionIconContainer}>
               <AddIcon width={24} height={24} color="rgba(0,0,0,0.96)" />
             </View>
@@ -131,6 +145,23 @@ export function CardManagementScreen({ onBack, onCardPress }: CardManagementScre
           )}
         </ScrollView>
       </SafeAreaView>
+
+      {/* Card Type Bottom Sheet */}
+      {showCardTypeSheet && (
+        <CardTypeBottomSheet
+          onClose={() => setShowCardTypeSheet(false)}
+          onSelectStandard={() => {
+            if (onNavigateToVirtualCardCreation) {
+              onNavigateToVirtualCardCreation();
+            }
+          }}
+          onSelectTemporary={() => {
+            if (onNavigateToTemporaryDisclaimer) {
+              onNavigateToTemporaryDisclaimer();
+            }
+          }}
+        />
+      )}
     </Animated.View>
   );
 }

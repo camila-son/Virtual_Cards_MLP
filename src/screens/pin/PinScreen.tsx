@@ -15,13 +15,13 @@ import { PinScreenProps } from '../../types/navigation';
 import { CloseIcon } from '../../components/icons';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-const ANIMATION_DURATION = 300;
+const ANIMATION_DURATION = 250; // Match native keyboard animation speed
 
 export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your 4-digit PIN" }: PinScreenProps) {
   const [pin, setPin] = useState<string>('');
   const [isError, setIsError] = useState<boolean>(false);
   const slideUpAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const overlaySlideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+  const overlayOpacityAnim = useRef(new Animated.Value(0)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -29,15 +29,16 @@ export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your
       Animated.timing(slideUpAnim, {
         toValue: 0,
         duration: ANIMATION_DURATION,
+        easing: Easing.out(Easing.ease), // Match native keyboard easing
         useNativeDriver: true,
       }),
-      Animated.timing(overlaySlideAnim, {
-        toValue: 0,
+      Animated.timing(overlayOpacityAnim, {
+        toValue: 1,
         duration: ANIMATION_DURATION,
         useNativeDriver: true,
       }),
     ]).start();
-  }, [slideUpAnim, overlaySlideAnim]);
+  }, [slideUpAnim, overlayOpacityAnim]);
 
   const handlePinChange = (text: string) => {
     // Only allow numeric input and limit to 4 digits
@@ -81,14 +82,13 @@ export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your
         Animated.timing(slideUpAnim, {
           toValue: SCREEN_HEIGHT,
           duration: ANIMATION_DURATION,
+          easing: Easing.in(Easing.ease), // Match native keyboard easing
           useNativeDriver: true,
-          easing: Easing.out(Easing.quad),
         }),
-        Animated.timing(overlaySlideAnim, {
-          toValue: SCREEN_HEIGHT,
+        Animated.timing(overlayOpacityAnim, {
+          toValue: 0,
           duration: ANIMATION_DURATION,
           useNativeDriver: true,
-          easing: Easing.out(Easing.quad),
         }),
       ]).start(() => {
         onNavigateToCardDetails();
@@ -103,14 +103,13 @@ export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your
       Animated.timing(slideUpAnim, {
         toValue: SCREEN_HEIGHT,
         duration: ANIMATION_DURATION,
+        easing: Easing.in(Easing.ease), // Match native keyboard easing
         useNativeDriver: true,
-        easing: Easing.out(Easing.quad),
       }),
-      Animated.timing(overlaySlideAnim, {
-        toValue: SCREEN_HEIGHT,
+      Animated.timing(overlayOpacityAnim, {
+        toValue: 0,
         duration: ANIMATION_DURATION,
         useNativeDriver: true,
-        easing: Easing.out(Easing.quad),
       }),
     ]).start(() => {
       onBack();
@@ -153,7 +152,7 @@ export function PinScreen({ onBack, onNavigateToCardDetails, title = "Enter your
         style={[
           styles.overlay,
           {
-            transform: [{ translateY: overlaySlideAnim }],
+            opacity: overlayOpacityAnim,
           },
         ]}
       >

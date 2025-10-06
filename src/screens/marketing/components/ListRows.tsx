@@ -48,10 +48,7 @@ export function ListRows({ onNavigateToVirtualCardCreation, onNavigateToTemporar
 
 const styles = StyleSheet.create({
   navigationList: {
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
+    paddingHorizontal: 16,
     paddingBottom: 32,
   },
   listContainer: {

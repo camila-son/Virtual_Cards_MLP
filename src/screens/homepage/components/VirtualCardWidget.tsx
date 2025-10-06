@@ -2,8 +2,20 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { VirtualCardIcon } from '../../../components/icons/VirtualCardIcon';
 import { VirtualCardWidgetProps } from '../../../types/navigation';
+import { useCards } from '../../../contexts/CardsContext';
 
-export function VirtualCardWidget({ onNavigateToMarketing }: VirtualCardWidgetProps) {
+export function VirtualCardWidget({ onNavigateToMarketing, onNavigateToCardManagement }: VirtualCardWidgetProps) {
+  const { cards } = useCards();
+  const hasCards = cards.length > 0;
+
+  const handlePress = () => {
+    if (hasCards) {
+      onNavigateToCardManagement();
+    } else {
+      onNavigateToMarketing();
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Top Section */}
@@ -20,8 +32,10 @@ export function VirtualCardWidget({ onNavigateToMarketing }: VirtualCardWidgetPr
 
       {/* Bottom Section */}
       <View style={styles.bottomSection}>
-        <TouchableOpacity style={styles.createButton} onPress={onNavigateToMarketing}>
-          <Text style={styles.createButtonText}>Create</Text>
+        <TouchableOpacity style={styles.createButton} onPress={handlePress}>
+          <Text style={styles.createButtonText}>
+            {hasCards ? 'Manage' : 'Create'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -288,19 +288,13 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
   }, [screenMode, customCardName, cardScaleAnim]);
 
   return (
-    <LinearGradient
-      colors={['#F6ECFF', '#FFFFFF']}
-      locations={[0.13, 0.57]}
-      style={styles.rootContainer}
-    >
-      <Animated.View 
-        style={[
-          styles.container,
-          {
-            transform: [{ translateX: slideAnim }],
-          },
-        ]}
+    <Animated.View style={[styles.rootContainer, { transform: [{ translateX: slideAnim }] }]}>
+      <LinearGradient
+        colors={['#F6ECFF', '#FFFFFF']}
+        locations={[0.13, 0.57]}
+        style={styles.gradientContainer}
       >
+        <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
           <TopNavigationBar 
             onBack={handleBack} 
@@ -358,7 +352,7 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
             </TouchableWithoutFeedback>
           )}
         </SafeAreaView>
-      </Animated.View>
+      </View>
       
       <Animated.View 
         style={[
@@ -394,7 +388,8 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
           />
         </Animated.View>
       </Animated.View>
-    </LinearGradient>
+      </LinearGradient>
+    </Animated.View>
   );
 }
 
@@ -405,7 +400,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1002,
+    zIndex: 1006, // Same as card details screens, above CardManagementScreen (1005)
+  },
+  gradientContainer: {
+    flex: 1,
   },
   container: {
     flex: 1,

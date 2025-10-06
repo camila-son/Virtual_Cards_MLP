@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     flex: 1,
     backgroundColor: '#ece9ee',
-    zIndex: 1002, // Higher than MarketingScreen's zIndex
+    zIndex: 1006, // Same as card details screens, above CardManagementScreen (1005)
   },
   safeArea: {
     flex: 1,
