@@ -85,6 +85,21 @@ export function CardCarousel({
     }
   }, [restoreScrollPosition]);
 
+  // Initialize carousel to center the first card on mount
+  useEffect(() => {
+    // Small delay to ensure layout is complete before scrolling
+    const timer = setTimeout(() => {
+      if (snapPositions.length > 0) {
+        scrollViewRef.current?.scrollTo({
+          x: snapPositions[0],
+          animated: false,
+        });
+      }
+    }, 0);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <View style={styles.carouselContainer}>
       <ScrollView
