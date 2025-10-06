@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: 'Nu Sans Medium',
-    fontSize: 14,
+    fontSize: 18,
     color: 'rgba(0,0,0,0.96)',
   },
 });
