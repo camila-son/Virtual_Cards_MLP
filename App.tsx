@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { HomepageScreen } from './src/screens/homepage/HomepageScreen';
 import { MarketingScreen } from './src/screens/marketing/MarketingScreen';
 import { CustomVirtualCardScreen } from './src/screens/custom_virtual_card';
@@ -306,9 +307,11 @@ function AppContent() {
 
 export default function App() {
   return (
-    <CardsProvider>
-      <AppContent />
-    </CardsProvider>
+    <SafeAreaProvider>
+      <CardsProvider>
+        <AppContent />
+      </CardsProvider>
+    </SafeAreaProvider>
   );
 }
 
