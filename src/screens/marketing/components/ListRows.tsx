@@ -1,15 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ChevronIcon } from '../../../components/icons/chevron_icon';
-import { Fonts } from '../../../components/config/fonts';
+import { RadioButton } from '../../../components/icons/RadioButton';
 import { LIST_OPTIONS } from '../../../constants/marketingData';
 
 interface ListRowsProps {
-  onNavigateToVirtualCardCreation: () => void;
-  onNavigateToTemporaryDisclaimer: () => void;
+  selectedOption: string;
+  onSelectOption: (option: string) => void;
 }
 
-export function ListRows({ onNavigateToVirtualCardCreation, onNavigateToTemporaryDisclaimer }: ListRowsProps) {
+// Colors
+const COLORS = {
+  background: '#ffffff',
+  border: '#EFEFEF',
+  textPrimary: 'rgba(0, 0, 0, 0.96)',
+  textSecondary: 'rgba(0, 0, 0, 0.64)',
+};
+
+export function ListRows({ selectedOption, onSelectOption }: ListRowsProps) {
   return (
     <View style={styles.navigationList}>
       <View style={styles.listContainer}>
@@ -18,13 +25,9 @@ export function ListRows({ onNavigateToVirtualCardCreation, onNavigateToTemporar
             <TouchableOpacity 
               style={styles.listRow}
               onPress={() => {
-                if (option.title === 'Standard') {
-                  onNavigateToVirtualCardCreation();
-                } else if (option.title === 'Temporary') {
-                  onNavigateToTemporaryDisclaimer();
-                }
+                onSelectOption(option.title);
               }}
-              activeOpacity={0.7}
+              activeOpacity={1}
             >
               <View style={styles.rowContent}>
                 <View style={styles.textContent}>
@@ -33,8 +36,8 @@ export function ListRows({ onNavigateToVirtualCardCreation, onNavigateToTemporar
                     {option.description}
                   </Text>
                 </View>
-                <View style={styles.chevronIcon}>
-                  <ChevronIcon size={20} color="rgba(0,0,0,0.64)" />
+                <View style={styles.radioButtonContainer}>
+                  <RadioButton selected={selectedOption === option.title} size={24} />
                 </View>
               </View>
             </TouchableOpacity>
@@ -52,25 +55,14 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   listContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: COLORS.background,
     borderRadius: 24,
     paddingVertical: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 0,
-    elevation: 1,
+    borderWidth: 2,
+    borderColor: COLORS.border,
   },
   listRow: {
     flexDirection: 'column',
-  },
-  rowDivider: {
-    height: 1,
-    backgroundColor: '#efefef',
-    width: '100%',
   },
   rowContent: {
     flexDirection: 'row',
@@ -87,18 +79,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Nu Sans Medium',
     fontSize: 14,
     fontWeight: '500',
-    color: 'rgba(0,0,0,0.96)',
+    color: COLORS.textPrimary,
     lineHeight: 18.2,
   },
   rowDescription: {
     fontFamily: 'Nu Sans Regular',
     fontSize: 14,
     fontWeight: '400',
-    color: 'rgba(0,0,0,0.64)',
+    color: COLORS.textSecondary,
     lineHeight: 21,
   },
-  chevronIcon: {
-    width: 20,
-    height: 20,
+  rowDivider: {
+    height: 1,
+    backgroundColor: COLORS.border,
+    width: '100%',
+  },
+  radioButtonContainer: {
+    width: 24,
+    height: 24,
   },
 });

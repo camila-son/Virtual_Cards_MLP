@@ -15,6 +15,7 @@ export { FreezeIcon } from './FreezeIcon';
 export { HelpIcon } from './help_icon';
 export { MastercardLogo } from './MastercardLogo';
 export { MGMIcon } from './MGM_icon';
+export { RadioButton } from './RadioButton';
 export { ReceiveIcon } from './ReceiveIcon';
 export { SendIcon } from './SendIcon';
 export { ShieldIcon } from './ShieldIcon';

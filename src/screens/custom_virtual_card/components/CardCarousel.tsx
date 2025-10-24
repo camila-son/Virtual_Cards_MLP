@@ -122,7 +122,7 @@ export function CardCarousel({
           
           return (
             <React.Fragment key={item.id}>
-              <Animated.View style={{ opacity: cardOpacity }}>
+              <Animated.View style={[styles.animatedCardWrapper, { opacity: cardOpacity }]}>
                 <TouchableOpacity
                   style={styles.cardDesignItem}
                   activeOpacity={1}
@@ -172,6 +172,8 @@ const styles = StyleSheet.create({
   cardSpacer: {
     width: LAYOUT_CONSTANTS.CARD_SPACING,
     height: 330,
+  },
+  animatedCardWrapper: {
   },
   cardDesignItem: {
     width: LAYOUT_CONSTANTS.CARD_WIDTH,
