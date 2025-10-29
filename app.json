@@ -1,8 +1,14 @@
 {
   "expo": {
     "name": "Virtual Cards MLP",
-    "slug": "virtual-cards-mlp",
+    "slug": "prometheus-virtualcards",
     "version": "1.0.0",
+    "owner": "camila.son",
+    "extra": {
+      "eas": {
+        "projectId": "3f1ecc4f-eac5-4dff-9491-66463569a503"
+      }
+    },
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
@@ -20,6 +26,12 @@
     "plugins": [
       "expo-font",
       "expo-asset"
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3f1ecc4f-eac5-4dff-9491-66463569a503"
+    }
   }
 }

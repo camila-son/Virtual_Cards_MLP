@@ -2,29 +2,67 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { VirtualCardIcon } from '../../../components/icons/VirtualCardIcon';
 import { VirtualCardWidgetProps } from '../../../types/navigation';
+import { useCards } from '../../../contexts/CardsContext';
 
-export function VirtualCardWidget({ onNavigateToMarketing }: VirtualCardWidgetProps) {
+export function VirtualCardWidget({ onNavigateToMarketing, onNavigateToCardManagement }: VirtualCardWidgetProps) {
+  const { cards } = useCards();
+  const hasCards = cards.length > 0;
+
+  const handlePress = () => {
+    if (hasCards) {
+      onNavigateToCardManagement();
+    } else {
+      onNavigateToMarketing();
+    }
+  };
+
+  if (!hasCards) {
+    return (
+      <TouchableOpacity style={styles.container} onPress={handlePress}>
+        {/* Top Section with Icon */}
+        <View style={styles.topSectionNoCards}>
+          <View style={styles.iconCircle}>
+            <VirtualCardIcon width={20} height={20} />
+          </View>
+        </View>
+
+        {/* Bottom Section with Title and Subtitle */}
+        <View style={styles.bottomSectionNoCards}>
+          <View style={styles.contentNoCards}>
+            <Text style={styles.titleNoCards}>
+              My cards
+            </Text>
+            <Text style={styles.subtitleNoCards}>Shop safely online</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  const displayCount = cards.length > 3 ? '+3' : cards.length.toString();
+
   return (
-    <View style={styles.container}>
-      {/* Top Section */}
-      <View style={styles.topSection}>
-        <View style={styles.cardsIllustration}>
-          <VirtualCardIcon width={32} height={33} />
-        </View>
-        
-        <View style={styles.content}>
-          <Text style={styles.subtitle}>Shop safely</Text>
-          <Text style={styles.title}>Virtual Cards</Text>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
+      {/* Top Section with Icon and Badge */}
+      <View style={styles.topSectionNoCards}>
+        <View style={styles.avatarsContainer}>
+          <View style={styles.iconCircleWithCards}>
+            <VirtualCardIcon width={20} height={20} color="#610F9B" />
+          </View>
+          <View style={styles.countBadge}>
+            <Text style={styles.countBadgeText}>{displayCount}</Text>
+          </View>
         </View>
       </View>
 
-      {/* Bottom Section */}
-      <View style={styles.bottomSection}>
-        <TouchableOpacity style={styles.createButton} onPress={onNavigateToMarketing}>
-          <Text style={styles.createButtonText}>Create</Text>
-        </TouchableOpacity>
+      {/* Bottom Section with Title and Subtitle */}
+      <View style={styles.bottomSectionNoCards}>
+        <View style={styles.contentNoCards}>
+          <Text style={styles.titleNoCards}>My cards</Text>
+          <Text style={styles.subtitleNoCards}>Manage and shop</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -43,57 +81,73 @@ const styles = StyleSheet.create({
     elevation: 1,
     flex: 1,
   },
-  topSection: {
-    flex: 1,
+  topSectionNoCards: {
     width: '100%',
     paddingTop: 16,
     paddingHorizontal: 16,
-    flexDirection: 'column',
-    gap: 12,
   },
-  cardsIllustration: {
+  avatarsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconCircle: {
     width: 32,
-    height: 33,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#F5F3F6',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  content: {
+  iconCircleWithCards: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#F6ECFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    zIndex: 2,
+  },
+  countBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#EFEFEF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: -8,
+    zIndex: 1,
+  },
+  countBadgeText: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#1F002F',
+    lineHeight: 15.6,
+  },
+  bottomSectionNoCards: {
     flex: 1,
-    flexDirection: 'column',
-    gap: 2,
-  },
-  subtitle: {
-    fontFamily: 'Nu Sans',
-    fontSize: 12,
-    fontWeight: '400',
-    color: '#6b7280', // muted-foreground
-    lineHeight: 15.6, // 1.3 * 12
-  },
-  title: {
-    fontFamily: 'Nu Sans Medium',
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
-    lineHeight: 23.4, // 1.3 * 18
-    letterSpacing: -0.18,
-  },
-  bottomSection: {
     width: '100%',
-    padding: 8,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    justifyContent: 'flex-end',
   },
-  createButton: {
-    backgroundColor: '#f3f4f6', // secondary color
-    height: 36,
-    borderRadius: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 12,
+  contentNoCards: {
+    flexDirection: 'column',
+    gap: 4,
   },
-  createButtonText: {
-    fontFamily: 'Nu Sans Medium',
-    fontSize: 12,
+  titleNoCards: {
+    fontFamily: 'Nu Sans Display',
+    fontSize: 20,
     fontWeight: '500',
-    color: '#000',
-    lineHeight: 15.6, // 1.3 * 12
+    color: '#1F002F',
+    lineHeight: 24, // 20 * 1.2
+  },
+  subtitleNoCards: {
+    fontFamily: 'Nu Sans Regular',
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.64)',
+    lineHeight: 18.2, // 14 * 1.3
   },
 });

@@ -9,7 +9,7 @@ import { MarketInfoWidget } from './components/MarketInfoWidget';
 import { ActionButtons } from './components/ActionButtons';
 import { HomepageScreenProps } from '../../types/navigation';
 
-export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
+export function HomepageScreen({ onNavigateToMarketing, onNavigateToVirtualCardCreation, onNavigateToCardManagement }: HomepageScreenProps) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   return (
@@ -31,7 +31,10 @@ export function HomepageScreen({ onNavigateToMarketing }: HomepageScreenProps) {
           <BalanceWidget />
           <View style={styles.smallWidgetsRow}>
             <MarketInfoWidget />
-            <VirtualCardWidget onNavigateToMarketing={onNavigateToMarketing} />
+            <VirtualCardWidget 
+              onNavigateToMarketing={onNavigateToMarketing}
+              onNavigateToCardManagement={onNavigateToCardManagement}
+            />
           </View>
           <TransactionsWidget />
         </View>
