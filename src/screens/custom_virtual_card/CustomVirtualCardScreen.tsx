@@ -10,10 +10,8 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
 import { CustomVirtualCardScreenProps } from '../../types/navigation';
 import { CardCarousel, ColorSwatches, BottomBar } from './components';
@@ -204,6 +202,11 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
     onNavigateToLoading(selectedCard, customCardName);
   };
 
+  const handleVideoFinish = () => {
+    // Don't fade out naming mode card - let success screen card render on top
+    // The cards are at the same position so there will be a seamless handoff
+  };
+
   const handleBack = () => {
     if (screenMode === 'naming') {
       // If card is scaled up, animate it back down first
@@ -296,11 +299,7 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
 
   return (
     <Animated.View style={[styles.rootContainer, { transform: [{ translateX: slideAnim }] }]}>
-      <LinearGradient
-        colors={['#F6ECFF', '#FFFFFF']}
-        locations={[0.13, 0.57]}
-        style={styles.gradientContainer}
-      >
+      <View style={styles.gradientContainer}>
         <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
           <TopNavigationBar 
@@ -346,12 +345,6 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
           <View style={styles.content}>
           </View>
           
-          <BottomBar 
-            onChooseDesign={handleChooseDesign} 
-            onCreateCard={handleCreateCard}
-            screenMode={screenMode}
-          />
-          
           {/* TouchableWithoutFeedback overlay only for naming mode */}
           {screenMode === 'naming' && (
             <TouchableWithoutFeedback onPress={handleBackgroundPress}>
@@ -359,6 +352,15 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
             </TouchableWithoutFeedback>
           )}
         </SafeAreaView>
+      </View>
+      
+      {/* BottomBar outside container */}
+      <BottomBar 
+        onChooseDesign={handleChooseDesign} 
+        onCreateCard={handleCreateCard}
+        screenMode={screenMode}
+        onVideoFinish={handleVideoFinish}
+      />
       </View>
       
       <Animated.View 
@@ -391,12 +393,18 @@ export function CustomVirtualCardScreen({ onBack, onNavigateToLoading }: CustomV
             placeholder="Enter card name"
             placeholderTextColor="rgba(255,255,255,0.7)"
             autoFocus={screenMode === 'naming'}
-            maxLength={20}
+            maxLength={17}
             textAlign='left'
           />
+          {isKeyboardVisible && (
+            <View style={styles.characterCounterContainer}>
+              <Text style={styles.characterCounterText}>
+                {customCardName.length} / 17
+              </Text>
+            </View>
+          )}
         </Animated.View>
       </Animated.View>
-      </LinearGradient>
     </Animated.View>
   );
 }
@@ -412,6 +420,7 @@ const styles = StyleSheet.create({
   },
   gradientContainer: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
   container: {
     flex: 1,
@@ -468,7 +477,7 @@ const styles = StyleSheet.create({
   },
   cardNameInput: {
     position: 'absolute',
-    top: '70%',
+    top: '60%',
     left: '50%',
     transform: [{ translateX: -110 }],
     width: 220,
@@ -486,5 +495,23 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     zIndex: 99999,
     elevation: 30,
+  },
+  characterCounterContainer: {
+    position: 'absolute',
+    top: '60%',
+    marginTop: 32, // 8px below the input (24px input height + 8px)
+    left: '50%',
+    transform: [{ translateX: -110 }],
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    borderRadius: 4,
+    marginLeft: 16,
+  },
+  characterCounterText: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 12,
+    color: '#ffffff',
+    textAlign: 'center',
   },
 });

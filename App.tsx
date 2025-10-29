@@ -28,11 +28,12 @@ function AppContent() {
   const [temporarySuccessScreenShown, setTemporarySuccessScreenShown] = useState(false);
   const [cardDetailsLoaded, setCardDetailsLoaded] = useState(false);
   const [temporaryCardDetailsLoaded, setTemporaryCardDetailsLoaded] = useState(false);
+  const [isTransitioningToSuccess, setIsTransitioningToSuccess] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [isTemporaryFlow, setIsTemporaryFlow] = useState(false);
   const [temporaryCardExpiresAt, setTemporaryCardExpiresAt] = useState<Date | null>(null);
   const [cameFromCardManagement, setCameFromCardManagement] = useState(false);
-  const { cards } = useCards();
+  const { cards, addCard } = useCards();
 
   useEffect(() => {
     loadCustomFonts().then(() => {
@@ -62,7 +63,23 @@ function AppContent() {
     setIsTemporaryFlow(false); // Mark as standard flow
     // Track if this is coming from card management (existing user creating another card)
     setCameFromCardManagement(cards.length > 0);
-    setCurrentScreen('loading');
+    
+    // Add the card to the context (moved from LoadingScreen)
+    const lastFourDigits = Math.floor(1000 + Math.random() * 9000).toString();
+    addCard({
+      name: customCardName,
+      lastFourDigits,
+      cardType: 'Pre-paid',
+      cardDesign,
+    });
+    
+    setIsTransitioningToSuccess(true); // Start transition
+    setCurrentScreen('standard_success'); // Skip loading screen, go directly to success
+    
+    // Clear transition flag after animation completes
+    setTimeout(() => {
+      setIsTransitioningToSuccess(false);
+    }, 500); // 400ms fade + 100ms buffer
   };
 
   const navigateToTemporarySuccess = () => {
@@ -201,7 +218,7 @@ function AppContent() {
           onNavigateToPin={navigateToPin}
         />
       )}
-      {currentScreen === 'custom_virtual_card' && (
+      {(currentScreen === 'custom_virtual_card' || isTransitioningToSuccess) && (
         <CustomVirtualCardScreen 
           onBack={() => {
             if (cards.length > 0) {

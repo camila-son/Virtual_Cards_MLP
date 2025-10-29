@@ -32,5 +32,6 @@ export interface BottomBarProps {
   onChooseDesign: () => void;
   onCreateCard?: () => void;
   screenMode?: 'selection' | 'naming';
+  onVideoFinish?: () => void;
 }
 

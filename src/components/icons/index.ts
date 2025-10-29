@@ -2,6 +2,7 @@
 export { AddIcon } from './AddIcon';
 export { AddToWalletIcon } from './AddToWalletIcon';
 export { AppleWalletIcon } from './AppleWalletIcon';
+export { ArrowRightIcon } from './ArrowRightIcon';
 export { BitcoinIcon } from './BitcoinIcon';
 export { BlockIcon } from './BlockIcon';
 export { CheckIcon } from './CheckIcon';

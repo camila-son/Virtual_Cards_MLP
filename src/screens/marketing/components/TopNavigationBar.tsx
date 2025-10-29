@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { CloseIcon } from '../../../components/icons/CloseIcon';
+import { ChevronIcon } from '../../../components/icons/chevron_icon';
 import { TopNavigationBarProps } from '../../../types/navigation';
 
 // Colors
@@ -14,8 +14,8 @@ export function TopNavigationBar({ onBack, title, backgroundColor }: TopNavigati
     <View style={[styles.topBar, backgroundColor && { backgroundColor }]}>
       <View style={styles.navigationBar}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <View style={styles.closeIconContainer}>
-            <CloseIcon size={24} color={COLORS.closeIcon} />
+          <View style={[styles.closeIconContainer, { transform: [{ rotate: '180deg' }] }]}>
+            <ChevronIcon size={24} color={COLORS.closeIcon} />
           </View>
         </TouchableOpacity>
         {title && (

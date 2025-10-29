@@ -131,6 +131,7 @@ export function MarketingScreen({
             <TouchableOpacity 
               style={styles.primaryButton} 
               onPress={handleGetStarted}
+              activeOpacity={1}
             >
               <Text style={styles.buttonText}>Get started</Text>
             </TouchableOpacity>
