@@ -66,7 +66,7 @@ export function CardManagementScreen({ onBack, onCardPress, onNavigateToVirtualC
         <TopNavigationBar 
           onBack={handleBack}
           title="My cards"
-          backgroundColor="#ECE9EE"
+          backgroundColor="#FFFFFF"
         />
         
         <View style={styles.actionRow}>
@@ -110,6 +110,7 @@ export function CardManagementScreen({ onBack, onCardPress, onNavigateToVirtualC
                 const thumbnail = card.isTemporary 
                   ? require('../../../assets/mini-temporary_card.png')
                   : card.cardDesign?.image;
+                const isFrozen = card.isFrozen || false;
                 
                 return (
                   <TouchableOpacity 
@@ -121,22 +122,30 @@ export function CardManagementScreen({ onBack, onCardPress, onNavigateToVirtualC
                       {thumbnail && (
                         <Image 
                           source={thumbnail} 
-                          style={styles.cardThumbnail}
+                          style={[
+                            styles.cardThumbnail,
+                            isFrozen && { opacity: 1 }
+                          ]}
                           resizeMode="contain"
                         />
                       )}
+                      {isFrozen && <View style={styles.greyscaleOverlay} />}
                     </View>
                     <View style={styles.cardInfo}>
-                      <Text style={styles.cardName}>{card.name}</Text>
-                      <Text style={styles.cardDetails}>
-                        •••• {card.lastFourDigits} · {card.cardType}
+                      <Text style={[styles.cardName, isFrozen && { opacity: 0.3 }]}>{card.name}</Text>
+                      <Text style={[styles.cardDetails, isFrozen && { opacity: 0.3 }]}>
+                        •••• {card.lastFourDigits}
                       </Text>
                     </View>
-                    {card.isTemporary && hoursLeft !== null && (
+                    {isFrozen ? (
+                      <View style={styles.frozenBadge}>
+                        <Text style={styles.frozenBadgeText}>Frozen</Text>
+                      </View>
+                    ) : card.isTemporary && hoursLeft !== null ? (
                       <View style={styles.badge}>
                         <Text style={styles.badgeText}>{hoursLeft}h left</Text>
                       </View>
-                    )}
+                    ) : null}
                     {index < cards.length - 1 && <View style={styles.divider} />}
                   </TouchableOpacity>
                 );
@@ -173,7 +182,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#ECE9EE',
+    backgroundColor: '#FFFFFF',
     zIndex: 1005, // Between StandardSuccessScreen (1004) and StandardCardDetailsScreen (1006)
   },
   safeArea: {
@@ -197,6 +206,8 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#e5e0e8',
@@ -225,15 +236,16 @@ const styles = StyleSheet.create({
   cardsList: {
     backgroundColor: '#ffffff',
     borderRadius: 24,
-    shadowColor: '#e5e0e8',
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
-    overflow: 'hidden',
   },
   listHeader: {
     paddingHorizontal: 16,
@@ -262,6 +274,14 @@ const styles = StyleSheet.create({
     width: 24,
     height: 36,
   },
+  greyscaleOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 24,
+    height: 36,
+    backgroundColor: 'rgba(128, 128, 128, 0.5)',
+  },
   cardInfo: {
     flex: 1,
     gap: 4,
@@ -273,17 +293,23 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.96)',
   },
   badge: {
-    backgroundColor: '#EEEEFF',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
     marginLeft: 12,
   },
   badgeText: {
-    fontFamily: 'Nu Sans Medium',
+    fontFamily: 'Nu Sans Regular',
     fontSize: 12,
     lineHeight: 14,
-    color: '#615BCC',
+    color: '#AF4D0E',
+    letterSpacing: 0.12,
+  },
+  frozenBadge: {
+    marginLeft: 12,
+  },
+  frozenBadgeText: {
+    fontFamily: 'Nu Sans Regular',
+    fontSize: 12,
+    lineHeight: 14,
+    color: 'rgba(0,0,0,0.64)',
     letterSpacing: 0.12,
   },
   cardDetails: {
@@ -296,8 +322,8 @@ const styles = StyleSheet.create({
   divider: {
     position: 'absolute',
     bottom: 0,
-    left: 16,
-    right: 16,
+    left: 0,
+    right: 0,
     height: 1,
     backgroundColor: '#efefef',
   },

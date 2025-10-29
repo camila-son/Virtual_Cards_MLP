@@ -41,13 +41,16 @@ export function CountdownTimer({ initialSeconds = 86400 }: CountdownTimerProps) 
   });
   const isToday = expirationDate.getDate() === new Date().getDate();
   const expirationText = isToday 
-    ? `Expires today at ${expirationTime}` 
-    : `Expires tomorrow at ${expirationTime}`;
+    ? `Today at ${expirationTime}` 
+    : `Tomorrow at ${expirationTime}`;
 
   return (
     <View style={styles.container}>
       <View style={styles.leftWrap}>
-        <Text style={styles.expiresText}>{expirationText}</Text>
+        <View style={styles.textColumn}>
+          <Text style={styles.overlineText}>Expires at</Text>
+          <Text style={styles.expiresText}>{expirationText}</Text>
+        </View>
       </View>
       
       <View style={styles.cronometer}>
@@ -87,13 +90,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderRadius: 16,
-    shadowColor: '#e5e0e8',
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
   },
@@ -102,12 +107,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
   },
+  textColumn: {
+    flexDirection: 'column',
+    gap: 4,
+  },
+  overlineText: {
+    fontFamily: 'Nu Sans Regular',
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.64)',
+    letterSpacing: 0.12,
+    lineHeight: 18.2,
+  },
   expiresText: {
     fontFamily: 'Nu Sans Medium',
-    fontSize: 14,
+    fontSize: 16,
     color: 'rgba(0,0,0,0.96)',
     letterSpacing: 0.12,
-    lineHeight: 15.6,
+    lineHeight: 20.8,
   },
   cronometer: {
     flexDirection: 'row',

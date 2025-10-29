@@ -13,11 +13,13 @@ export interface VirtualCard {
   createdAt: Date;
   isTemporary?: boolean;
   expiresAt?: Date;
+  isFrozen?: boolean;
 }
 
 interface CardsContextType {
   cards: VirtualCard[];
   addCard: (card: Omit<VirtualCard, 'id' | 'createdAt'>) => void;
+  updateCardFrozenState: (cardId: string, isFrozen: boolean) => void;
 }
 
 const CardsContext = createContext<CardsContextType | undefined>(undefined);
@@ -30,12 +32,21 @@ export function CardsProvider({ children }: { children: ReactNode }) {
       ...cardData,
       id: Date.now().toString(),
       createdAt: new Date(),
+      isFrozen: false,
     };
     setCards(prevCards => [newCard, ...prevCards]); // Add to beginning of list
   };
 
+  const updateCardFrozenState = (cardId: string, isFrozen: boolean) => {
+    setCards(prevCards => 
+      prevCards.map(card => 
+        card.id === cardId ? { ...card, isFrozen } : card
+      )
+    );
+  };
+
   return (
-    <CardsContext.Provider value={{ cards, addCard }}>
+    <CardsContext.Provider value={{ cards, addCard, updateCardFrozenState }}>
       {children}
     </CardsContext.Provider>
   );

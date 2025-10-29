@@ -96,6 +96,7 @@ export interface StandardCardDetailsScreenProps {
     image: any;
   };
   customCardName: string;
+  cardId: string;
 }
 
 // Card management screen types
@@ -111,6 +112,7 @@ export interface TemporaryCardDetailsScreenProps {
   onBack: () => void;
   onAnimationComplete?: () => void;
   expiresAt: Date;
+  cardId: string;
 }
 
 // Temporary disclaimer screen types

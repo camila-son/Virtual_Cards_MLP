@@ -9,16 +9,26 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { StandardCardDetailsScreenProps } from '../../types/navigation';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
-import { FreezeIcon, ShieldIcon, DeleteIcon, CopyIcon, MastercardLogo, CheckIcon } from '../../components/icons';
+import { FreezeIcon, UnfreezeIcon, CopyIcon, MastercardLogo, CheckIcon, EditIcon, DeleteIcon } from '../../components/icons';
+import { useCards } from '../../contexts/CardsContext';
 
-export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDesign, customCardName }: StandardCardDetailsScreenProps) {
+export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDesign, customCardName, cardId }: StandardCardDetailsScreenProps) {
+  const { cards, updateCardFrozenState } = useCards();
+  const card = cards.find(c => c.id === cardId);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const toastSlideAnim = useRef(new Animated.Value(100)).current; // Start 100px below screen
   const [showToast, setShowToast] = useState(false);
+  const isFrozen = card?.isFrozen || false;
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const toggleFrozen = () => {
+    updateCardFrozenState(cardId, !isFrozen);
+  };
 
   useEffect(() => {
     // Slide-in animation from right
@@ -94,7 +104,7 @@ export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDes
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar 
           onBack={handleBack}
-          backgroundColor="#ECE9EE"
+          backgroundColor="#FFFFFF"
         />
         
         <ScrollView 
@@ -110,29 +120,29 @@ export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDes
               resizeMode="contain"
             />
             <Text style={styles.cardNameText}>{customCardName}</Text>
+            
+            {/* Frost Overlay when frozen */}
+            {isFrozen && (
+              <View style={styles.frostOverlay}>
+                <BlurView intensity={10} style={styles.blurLayer} />
+                <Image
+                  source={require('../../../assets/frost.png')}
+                  style={styles.frostImage}
+                  resizeMode="cover"
+                />
+              </View>
+            )}
           </View>
 
-          {/* Action Row */}
-          <View style={styles.actionRow}>
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Freeze')}>
-              <View style={styles.actionIconContainer}>
+          {/* Freeze Button */}
+          <View style={styles.freezeButtonContainer}>
+            <TouchableOpacity style={styles.freezeButton} onPress={toggleFrozen}>
+              {isFrozen ? (
+                <UnfreezeIcon size={20} color="rgba(0,0,0,0.96)" />
+              ) : (
                 <FreezeIcon size={24} color="rgba(0,0,0,0.96)" />
-              </View>
-              <Text style={styles.actionLabel}>Freeze</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Check PIN')}>
-              <View style={styles.actionIconContainer}>
-                <ShieldIcon size={24} color="rgba(0,0,0,0.96)" />
-              </View>
-              <Text style={styles.actionLabel}>Check PIN</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Delete')}>
-              <View style={styles.actionIconContainer}>
-                <DeleteIcon size={24} color="rgba(0,0,0,0.96)" />
-              </View>
-              <Text style={styles.actionLabel}>Delete</Text>
+              )}
+              <Text style={styles.freezeButtonText}>{isFrozen ? 'Unfreeze' : 'Freeze'}</Text>
             </TouchableOpacity>
           </View>
 
@@ -213,6 +223,31 @@ export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDes
               </View>
             </View>
           </View>
+
+          {/* Card Settings Section */}
+          <View style={styles.settingsSection}>
+            <Text style={styles.sectionTitle}>Card settings</Text>
+            <View style={styles.settingsCard}>
+              {/* Edit card name row */}
+              <TouchableOpacity style={styles.settingsRow} onPress={() => console.log('Edit card name')}>
+                <View style={styles.settingsIconContainer}>
+                  <EditIcon size={16} color="rgba(0,0,0,0.64)" />
+                </View>
+                <Text style={styles.settingsText}>Edit card name</Text>
+              </TouchableOpacity>
+              
+              {/* Divider */}
+              <View style={styles.settingsDivider} />
+              
+              {/* Delete card row */}
+              <TouchableOpacity style={styles.settingsRow} onPress={() => console.log('Delete card')}>
+                <View style={styles.settingsIconContainer}>
+                  <DeleteIcon size={16} color="#D01D1C" />
+                </View>
+                <Text style={styles.settingsText}>Delete card</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
       
@@ -247,7 +282,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#ECE9EE',
+    backgroundColor: '#FFFFFF',
     zIndex: 1006, // Higher than PIN screen
   },
   safeArea: {
@@ -263,21 +298,21 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 220, // Original naming mode width
-    height: 330, // Original naming mode height
+    width: 240,
+    height: 360,
     alignSelf: 'center',
     position: 'relative',
   },
   cardImage: {
-    width: 220, // LAYOUT_CONSTANTS.CARD_WIDTH from naming mode
-    height: 330,
+    width: 240,
+    height: 360,
   },
   cardNameText: {
     position: 'absolute',
     top: '70%', // Same position as naming mode
     left: '50%',
-    transform: [{ translateX: -110 }], // Half of card width for centering
-    width: 220,
+    transform: [{ translateX: -120 }], // Half of card width for centering
+    width: 240,
     fontFamily: 'Nu Sans Medium',
     fontSize: 21,
     color: '#ffffff',
@@ -285,56 +320,53 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     textAlign: 'left',
   },
-  actionRow: {
+  freezeButtonContainer: {
+    marginTop: 24,
+    marginHorizontal: 16,
+    alignItems: 'center',
+  },
+  freezeButton: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-    marginHorizontal: 16, // Added horizontal margins
-    gap: 52, // Fixed 52px gap between action buttons
-  },
-  actionButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12, // Gap between icon and label
-  },
-  actionIconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
     backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // Shadow to match Figma design
-    shadowColor: '#e5e0e8',
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    borderRadius: 64,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    gap: 8,
+    alignSelf: 'center',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
   },
-  actionLabel: {
-    fontFamily: 'Nu Sans Medium', // Semibold from Figma
-    fontSize: 12,
+  freezeButtonText: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 16,
     color: 'rgba(0,0,0,0.96)',
+    lineHeight: 20.8, // 16 * 1.3
     textAlign: 'center',
-    letterSpacing: 0.12, // tracking from Figma
-    lineHeight: 15.6, // 12 * 1.3
   },
   detailsTable: {
-    marginTop: 40,
+    marginTop: 24,
     marginHorizontal: 16, // Changed from 24 to 16 for wider table
     backgroundColor: '#ffffff',
     borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
     // Shadow to match Figma design
-    shadowColor: '#e5e0e8',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
   },
@@ -438,8 +470,87 @@ const styles = StyleSheet.create({
   toastText: {
     color: '#ffffff',
     fontSize: 16,
-    fontFamily: 'Graphik-Regular',
+    fontFamily: 'Nu Sans Regular',
     lineHeight: 24,
     flex: 1,
+  },
+  // Card Settings styles
+  settingsSection: {
+    marginTop: 24,
+    marginHorizontal: 16,
+    gap: 8,
+  },
+  sectionTitle: {
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.64)',
+    letterSpacing: -0.14,
+    lineHeight: 18.2, // 14 * 1.3
+    paddingHorizontal: 4,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
+  settingsCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    shadowColor: '#1F002F',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 0,
+    elevation: 1,
+  },
+  settingsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 16,
+    gap: 12,
+  },
+  settingsIconContainer: {
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  settingsText: {
+    flex: 1,
+    fontFamily: 'Nu Sans Medium',
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.96)',
+    lineHeight: 18.2, // 14 * 1.3
+  },
+  settingsDivider: {
+    height: 1,
+    backgroundColor: '#efefef',
+    marginHorizontal: 16,
+  },
+  // Frost overlay styles
+  frostOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 240,
+    height: 360,
+    overflow: 'hidden',
+    borderRadius: 16,
+  },
+  blurLayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
+  frostImage: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.9,
+    mixBlendMode: 'screen' as any,
   },
 });

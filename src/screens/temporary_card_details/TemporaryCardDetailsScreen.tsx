@@ -9,17 +9,27 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { TemporaryCardDetailsScreenProps } from '../../types/navigation';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
-import { FreezeIcon, ShieldIcon, DeleteIcon, CopyIcon, MastercardLogo, CheckIcon } from '../../components/icons';
+import { FreezeIcon, UnfreezeIcon, CopyIcon, MastercardLogo, CheckIcon } from '../../components/icons';
 import { CountdownTimer } from './components/CountdownTimer';
+import { useCards } from '../../contexts/CardsContext';
 
-export function TemporaryCardDetailsScreen({ onBack, onAnimationComplete, expiresAt }: TemporaryCardDetailsScreenProps) {
+export function TemporaryCardDetailsScreen({ onBack, onAnimationComplete, expiresAt, cardId }: TemporaryCardDetailsScreenProps) {
+  const { cards, updateCardFrozenState } = useCards();
+  const card = cards.find(c => c.id === cardId);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
   const toastSlideAnim = useRef(new Animated.Value(100)).current;
   const [showToast, setShowToast] = useState(false);
+  const isFrozen = card?.isFrozen || false;
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const toggleFrozen = () => {
+    updateCardFrozenState(cardId, !isFrozen);
+  };
 
   // Calculate initial remaining seconds based on expiration time
   const calculateRemainingSeconds = () => {
@@ -102,7 +112,7 @@ export function TemporaryCardDetailsScreen({ onBack, onAnimationComplete, expire
       <SafeAreaView style={styles.safeArea}>
         <TopNavigationBar 
           onBack={handleBack}
-          backgroundColor="#ECE9EE"
+          backgroundColor="#FFFFFF"
         />
         
         <ScrollView 
@@ -111,33 +121,35 @@ export function TemporaryCardDetailsScreen({ onBack, onAnimationComplete, expire
           showsVerticalScrollIndicator={false}
         >
           {/* Card Display - Temporary card PNG */}
-          <Image
-            source={require('../../../assets/temporary_card.png')}
-            style={styles.cardImage}
-            resizeMode="contain"
-          />
+          <View style={styles.cardContainer}>
+            <Image
+              source={require('../../../assets/temporary_card.png')}
+              style={styles.cardImage}
+              resizeMode="contain"
+            />
+            
+            {/* Frost Overlay when frozen */}
+            {isFrozen && (
+              <View style={styles.frostOverlay}>
+                <BlurView intensity={10} style={styles.blurLayer} />
+                <Image
+                  source={require('../../../assets/frost.png')}
+                  style={styles.frostImage}
+                  resizeMode="cover"
+                />
+              </View>
+            )}
+          </View>
 
-          {/* Action Row */}
-          <View style={styles.actionRow}>
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Freeze')}>
-              <View style={styles.actionIconContainer}>
+          {/* Freeze Button */}
+          <View style={styles.freezeButtonContainer}>
+            <TouchableOpacity style={styles.freezeButton} onPress={toggleFrozen}>
+              {isFrozen ? (
+                <UnfreezeIcon size={20} color="rgba(0,0,0,0.96)" />
+              ) : (
                 <FreezeIcon size={24} color="rgba(0,0,0,0.96)" />
-              </View>
-              <Text style={styles.actionLabel}>Freeze</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Check PIN')}>
-              <View style={styles.actionIconContainer}>
-                <ShieldIcon size={24} color="rgba(0,0,0,0.96)" />
-              </View>
-              <Text style={styles.actionLabel}>Check PIN</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButton} onPress={() => console.log('Delete')}>
-              <View style={styles.actionIconContainer}>
-                <DeleteIcon size={24} color="rgba(0,0,0,0.96)" />
-              </View>
-              <Text style={styles.actionLabel}>Delete</Text>
+              )}
+              <Text style={styles.freezeButtonText}>{isFrozen ? 'Unfreeze' : 'Freeze'}</Text>
             </TouchableOpacity>
           </View>
 
@@ -241,7 +253,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#ECE9EE',
+    backgroundColor: '#FFFFFF',
     zIndex: 1006,
   },
   safeArea: {
@@ -254,64 +266,67 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 40,
   },
-  cardImage: {
-    width: 220,
-    height: 330,
+  cardContainer: {
+    width: 240,
+    height: 360,
     alignSelf: 'center',
+    position: 'relative',
   },
-  actionRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-    marginHorizontal: 16,
-    gap: 52,
+  cardImage: {
+    width: 240,
+    height: 360,
   },
-  countdownContainer: {
+  freezeButtonContainer: {
     marginTop: 24,
-    marginBottom: 16,
     marginHorizontal: 16,
+    alignItems: 'center',
   },
-  actionButton: {
+  freezeButton: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
-  },
-  actionIconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
     backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#e5e0e8',
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    borderRadius: 64,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    gap: 8,
+    alignSelf: 'center',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
   },
-  actionLabel: {
+  freezeButtonText: {
     fontFamily: 'Nu Sans Medium',
-    fontSize: 12,
+    fontSize: 16,
     color: 'rgba(0,0,0,0.96)',
+    lineHeight: 20.8, // 16 * 1.3
     textAlign: 'center',
-    letterSpacing: 0.12,
-    lineHeight: 15.6,
+  },
+  countdownContainer: {
+    marginTop: 24,
+    marginBottom: 24,
+    marginHorizontal: 16,
   },
   detailsTable: {
     marginTop: 0,
     marginHorizontal: 16,
     backgroundColor: '#ffffff',
     borderRadius: 24,
-    shadowColor: '#e5e0e8',
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
   },
@@ -409,8 +424,31 @@ const styles = StyleSheet.create({
   toastText: {
     color: '#ffffff',
     fontSize: 16,
-    fontFamily: 'Graphik-Regular',
+    fontFamily: 'Nu Sans Regular',
     lineHeight: 24,
     flex: 1,
+  },
+  // Frost overlay styles
+  frostOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 240,
+    height: 360,
+    overflow: 'hidden',
+    borderRadius: 16,
+  },
+  blurLayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
+  frostImage: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.9,
+    mixBlendMode: 'screen' as any,
   },
 });
