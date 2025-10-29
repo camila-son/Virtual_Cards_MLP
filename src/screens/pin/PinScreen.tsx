@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1007, // Higher than CardManagementScreen (1005) and StandardCardDetailsScreen (1006)
+    zIndex: 1009, // Higher than Success screens (1008) to show on top
     backgroundColor: 'transparent', // Make sure root is transparent
   },
   overlay: {

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
   Image,
+  Dimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,7 +18,7 @@ export function StandardSuccessScreen({ onNext, onNavigateToPin, cardDesign, cus
   const insets = useSafeAreaInsets();
   // Match the exact positioning from CustomVirtualCardScreen
   const cardTop = insets.top + 56 + 42;
-  const slideAnim = useRef(new Animated.Value(0)).current; // Start at 0 (no slide-in)
+  const slideDownAnim = useRef(new Animated.Value(0)).current; // Start at 0, slides down when closing
   const elementsOpacity = useRef(new Animated.Value(0)).current;
   const backgroundOpacity = useRef(new Animated.Value(0)).current;
   const buttonsSlideUp = useRef(new Animated.Value(300)).current; // Start 300px below (further off-screen)
@@ -95,6 +96,17 @@ export function StandardSuccessScreen({ onNext, onNavigateToPin, cardDesign, cus
     }).start();
   }, []);
 
+  const handleClose = () => {
+    // Slide down animation before closing
+    Animated.timing(slideDownAnim, {
+      toValue: Dimensions.get('window').height,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onNext();
+    });
+  };
+
   return (
     <Animated.View style={[styles.rootContainer, { opacity: backgroundOpacity }]}>
       <View style={styles.whiteBackground}>
@@ -102,7 +114,7 @@ export function StandardSuccessScreen({ onNext, onNavigateToPin, cardDesign, cus
           style={[
             styles.container,
             {
-              transform: [{ translateX: slideAnim }],
+              transform: [{ translateY: slideDownAnim }],
             },
           ]}
         >
@@ -111,7 +123,7 @@ export function StandardSuccessScreen({ onNext, onNavigateToPin, cardDesign, cus
           <Animated.View style={{ opacity: elementsOpacity }}>
             <View style={styles.topBar}>
               <View style={styles.navigationBar}>
-                <TouchableOpacity style={styles.closeButton} onPress={onNext}>
+                <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
                   <View style={styles.closeIcon}>
                     <CloseIcon size={24} color="rgba(0,0,0,0.96)" />
                   </View>
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1004, // Higher than LoadingScreen
+    zIndex: 1008, // Higher than CardManagementScreen (1005) to overlay when shown
   },
   whiteBackground: {
     flex: 1,

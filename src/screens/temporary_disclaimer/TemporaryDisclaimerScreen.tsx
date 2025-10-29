@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,20 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { TemporaryDisclaimerScreenProps } from '../../types/navigation';
 import { TopNavigationBar } from '../marketing/components/TopNavigationBar';
 import { ClockIcon, BlockIcon, WarningIcon } from '../../components/icons';
+import { useCards } from '../../contexts/CardsContext';
 
 export function TemporaryDisclaimerScreen({ onBack, onCreateTemporaryCard }: TemporaryDisclaimerScreenProps) {
+  const { addCard } = useCards();
+  const cardAddedRef = useRef(false);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const videoRef = useRef<Video>(null);
+  const slideDownAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     // Slide in from right animation when component mounts
@@ -36,6 +44,71 @@ export function TemporaryDisclaimerScreen({ onBack, onCreateTemporaryCard }: Tem
     });
   };
 
+  const handleVideoLoad = async () => {
+    // Load video and show first frame
+    if (videoRef.current && !isVideoReady) {
+      await videoRef.current.setPositionAsync(0);
+      await videoRef.current.playAsync();
+      setTimeout(async () => {
+        await videoRef.current?.pauseAsync();
+        setIsVideoReady(true);
+      }, 100);
+    }
+  };
+
+  const handleVideoPress = async () => {
+    if (!isAnimating && videoRef.current) {
+      setIsAnimating(true);
+      
+      // Play video immediately
+      await videoRef.current.playAsync();
+    }
+  };
+
+  const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+    if (status.isLoaded && status.didJustFinish) {
+      // Video finished, create card and start sliding button down
+      
+      // Add temporary card only once
+      if (!cardAddedRef.current) {
+        cardAddedRef.current = true;
+        
+        // Generate a random 4-digit number for the card
+        const lastFourDigits = Math.floor(1000 + Math.random() * 9000).toString();
+        
+        // Set expiration to 24 hours from now
+        const expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + 24);
+
+        // Add the temporary card to the context
+        addCard({
+          name: 'Temporary Card',
+          lastFourDigits,
+          cardType: 'Pre-paid',
+          cardDesign: {
+            id: 999, // Special ID for temporary cards
+            name: 'Temporary',
+            image: require('../../../assets/temporary_card.png'),
+          },
+          isTemporary: true,
+          expiresAt,
+        });
+      }
+      
+      // Start sliding button down
+      Animated.timing(slideDownAnim, {
+        toValue: 200,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+      
+      // Navigate to success screen
+      setTimeout(() => {
+        onCreateTemporaryCard();
+      }, 100);
+    }
+  };
+
   return (
     <Animated.View 
       style={[
@@ -47,15 +120,18 @@ export function TemporaryDisclaimerScreen({ onBack, onCreateTemporaryCard }: Tem
     >
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.scrollContent}>
-          <TopNavigationBar onBack={handleBack} backgroundColor="#ece9ee" />
+          <TopNavigationBar onBack={handleBack} backgroundColor="#FFFFFF" />
 
           {/* Content */}
           <View style={styles.content}>
             {/* Illustration */}
             <View style={styles.illustrationContainer}>
               <View style={styles.illustrationPlaceholder}>
-                {/* Placeholder for the hourglass illustration */}
-                <Text style={styles.illustrationEmoji}>⏳</Text>
+                <Image
+                  source={require('../../../assets/hourglass.png')}
+                  style={styles.illustrationImage}
+                  resizeMode="contain"
+                />
               </View>
             </View>
 
@@ -109,15 +185,36 @@ export function TemporaryDisclaimerScreen({ onBack, onCreateTemporaryCard }: Tem
           </View>
         </View>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar with Video Button */}
         <View style={styles.bottomBar}>
-          <TouchableOpacity 
-            style={styles.primaryButton}
-            onPress={onCreateTemporaryCard}
-            activeOpacity={0.8}
+          <Animated.View
+            style={[
+              styles.videoLayer,
+              {
+                transform: [{ translateY: slideDownAnim }]
+              }
+            ]}
           >
-            <Text style={styles.buttonText}>Create temporary virtual card</Text>
-          </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.videoButton}
+              onPress={handleVideoPress}
+              activeOpacity={1}
+              disabled={isAnimating}
+            >
+              <View style={styles.videoContainer}>
+                <Video
+                  ref={videoRef}
+                  source={require('../../../assets/animated-button/standard-button.mp4')}
+                  style={styles.video}
+                  resizeMode={ResizeMode.COVER}
+                  shouldPlay={false}
+                  isLooping={false}
+                  onLoad={handleVideoLoad}
+                  onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+                />
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
         </View>
       </SafeAreaView>
     </Animated.View>
@@ -132,7 +229,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flex: 1,
-    backgroundColor: '#ece9ee',
+    backgroundColor: '#FFFFFF',
     zIndex: 1006, // Same as card details screens, above CardManagementScreen (1005)
   },
   safeArea: {
@@ -144,7 +241,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 24,
     paddingTop: 16,
-    gap: 12,
+    gap: 28,
   },
   illustrationContainer: {
     width: '100%',
@@ -156,8 +253,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  illustrationEmoji: {
-    fontSize: 80,
+  illustrationImage: {
+    width: 150,
+    height: 150,
   },
   title: {
     fontFamily: 'Nu Sans Medium',
@@ -173,15 +271,16 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: '#ffffff',
     borderRadius: 24,
-    shadowColor: '#e5e0e8',
+    borderWidth: 1,
+    borderColor: 'rgba(31, 0, 47, 0.08)',
+    shadowColor: '#1F002F',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.12,
     shadowRadius: 0,
     elevation: 1,
-    overflow: 'hidden',
   },
   listItem: {
     flexDirection: 'row',
@@ -189,7 +288,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     gap: 12,
-    backgroundColor: '#ffffff',
   },
   iconContainer: {
     width: 20,
@@ -215,27 +313,28 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   bottomBar: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+    position: 'relative',
+    backgroundColor: 'transparent',
+    minHeight: 80,
+    paddingHorizontal: 0,
+  },
+  videoLayer: {
+    paddingTop: 4,
     paddingBottom: 16,
-    backgroundColor: '#ece9ee',
+    width: '100%',
   },
-  primaryButton: {
-    backgroundColor: '#820AD1',
-    height: 48,
-    borderRadius: 64,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+  videoButton: {
+    width: '100%',
   },
-  buttonText: {
-    fontFamily: 'Nu Sans Medium',
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#ffffff',
-    textAlign: 'center',
-    lineHeight: 20.8,
+  videoContainer: {
+    width: '100%',
+    overflow: 'visible',
+    aspectRatio: 7.75,
+    backgroundColor: 'transparent',
+  },
+  video: {
+    width: '100%',
+    height: '100%',
   },
 });
 

@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: '#FFFFFF',
-    zIndex: 1006, // Higher than PIN screen
+    zIndex: 1010, // Higher than success screens (1008) and PIN (1009)
   },
   safeArea: {
     flex: 1,

@@ -6,109 +6,194 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  Dimensions,
   Image,
+  Dimensions,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TemporarySuccessScreenProps } from '../../types/navigation';
 import { CloseIcon } from '../../components/icons';
 
 export function TemporarySuccessScreen({ onNext, onNavigateToPin }: TemporarySuccessScreenProps) {
-  const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
-  const floatAnim = useRef(new Animated.Value(0)).current;
+  const insets = useSafeAreaInsets();
+  const cardTop = insets.top + 56 + 42;
+  const slideDownAnim = useRef(new Animated.Value(0)).current; // Start at 0, slides down when closing
+  const elementsOpacity = useRef(new Animated.Value(0)).current;
+  const backgroundOpacity = useRef(new Animated.Value(1)).current; // Start visible immediately
+  const buttonsSlideUp = useRef(new Animated.Value(300)).current; // Start 300px below
+  const buttonsOpacity = useRef(new Animated.Value(0)).current;
+  const cardScaleAnim = useRef(new Animated.Value(1.27)).current; // Start at scaled up size
+  const cardTranslateYAnim = useRef(new Animated.Value(30)).current; // Start at translated position
+  const cardOpacity = useRef(new Animated.Value(0)).current; // Start invisible, fade in
+  const shineAnim = useRef(new Animated.Value(-150)).current; // Start off-screen left-bottom
 
   useEffect(() => {
-    // Slide-in animation
-    Animated.timing(slideAnim, {
-      toValue: 0,
+    // Fade in card immediately
+    Animated.timing(cardOpacity, {
+      toValue: 1,
       duration: 300,
       useNativeDriver: true,
     }).start();
+    
+    // Bring in buttons immediately (no delay since video finished on previous screen)
+    Animated.parallel([
+      Animated.timing(buttonsSlideUp, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonsOpacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    
+    // Scale down card after buttons are in
+    const cardScaleDelay = 300;
+    
+    Animated.parallel([
+      Animated.timing(cardScaleAnim, {
+        toValue: 1,
+        duration: 300,
+        delay: cardScaleDelay,
+        useNativeDriver: true,
+      }),
+      Animated.timing(cardTranslateYAnim, {
+        toValue: 0,
+        duration: 300,
+        delay: cardScaleDelay,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    
+    // Fade in text after card finishes scaling down
+    const textDelay = 600;
+    
+    Animated.timing(elementsOpacity, {
+      toValue: 1,
+      duration: 200,
+      delay: textDelay,
+      useNativeDriver: true,
+    }).start();
+    
+    // Shine animation - moves from bottom-left to top-right (plays once)
+    shineAnim.setValue(-200); // Start 50px lower
+    Animated.timing(shineAnim, {
+      toValue: 250, // End 50px higher
+      duration: 400,
+      delay: 600, // Start after card finishes scaling down
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
-    // Floating animation - continuous cycle
-    const floatingAnimation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatAnim, {
-          toValue: -8, // Float up 8px
-          duration: 1333,
-          useNativeDriver: true,
-        }),
-        Animated.timing(floatAnim, {
-          toValue: 8, // Float down 8px  
-          duration: 2667,
-          useNativeDriver: true,
-        }),
-        Animated.timing(floatAnim, {
-          toValue: -8, // Float back up to start position
-          duration: 1333,
-          useNativeDriver: true,
-        }),
-      ]),
-      { iterations: -1, resetBeforeIteration: false }
-    );
-    floatingAnimation.start();
-
-    return () => {
-      floatingAnimation.stop();
-    };
-  }, [slideAnim, floatAnim]);
+  const handleClose = () => {
+    // Slide down animation before closing
+    Animated.timing(slideDownAnim, {
+      toValue: Dimensions.get('window').height,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onNext();
+    });
+  };
 
   return (
-    <LinearGradient
-      colors={['#F6ECFF', '#FFFFFF']}
-      locations={[0.13, 0.57]}
-      style={styles.rootContainer}
-    >
-      <Animated.View 
-        style={[
-          styles.container,
-          {
-            transform: [{ translateX: slideAnim }],
-          },
-        ]}
-      >
-        <SafeAreaView style={styles.safeArea}>
-          {/* Custom Top Navigation with Close Icon */}
-          <View style={styles.topBar}>
-            <View style={styles.navigationBar}>
-              <TouchableOpacity style={styles.closeButton} onPress={onNext}>
-                <View style={styles.closeIcon}>
-                  <CloseIcon size={24} color="rgba(0,0,0,0.96)" />
+    <Animated.View style={[styles.rootContainer, { opacity: backgroundOpacity }]}>
+      <View style={styles.whiteBackground}>
+        <Animated.View 
+          style={[
+            styles.container,
+            {
+              transform: [{ translateY: slideDownAnim }],
+            },
+          ]}
+        >
+          <SafeAreaView style={styles.safeArea}>
+            {/* Custom Top Navigation with Close Icon */}
+            <Animated.View style={{ opacity: elementsOpacity }}>
+              <View style={styles.topBar}>
+                <View style={styles.navigationBar}>
+                  <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+                    <View style={styles.closeIcon}>
+                      <CloseIcon size={24} color="rgba(0,0,0,0.96)" />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Card Display - positioned relative to full screen */}
-          <View style={styles.cardOverlayContainer}>
-            <Animated.View style={[styles.cardContainer, {
-              transform: [{ translateY: floatAnim }]
-            }]}>
-              <Image
-                source={require('../../../assets/temporary_card.png')}
-                style={styles.cardImage}
-                resizeMode="contain"
-              />
+              </View>
             </Animated.View>
-          </View>
 
-          <View style={styles.content}>
-            {/* Success content */}
-            <View style={styles.successContainer}>
-              <Text style={styles.successTitle}>Your temporary virtual card is ready</Text>
-              <Text style={styles.successMessage}>You can now start spending online with this card for the next 24 hours.</Text>
+            {/* Card Display - positioned to match standard flow */}
+            <View style={[styles.cardOverlayContainer, { top: cardTop }]}>
+              <Animated.View style={[styles.cardContainer, {
+                opacity: cardOpacity,
+                transform: [
+                  { scale: cardScaleAnim },
+                  { translateY: cardTranslateYAnim }
+                ]
+              }]}>
+                <Image
+                  source={require('../../../assets/temporary_card.png')}
+                  style={styles.cardImage}
+                  resizeMode="contain"
+                />
+                
+                {/* Shine effect */}
+                <Animated.View
+                  style={[
+                    styles.shineContainer,
+                    {
+                      transform: [
+                        { translateX: shineAnim },
+                        { translateY: Animated.multiply(shineAnim, -0.5) }, // Move up-right diagonally at -65 degrees
+                      ],
+                    },
+                  ]}
+                >
+                  <LinearGradient
+                    colors={[
+                      'rgba(255,255,255,0)',
+                      'rgba(255,255,255,0.05)',
+                      'rgba(255,255,255,0.15)',
+                      'rgba(255,255,255,0.25)',
+                      'rgba(255,255,255,0.3)',
+                      'rgba(255,255,255,0.3)',
+                      'rgba(255,255,255,0.25)',
+                      'rgba(255,255,255,0.15)',
+                      'rgba(255,255,255,0.05)',
+                      'rgba(255,255,255,0)',
+                    ]}
+                    locations={[0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9, 1]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.shine}
+                  />
+                </Animated.View>
+              </Animated.View>
             </View>
-          </View>
 
-          {/* Bottom Button Bar */}
-          <View style={styles.bottomBar}>
+            {/* Success content - positioned below card */}
+            <Animated.View style={[styles.successContainer, { top: cardTop + 330 + 48, opacity: elementsOpacity }]}>
+              <Text style={styles.successTitle}>Your temporary virtual card is ready</Text>
+              <Text style={styles.successMessage}>You can now spend online with this card for the next 24 hours</Text>
+            </Animated.View>
+            
+            <View style={styles.content} />
+          </SafeAreaView>
+          
+          {/* Bottom Button Bar - slides up from bottom */}
+          <Animated.View style={[styles.bottomBar, { 
+            transform: [{ translateY: buttonsSlideUp }],
+            opacity: buttonsOpacity,
+            paddingBottom: insets.bottom + 16,
+          }]}>
             <TouchableOpacity style={styles.secondaryButton} onPress={onNavigateToPin}>
               <Text style={styles.secondaryButtonText}>View card details</Text>
             </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-      </Animated.View>
-    </LinearGradient>
+          </Animated.View>
+        </Animated.View>
+      </View>
+    </Animated.View>
   );
 }
 
@@ -119,7 +204,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1005, // Higher than TemporaryLoadingScreen
+    zIndex: 1008, // Higher than CardManagementScreen (1005) to overlay when shown
+  },
+  whiteBackground: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
   container: {
     flex: 1,
@@ -149,6 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.64,
   },
   content: {
     flex: 1,
@@ -158,12 +248,11 @@ const styles = StyleSheet.create({
   },
   cardOverlayContainer: {
     position: 'absolute',
-    top: '45%',
+    // top is set dynamically based on device SafeArea insets
     left: '50%',
-    width: 280,
-    height: 420,
-    marginLeft: -140,
-    marginTop: -210,
+    width: 220,
+    height: 330,
+    marginLeft: -110,
   },
   cardContainer: {
     alignItems: 'center',
@@ -171,17 +260,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+    overflow: 'hidden',
   },
   cardImage: {
-    width: 280,
-    height: 420,
+    width: 220,
+    height: 330,
   },
   successContainer: {
     position: 'absolute',
-    top: '45%',
-    left: 24,
-    right: 24,
-    marginTop: 183,
+    // top is set dynamically based on card position
+    left: 24, // 24px from left edge
+    right: 24, // 24px from right edge
     alignItems: 'center',
   },
   successTitle: {
@@ -199,8 +288,13 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingTop: 16,
+    backgroundColor: 'transparent',
   },
   secondaryButton: {
     backgroundColor: '#efefef',
@@ -219,6 +313,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: -0.16,
     lineHeight: 20.8,
+  },
+  shineContainer: {
+    position: 'absolute',
+    top: -330,
+    left: -220,
+    width: 660,
+    height: 990,
+    overflow: 'hidden',
+  },
+  shine: {
+    position: 'absolute',
+    left: '50%',
+    top: -405,
+    width: 135,
+    height: 1800,
+    marginLeft: -67.5,
+    transform: [{ rotate: '-65deg' }],
   },
 });
 
