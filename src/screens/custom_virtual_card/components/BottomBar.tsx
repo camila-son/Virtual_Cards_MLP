@@ -51,7 +51,6 @@ export function BottomBar({ onChooseDesign, onCreateCard, screenMode = 'selectio
       
       // Navigate immediately so success screen can start fading in while button slides out
       setTimeout(() => {
-        onCreateCard();
       }, 100); // Small delay to let slide animation start
     }
   };
