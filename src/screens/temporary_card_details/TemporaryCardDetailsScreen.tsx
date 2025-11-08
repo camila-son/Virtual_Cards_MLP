@@ -9,7 +9,6 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Platform,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { TemporaryCardDetailsScreenProps } from '../../types/navigation';
@@ -372,23 +371,6 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#efefef',
     marginHorizontal: 16,
-  },
-  doubleRow: {
-    flexDirection: 'row',
-    minHeight: 64,
-  },
-  halfRowContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  verticalDivider: {
-    width: 1,
-    backgroundColor: '#efefef',
-    alignSelf: 'center',
-    height: 48,
   },
   mastercardLogo: {
     width: 48,
