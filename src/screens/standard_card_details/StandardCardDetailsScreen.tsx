@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { StandardCardDetailsScreenProps } from '../../types/navigation';
@@ -228,7 +229,7 @@ export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDes
             <Text style={styles.sectionTitle}>Card settings</Text>
             <View style={styles.settingsCard}>
               {/* Edit card name row */}
-              <TouchableOpacity style={styles.settingsRow} onPress={() => {}}>
+              <TouchableOpacity style={styles.settingsRow} onPress={() => console.log('Edit card name')}>
                 <View style={styles.settingsIconContainer}>
                   <EditIcon size={16} color="rgba(0,0,0,0.64)" />
                 </View>
@@ -239,7 +240,7 @@ export function StandardCardDetailsScreen({ onBack, onAnimationComplete, cardDes
               <View style={styles.settingsDivider} />
               
               {/* Delete card row */}
-              <TouchableOpacity style={styles.settingsRow} onPress={() => {}}>
+              <TouchableOpacity style={styles.settingsRow} onPress={() => console.log('Delete card')}>
                 <View style={styles.settingsIconContainer}>
                   <DeleteIcon size={16} color="#D01D1C" />
                 </View>
